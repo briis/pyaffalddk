@@ -1,0 +1,16 @@
+aiohttp
+black
+coverage
+flake8
+mock
+pyflakes
+pylint
+pytest
+pytest-asyncio
+pytest-cov
+python-dotenv
+requests
+requests-toolbelt
+ruff
+mypy
+pre-commit

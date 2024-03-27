@@ -15,6 +15,6 @@ from pyaffalddk.data import PickupEvents, PickupType, AffaldDKAddressInfo
 from pyaffalddk.const import ICON_LIST, MUNICIPALITIES_ARRAY, NAME_ARRAY, NAME_LIST
 
 __title__ = "pyaffalddk"
-__version__ = "2.0.17"
+__version__ = "2.0.18"
 __author__ = "briis"
 __license__ = "MIT"

@@ -1,6 +1,6 @@
-# Python Wrapper for RenoWeb Garbage System API
+# Python Wrapper for AffaldDK Garbage System API
 
-A module to retrieve Garbage Collection data for Danish Municipalities that are using RenoWeb
+A module to retrieve Garbage Collection data for Danish Municipalities
 
 
 

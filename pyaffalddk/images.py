@@ -1,4 +1,4 @@
-"""This module contains the cembedded images for Entity Pictures."""
+"""This module contains the embedded images for Entity Pictures."""
 from __future__ import annotations
 
 PICTURE_ITEMS = {

@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.19
+
+**Date**: `2024-03-29`
+
+### What's Changed
+
+- Converted last_updated value to a Datetime string
+- Added missing categories to PickupEvents Dataclass
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.18
 
 **Date**: `2024-03-29`
@@ -7,9 +19,6 @@
 ### What's Changed
 
 - The API Wrapper module is now renamed to `pyaffalddk`, as the plan is to support more than RenoWeb in the future. So even though this is V2.0.18, this is basically the first version, and contains the same functionality as `pyrenoweb` V2.0.17, just with new function and procedure names.
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.17
 

@@ -32,26 +32,34 @@ class PickupType:
 class PickupEvents:
     """Represent AffaldDK collection data."""
 
-    restaffaldmadaffald: list[PickupType] | None = None
     batterier: list[PickupType] | None = None
-    elektronik: list[PickupType] | None = None
-    papirglasdaaser: list[PickupType] | None = None
-    glas: list[PickupType] | None = None
     dagrenovation: list[PickupType] | None = None
-    metalglas: list[PickupType] | None = None
-    pappi: list[PickupType] | None = None
+    elektronik: list[PickupType] | None = None
     farligtaffald: list[PickupType] | None = None
     farligtaffaldmiljoboks: list[PickupType] | None = None
     flis: list[PickupType] | None = None
     genbrug: list[PickupType] | None = None
+    glas: list[PickupType] | None = None
+    glasplast: list[PickupType] | None = None
+    haveaffald: list[PickupType] | None = None
     jern: list[PickupType] | None = None
-    papir: list[PickupType] | None = None
-    papirmetal: list[PickupType] | None = None
+    metalglas: list[PickupType] | None = None
     pap: list[PickupType] | None = None
+    papir: list[PickupType] | None = None
+    papirglas: list[PickupType] | None = None
+    papirglasdaaser: list[PickupType] | None = None
+    papirglasmetalplast: list[PickupType] | None = None
+    papirmetal: list[PickupType] | None = None
+    pappair: list[PickupType] | None = None
+    pappapirglasmetal: list[PickupType] | None = None
+    pappi: list[PickupType] | None = None
+    plast: list[PickupType] | None = None
+    plastmadkarton: list[PickupType] | None = None
     plastmetal: list[PickupType] | None = None
+    plastmetalmadmdk: list[PickupType] | None = None
+    plastmetalpapir: list[PickupType] | None = None
+    restaffaldmadaffald: list[PickupType] | None = None
     storskrald: list[PickupType] | None = None
     storskraldogtekstilaffald: list[PickupType] | None = None
-    haveaffald: list[PickupType] | None = None
-    papirglas: list[PickupType] | None = None
-    plastmadkarton: list[PickupType] | None = None
+    tekstil: list[PickupType] | None = None
     next_pickup: list[PickupType] | None = None

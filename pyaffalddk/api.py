@@ -221,7 +221,7 @@ class GarbageCollection:
                     )
                     continue
 
-                _last_update = dt.datetime.today()
+                _last_update = dt.datetime.now()
                 _pickup_event = {
                     key: PickupType(
                         date=_pickup_date,
@@ -246,7 +246,7 @@ class GarbageCollection:
                         _next_name.append(NAME_LIST.get(key))
                         _next_description.append(row["materielnavn"])
 
-            _last_update = dt.datetime.today()
+            _last_update = dt.datetime.now()
             _next_pickup_event = {
                 "next_pickup": PickupType(
                     date=_next_pickup,

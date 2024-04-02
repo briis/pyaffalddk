@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.20
+
+**Date**: `2024-04-02`
+
+### What's Changed
+
+- Converted last_updated value to a UTC Datetime object
+- Added `Miljøboks` for Gentofte kommune. Closing [#64](https://github.com/briis/affalddk/issues/64)
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.19
 
 **Date**: `2024-03-29`
@@ -8,9 +20,6 @@
 
 - Converted last_updated value to a Datetime string
 - Added missing categories to PickupEvents Dataclass
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.18
 

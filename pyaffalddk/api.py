@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import abc
 import datetime as dt
+from datetime import timezone
 import json
 import logging
 
@@ -104,11 +105,13 @@ class GarbageCollection:
     def __init__(
         self,
         municipality: str,
+        timezone: str = "Europe/Copenhagen",
         session: aiohttp.ClientSession = None,
         api: AffaldDKAPIBase = AffaldDKAPI(),
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
+        self._timezone = timezone
         self._street = None
         self._house_number = None
         self._api = api
@@ -192,6 +195,9 @@ class GarbageCollection:
             _next_pickup_event: PickupType = None
             _next_name = []
             _next_description = []
+            _last_update = dt.datetime.now(timezone.utc)
+            _utc_date = _last_update.replace(tzinfo=timezone.utc)
+            _utc_timestamp = _utc_date.timestamp()
 
             for row in garbage_data:
                 if row["ordningnavn"] in NON_SUPPORTED_ITEMS:
@@ -221,7 +227,6 @@ class GarbageCollection:
                     )
                     continue
 
-                _last_update = dt.datetime.now()
                 _pickup_event = {
                     key: PickupType(
                         date=_pickup_date,
@@ -230,7 +235,8 @@ class GarbageCollection:
                         icon=ICON_LIST.get(key),
                         entity_picture=f"{key}.svg",
                         description=row["materielnavn"],
-                        last_updated=_last_update.strftime("%Y-%m-%d %H:%M:%S"),
+                        last_updated=_utc_date,
+                        utc_timestamp=_utc_timestamp,
                     )
                 }
                 pickup_events.update(_pickup_event)
@@ -246,7 +252,6 @@ class GarbageCollection:
                         _next_name.append(NAME_LIST.get(key))
                         _next_description.append(row["materielnavn"])
 
-            _last_update = dt.datetime.now()
             _next_pickup_event = {
                 "next_pickup": PickupType(
                     date=_next_pickup,
@@ -255,7 +260,8 @@ class GarbageCollection:
                     icon=ICON_LIST.get("genbrug"),
                     entity_picture="genbrug.svg",
                     description=list_to_string(_next_description),
-                    last_updated=_last_update.strftime("%Y-%m-%d %H:%M:%S"),
+                    last_updated=_utc_date,
+                    utc_timestamp=_utc_timestamp,
                 )
             }
 

@@ -104,11 +104,13 @@ class GarbageCollection:
     def __init__(
         self,
         municipality: str,
+        timezone: str = "Europe/Copenhagen",
         session: aiohttp.ClientSession = None,
         api: AffaldDKAPIBase = AffaldDKAPI(),
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
+        self._timezone = timezone
         self._street = None
         self._house_number = None
         self._api = api

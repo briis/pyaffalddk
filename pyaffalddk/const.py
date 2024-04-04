@@ -58,6 +58,7 @@ SUPPORTED_ITEMS = {
     "farligtaffaldmiljoboks": [
         "Farligt affald/Miljøboks",
         "Papir og glas/dåser",
+        "Miljøboks",
     ],
     "flis": [
         "Flis",

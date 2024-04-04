@@ -2,15 +2,23 @@
 
 ## Version 2.0.20
 
+**Date**: `2024-04-xx`
+
+### What's Changed
+
+- Re-added `Miljøboks` for Gentofte kommune. Closing [#64](https://github.com/briis/affalddk/issues/64)
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
+## Version 2.0.20
+
 **Date**: `2024-04-02`
 
 ### What's Changed
 
 - Converted last_updated value to a UTC Datetime object
 - Added `Miljøboks` for Gentofte kommune. Closing [#64](https://github.com/briis/affalddk/issues/64)
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.19
 

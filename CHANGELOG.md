@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.22
+
+**Date**: `2024-04-06`
+
+### What's Changed
+
+- Added missing container for Svendborg kommune. Closing [#68](https://github.com/briis/affalddk/issues/68)
+- Added missing container for Mariagerfjord kommune. Closing [#67](https://github.com/briis/affalddk/issues/67)
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.21
 
 **Date**: `2024-04-05`
@@ -7,9 +19,6 @@
 ### What's Changed
 
 - Re-added `Miljøboks` for Gentofte kommune. Closing [#64](https://github.com/briis/affalddk/issues/64)
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.20
 

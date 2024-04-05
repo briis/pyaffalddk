@@ -186,6 +186,7 @@ MATERIAL_LIST = {
     "farligtaffaldmiljoboks": [
         "Miljøkasse (1 stk.)",
         "Miljøboks",
+        "Rød kasse henteordning (1 stk.)",
     ],
     "flis": [""],
     "jern": [""],
@@ -223,6 +224,7 @@ MATERIAL_LIST = {
     "storskraldogtekstilaffald": [""],
     "haveaffald": [
         "Gen-Skel 0-2 meter (1 stk.)",
+        "Haveaffald henteordning (1 stk.)",
     ],
     "papirglas": [
         "Papir/glas - 240 l. fortovsindsamling (1 stk.)",
@@ -252,6 +254,7 @@ MATERIAL_LIST = {
     "papirglasmetalplast": [
         "4-kammer (370 l) (1 stk.)",
         "Pap og papir/metal, glas og hård plast - 240 L (1 stk.)",
+        "240 l genbrug låg i låg (1 stk.)"
     ],
 }
 

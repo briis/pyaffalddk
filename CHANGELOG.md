@@ -1,8 +1,8 @@
 # Changelog for pyaffalddk
 
-## Version 2.0.20
+## Version 2.0.21
 
-**Date**: `2024-04-xx`
+**Date**: `2024-04-05`
 
 ### What's Changed
 

@@ -386,3 +386,4 @@ MUNICIPALITIES_LIST = {
 MUNICIPALITIES_ARRAY = list(MUNICIPALITIES_LIST.keys())
 
 WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+WEEKDAYS_SHORT = ["Man", "Tir", "Ons", "Tor", "Fre", "Lør", "Søn"]

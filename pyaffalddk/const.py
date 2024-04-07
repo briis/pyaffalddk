@@ -197,7 +197,6 @@ MATERIAL_LIST = {
         "Genanvendeligt",
         "Genbrug 240 L",
         "Genbrugshal (1 stk.)",
-        "Genbrug henteordning (1 stk.)",
     ],
     "papir": [""],
     "papirmetal": [
@@ -232,6 +231,7 @@ MATERIAL_LIST = {
     ],
     "plastmadkarton": [
         "Genbrugsbeholder PMDK/MG-240L/3uge (1 stk.)",
+        "Genbrug henteordning (1 stk.)",
     ],
     "papirglasdaaser": [
         "240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",

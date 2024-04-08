@@ -321,4 +321,4 @@ def get_next_weekday(weekday: str) -> dt.date:
 
 def list_to_string(list: list[str]) -> str:
     """Convert a list to a string."""
-    return ", ".join(list)
+    return " | ".join(list)

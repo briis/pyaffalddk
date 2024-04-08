@@ -1,5 +1,16 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.23
+
+**Date**: `2024-04-xx`
+
+### What's Changed
+
+- Added `|` as separator to Next Pickup sensor, to easier identify items.
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.22
 
 **Date**: `2024-04-07`
@@ -9,9 +20,6 @@
 - Added missing container for Svendborg kommune. Closing [#68](https://github.com/briis/affalddk/issues/68)
 - Added missing container for Mariagerfjord kommune. Closing [#67](https://github.com/briis/affalddk/issues/67)
 - Exporting danish `WEEKDAYS` and the short form `WEEKDAYS_SHORT` so that it can be used in other programs
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.21
 

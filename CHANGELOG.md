@@ -7,6 +7,7 @@
 ### What's Changed
 
 - Added `|` as separator to Next Pickup sensor, to easier identify items.
+- Added missing containers for Papir & Plast and Metal & Glas for Faxe kommune. Closing #71
 
 <details>
   <summary><b>Previous Changes</b></summary>

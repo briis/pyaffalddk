@@ -225,7 +225,8 @@ MATERIAL_LIST = {
     ],
     "storskrald": [
         "Storskrald - fortovsindsamling (1 stk.)",
-        "Storskrald (1 stk.)"
+        "Storskrald (1 stk.)",
+        "Storskrald enfamiliehus (1 stk.)",
     ],
     "storskraldogtekstilaffald": [""],
     "haveaffald": [

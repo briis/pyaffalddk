@@ -130,6 +130,7 @@ SUPPORTED_ITEMS = {
         "Plast/Metal/Mad- & drikkekartoner",
         "Plast, mad- og drikkekartoner og metal",
     ],
+    "plastmdkglasmetal": [],
     "pappapir": ["Pap/Papir", "Papir/Pap", "Papir og Pap"],
     "tekstil": [
         "Tekstiler",
@@ -217,6 +218,8 @@ MATERIAL_LIST = {
     "plastmetal": [
         "Plast, småt metal & MDK - 240 l. (1 stk.)",
     ],
+    "plastmdkglasmetal": ["240 L todelt genbrugsspand hver 4. uge (1 stk.)",
+    ],
     "plast": [
         "Plast og MDK 240 L (ejer.kommune) (1 stk.)",
     ],
@@ -286,6 +289,7 @@ ICON_LIST = {
     "plastmadkarton": "mdi:trash-can",
     "papirglasdaaser": "mdi:trash-can",
     "pappapirglasmetal": "mdi:trash-can",
+    "plastmdkglasmetal": "mdi:trash-can",
     "plastmetalmadmdk": "mdi:trash-can",
     "pappapir": "mdi:file",
     "tekstil": "mdi:recycle",
@@ -318,6 +322,7 @@ NAME_LIST = {
     "pappi": "Papir & Plast",
     "plast": "Plast",
     "plastmadkarton": "Plast & Madkarton",
+    "plastmdkglasmetal": "Plast, Madkarton, Glas & Metal",
     "plastmetal": "Plast & Metal",
     "plastmetalmadmdk": "Plast, Metal, Mad & Drikkekartoner",
     "plastmetalpapir": "Plast, Metal & Papir",

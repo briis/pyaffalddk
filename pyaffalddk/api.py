@@ -211,11 +211,11 @@ class GarbageCollection:
                 else:
                     continue
 
-                if (
-                    "genbrug" in row["ordningnavn"].lower()
-                    or "papir og glas/dåser" in row["ordningnavn"].lower()
-                    or "miljøkasse/tekstiler" in row["ordningnavn"].lower()
-                ):
+                if any(
+                        group in row["ordningnavn"].lower()
+                        for group in [
+                            "genbrug", "storskrald","papir og glas/dåser","miljøkasse/tekstiler"
+                        ]):
                     key = get_garbage_type_from_material(row["materielnavn"])
                 else:
                     key = get_garbage_type(row["ordningnavn"])

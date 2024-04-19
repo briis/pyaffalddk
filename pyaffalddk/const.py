@@ -222,6 +222,7 @@ MATERIAL_LIST = {
     ],
     "storskrald": [
         "Storskrald - fortovsindsamling (1 stk.)",
+        "Storskrald (1 stk.)"
     ],
     "storskraldogtekstilaffald": [""],
     "haveaffald": [
@@ -251,6 +252,7 @@ MATERIAL_LIST = {
     "tekstil": [
         "Tekstil pose (1 stk.)",
         "Tekstilpose tømning (1 stk.)",
+        "Tekstilaffald (1 stk.)"
     ],
     "glasplast": [""],
     "plastmetalpapir": [""],

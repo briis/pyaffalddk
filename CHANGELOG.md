@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.24
+
+**Date**: `2024-04-19`
+
+### What's Changed
+
+- Added new category Plast, MDK, Glas & Metal.
+- Added missing containers for Varde kommune. Closing #75
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.23
 
 **Date**: `2024-04-16`
@@ -8,9 +20,6 @@
 
 - Added `|` as separator to Next Pickup sensor, to easier identify items.
 - Added missing containers for Papir & Plast and Metal & Glas for Faxe kommune. Closing #71
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.22
 

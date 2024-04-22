@@ -1,5 +1,16 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.26
+
+**Date**: `2024-04-xx`
+
+### What's Changed
+
+- Partly reverted change from 2.0.25, as it caused problems for many with the category Storskrald.
+
+
+<details>
+  <summary><b>Previous Changes</b></summary>
 ## Version 2.0.25
 
 **Date**: `2024-04-19`
@@ -9,9 +20,6 @@
 - Added new category Plast, MDK, Glas & Metal.
 - Added missing containers for Varde kommune. Closing #75
 - Added missing storskrald for Solrød
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.23
 

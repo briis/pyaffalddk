@@ -214,7 +214,7 @@ class GarbageCollection:
                 if any(
                         group in row["ordningnavn"].lower()
                         for group in [
-                            "genbrug", "storskrald","papir og glas/dåser","miljøkasse/tekstiler"
+                            "genbrug","papir og glas/dåser","miljøkasse/tekstiler"
                         ]):
                     key = get_garbage_type_from_material(row["materielnavn"])
                 else:

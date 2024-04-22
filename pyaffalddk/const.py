@@ -227,6 +227,11 @@ MATERIAL_LIST = {
         "Storskrald - fortovsindsamling (1 stk.)",
         "Storskrald (1 stk.)",
         "Storskrald enfamiliehus (1 stk.)",
+        "Storskrald",
+        "Stort elektronik",
+        "Storskrald og genbrug",
+        "Pap og Storskrald",
+        "Storskrald distrikt 8 (1 stk.)",
     ],
     "storskraldogtekstilaffald": [""],
     "haveaffald": [

@@ -180,6 +180,7 @@ class GarbageCollection:
         """Get the garbage collection data."""
 
         if self._municipality_url is not None:
+            self._address_id = address_id
             url = f"https://{self._municipality_url}{API_URL_DATA}"
             # _LOGGER.debug("URL: %s", url)
             body = {"adrid": f"{address_id}", "common": "false"}
@@ -216,20 +217,20 @@ class GarbageCollection:
                         for group in [
                             "genbrug", "storskrald", "papir og glas/dåser","miljøkasse/tekstiler"
                         ]) and self._municipality.lower() == "gladsaxe":
-                    key = get_garbage_type_from_material(row["materielnavn"])
+                    key = get_garbage_type_from_material(row["materielnavn"], self._municipality, self._address_id)
                 elif  any(
                         group in row["ordningnavn"].lower()
                         for group in [
                             "genbrug", "papir og glas/dåser","miljøkasse/tekstiler"
                         ]):
-                    key = get_garbage_type_from_material(row["materielnavn"])
+                    key = get_garbage_type_from_material(row["materielnavn"], self._municipality, self._address_id)
                 else:
                     key = get_garbage_type(row["ordningnavn"])
 
                 if key == row["ordningnavn"] and key != "Bestillerordning":
                     _LOGGER.warning(
-                        "Garbage type [%s] is not defined in the system. Please notify the developer",
-                        key,
+                        "Garbage type [%s] is not defined in the system. Please notify the developer. Municipality: %s, Address ID: %s",
+                        key, self._municipality, self._address_id
                     )
                     continue
 
@@ -298,7 +299,7 @@ def get_garbage_type(item: str) -> str:
     return item
 
 
-def get_garbage_type_from_material(item: str) -> str:
+def get_garbage_type_from_material(item: str, municipality: str, address_id: str) -> str:
     """Get the garbage type from the materialnavn."""
     # _LOGGER.debug("Material: %s", item)
     for key, value in MATERIAL_LIST.items():
@@ -310,8 +311,8 @@ def get_garbage_type_from_material(item: str) -> str:
                     return key
 
     _LOGGER.warning(
-        "Material type [%s] is not defined in the system for Genbrug. Please notify the developer",
-        item,
+        "Material type [%s] is not defined in the system for Genbrug. Please notify the developer. Municipality: %s, Address ID: %s",
+        item, municipality, address_id
     )
     return "genbrug"
 

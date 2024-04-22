@@ -2,11 +2,12 @@
 
 ## Version 2.0.26
 
-**Date**: `2024-04-xx`
+**Date**: `2024-04-22`
 
 ### What's Changed
 
-- Partly reverted change from 2.0.25, as it caused problems for many with the category Storskrald.
+- Modified change from 2.0.25, as it caused problems for many with the category Storskrald. It will now work for all, including Gladsaxe.
+- Added more details to warning if category not found. Makes it easier to debug when people report errors.
 
 
 <details>

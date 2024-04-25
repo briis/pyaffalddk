@@ -1,5 +1,18 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.27
+
+**Date**: `2024-04-xx`
+
+### What's Changed
+
+- Fixed missing containers for Glostrup Kommune. Closing #79
+- Added two new Categories: `restaffald` and `madaffald`. These are new as separat containers.
+
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.26
 
 **Date**: `2024-04-22`
@@ -9,9 +22,6 @@
 - Modified change from 2.0.25, as it caused problems for many with the category Storskrald. It will now work for all, including Gladsaxe.
 - Added more details to warning if category not found. Makes it easier to debug when people report errors.
 
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 ## Version 2.0.25
 
 **Date**: `2024-04-19`

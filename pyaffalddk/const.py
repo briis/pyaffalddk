@@ -35,6 +35,7 @@ SUPPORTED_ITEMS = {
         "Energibeholder (mad/rest)",
         "Rest- og Madaffald",
     ],
+    "madaffald": [""],
     "batterier": ["Batterier"],
     "dagrenovation": ["Dagrenovation"],
     "elektronik": [""],
@@ -98,6 +99,7 @@ SUPPORTED_ITEMS = {
         "Plast-metal",
         "Plast/Metal",
     ],
+    "restaffald": ["",],
     "storskrald": [
         "Storskrald",
         "Stort elektronik",
@@ -163,7 +165,7 @@ MATERIAL_LIST = {
     "elektronik": [
         "Småt elektronik i pose på låg (1 stk.)",
     ],
-    "glas": [""],
+    "glas": ["240 L glas (1 stk.)",],
     "metalglas": [
         "Glas/metal (1 stk.)",
         "240 l Glas/metal Egenløsning (1 stk.)",
@@ -192,7 +194,7 @@ MATERIAL_LIST = {
         "Rød kasse henteordning (1 stk.)",
     ],
     "flis": [""],
-    "jern": [""],
+    "jern": ["240 L metal (1 stk.)",],
     "genbrug": [
         "Tekstiler",
         "Genbrug",
@@ -201,7 +203,7 @@ MATERIAL_LIST = {
         "Genbrug 240 L",
         "Genbrugshal (1 stk.)",
     ],
-    "papir": [""],
+    "papir": ["660 L papir (1 stk.)",],
     "papirmetal": [
         "Metal og papir 240 L (ejer.kommune) (1 stk.)",
     ],
@@ -214,6 +216,7 @@ MATERIAL_LIST = {
         "Indsamling af pap (løst og beholder) (1 stk.)",
         "240 L - Pap - Skel (1 stk.)",
         "Beholder til pap (1 stk.)",
+        "770 L pap (1 stk.)",
     ],
     "plastmetal": [
         "Plast, småt metal & MDK - 240 l. (1 stk.)",
@@ -244,6 +247,7 @@ MATERIAL_LIST = {
     "plastmadkarton": [
         "Genbrugsbeholder PMDK/MG-240L/3uge (1 stk.)",
         "Genbrug henteordning (1 stk.)",
+        "660 L plast, mad- og drikkekartoner (1 stk.)",
     ],
     "papirglasdaaser": [
         "240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",
@@ -270,6 +274,8 @@ MATERIAL_LIST = {
         "Pap og papir/metal, glas og hård plast - 240 L (1 stk.)",
         "240 l genbrug låg i låg (1 stk.)"
     ],
+    "madaffald": ["140 L madaffald (1 stk.)",],
+    "restaffald": ["9505: 770 L restaffald uge (2 stk.)",],
 }
 
 ICON_LIST = {
@@ -304,6 +310,8 @@ ICON_LIST = {
     "glasplast": "mdi:trash-can",
     "plastmetalpapir": "mdi:trash-can",
     "plast": "mdi:trash-can",
+    "madaffald": "mdi:trash-can",
+    "restaffald": "mdi:trash-can",
 }
 
 NAME_LIST = {
@@ -317,7 +325,8 @@ NAME_LIST = {
     "glas": "Glas",
     "glasplast": "Glas, Plast & Madkartoner",
     "haveaffald": "Haveaffald",
-    "jern": "Jern",
+    "jern": "Metal",
+    "madaffald": "Madaffald",
     "metalglas": "Metal & Glas",
     "pap": "Pap",
     "papir": "Papir",
@@ -334,6 +343,7 @@ NAME_LIST = {
     "plastmetal": "Plast & Metal",
     "plastmetalmadmdk": "Plast, Metal, Mad & Drikkekartoner",
     "plastmetalpapir": "Plast, Metal & Papir",
+    "restaffald": "Restaffald",
     "restaffaldmadaffald": "Rest & Madaffald",
     "storskrald": "Storskrald",
     "storskraldogtekstilaffald": "Storskrald & Tekstilaffald",

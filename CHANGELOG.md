@@ -1,11 +1,12 @@
 # Changelog for pyaffalddk
 
-## Version 2.0.27
+## Version 2.0.28
 
 **Date**: `2024-05-04`
 
 ### What's Changed
 
+- Fixed missing containers for Solrød Kommune.
 - Fixed missing containers for Egedal Kommune. Closing #84
 - Fixed missing containers for Lyngby-Taarbæk Kommune. Closing #83
 - Fixed missing containers for Glostrup Kommune. Closing #79

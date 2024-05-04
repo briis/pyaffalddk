@@ -279,7 +279,8 @@ MATERIAL_LIST = {
     "tekstil": [
         "Tekstil pose (1 stk.)",
         "Tekstilpose tømning (1 stk.)",
-        "Tekstilaffald (1 stk.)"
+        "Tekstilaffald (1 stk.)",
+        "Tekstilpose 25 L (1 stk.)",
     ],
     "glasplast": [""],
     "plastmetalpapir": [""],

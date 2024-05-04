@@ -6,6 +6,8 @@
 
 ### What's Changed
 
+- Fixed missing containers for Egedal Kommune. Closing #84
+- Fixed missing containers for Lyngby-Taarbæk Kommune. Closing #83
 - Fixed missing containers for Glostrup Kommune. Closing #79
 - Added two new Categories: `restaffald` and `madaffald`. These are new as separat containers.
 

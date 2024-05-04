@@ -115,6 +115,7 @@ SUPPORTED_ITEMS = {
         "Trærødder og stammer",
         "Haveaffald - Frivilligt",
         "Haveaffald 140 L",
+        "Frivillig Haveaffald tømmes fra mandag til onsdag",
     ],
     "papirglas": ["Papir og pap/Glas", "Glas-papir", "Papir, Pap/Glas"],
     "plastmadkarton": [
@@ -161,11 +162,16 @@ MATERIAL_LIST = {
     "batterier": [
         "Batterier i pose på låg (1 stk.)",
     ],
-    "dagrenovation": [""],
+    "dagrenovation": [
+        "240 l. container 1 x ugentligt (12 stk.)",
+    ],
     "elektronik": [
         "Småt elektronik i pose på låg (1 stk.)",
     ],
-    "glas": ["240 L glas (1 stk.)",],
+    "glas": [
+        "240 L glas (1 stk.)",
+        "Glas, 660 liter (2 stk.)",
+    ],
     "metalglas": [
         "Glas/metal (1 stk.)",
         "240 l Glas/metal Egenløsning (1 stk.)",
@@ -194,7 +200,10 @@ MATERIAL_LIST = {
         "Rød kasse henteordning (1 stk.)",
     ],
     "flis": [""],
-    "jern": ["240 L metal (1 stk.)",],
+    "jern": [
+        "240 L metal (1 stk.)",
+        "Metal, 660 liter (1 stk.)",
+    ],
     "genbrug": [
         "Tekstiler",
         "Genbrug",
@@ -203,7 +212,10 @@ MATERIAL_LIST = {
         "Genbrug 240 L",
         "Genbrugshal (1 stk.)",
     ],
-    "papir": ["660 L papir (1 stk.)",],
+    "papir": [
+        "660 L papir (1 stk.)",
+        "Papir, 660 liter (3 stk.)",
+    ],
     "papirmetal": [
         "Metal og papir 240 L (ejer.kommune) (1 stk.)",
     ],
@@ -217,6 +229,7 @@ MATERIAL_LIST = {
         "240 L - Pap - Skel (1 stk.)",
         "Beholder til pap (1 stk.)",
         "770 L pap (1 stk.)",
+        "Pap, 660 liter (3 stk.)",
     ],
     "plastmetal": [
         "Plast, småt metal & MDK - 240 l. (1 stk.)",
@@ -225,6 +238,7 @@ MATERIAL_LIST = {
     ],
     "plast": [
         "Plast og MDK 240 L (ejer.kommune) (1 stk.)",
+        "Plast, 660 liter (2 stk.)",
     ],
     "storskrald": [
         "Storskrald - fortovsindsamling (1 stk.)",

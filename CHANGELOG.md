@@ -1,6 +1,18 @@
 # Changelog for pyaffalddk
 
-## Version 2.0.28
+## Version 2.0.29
+
+**Date**: `2024-05-12`
+
+### What's Changed
+
+* Fixing missing details for Vejen and Randers. Closing #87
+
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
+# Version 2.0.28
 
 **Date**: `2024-05-04`
 
@@ -11,10 +23,6 @@
 - Fixed missing containers for Lyngby-Taarbæk Kommune. Closing #83
 - Fixed missing containers for Glostrup Kommune. Closing #79
 - Added two new Categories: `restaffald` and `madaffald`. These are new as separat containers.
-
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.26
 

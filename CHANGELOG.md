@@ -7,7 +7,7 @@
 ### What's Changed
 
 * Fixing missing details for Vejen and Randers. Closing #87
-
+- Bump `pyaffalddk` to V2.0.29
 
 <details>
   <summary><b>Previous Changes</b></summary>

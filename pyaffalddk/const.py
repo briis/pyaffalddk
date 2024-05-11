@@ -71,6 +71,7 @@ SUPPORTED_ITEMS = {
         "Genanvendeligt",
         "Genbrug 240 L",
         "Genbrugshal (1 stk.)",
+        "Beholderudbringning",
     ],
     "jern": [
         "Jern",
@@ -234,7 +235,9 @@ MATERIAL_LIST = {
     "plastmetal": [
         "Plast, småt metal & MDK - 240 l. (1 stk.)",
     ],
-    "plastmdkglasmetal": ["240 L todelt genbrugsspand hver 4. uge (1 stk.)",
+    "plastmdkglasmetal": [
+        "240 L todelt genbrugsspand hver 4. uge (1 stk.)",
+        "240L plast, MDK/metal, glas gl. (1 stk.)",
     ],
     "plast": [
         "Plast og MDK 240 L (ejer.kommune) (1 stk.)",
@@ -262,6 +265,7 @@ MATERIAL_LIST = {
         "Genbrugsbeholder PMDK/MG-240L/3uge (1 stk.)",
         "Genbrug henteordning (1 stk.)",
         "660 L plast, mad- og drikkekartoner (1 stk.)",
+        "240 l genbrug - blåt låg (1 stk.)",
     ],
     "papirglasdaaser": [
         "240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",
@@ -271,10 +275,12 @@ MATERIAL_LIST = {
         "240 l genbrug 2-kammer (2023) (1 stk.)",
         "4-kammer (240 l) (1 stk.)",
         "240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",
+        "240 l delt genbrug - grønt låg (1 stk.)",
     ],
     "plastmetalmadmdk": [""],
     "pappapir": [
         "Genbrugsbeholder PP-240L/6uge (1 stk.)",
+        "240L papir, pap (1 stk.)",
     ],
     "tekstil": [
         "Tekstil pose (1 stk.)",

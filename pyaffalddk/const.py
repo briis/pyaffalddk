@@ -13,6 +13,7 @@ NON_SUPPORTED_ITEMS = [
     "Farligt affald (skal bestilles)",
     "Storskrald (skal bestilles)",
     "Haveaffald (skal bestilles)",
+    "Beholderudbringning",
 ]
 
 SUPPORTED_ITEMS = {
@@ -71,7 +72,6 @@ SUPPORTED_ITEMS = {
         "Genanvendeligt",
         "Genbrug 240 L",
         "Genbrugshal (1 stk.)",
-        "Beholderudbringning",
     ],
     "jern": [
         "Jern",

@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.30
+
+**Date**: `2024-05-27`
+
+### What's Changed
+
+* Fixing missing details for Slagelse. Closing #97
+- Bump `pyaffalddk` to V2.0.30
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.29
 
 **Date**: `2024-05-12`
@@ -8,9 +20,6 @@
 
 * Fixing missing details for Vejen and Randers. Closing #87
 - Bump `pyaffalddk` to V2.0.29
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 # Version 2.0.28
 

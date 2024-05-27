@@ -49,7 +49,7 @@ SUPPORTED_ITEMS = {
         "Plast/Papir",
         "Papir/Plast og kartoner",
         "Plast og Mad- & drikkekartoner/Papir",
-        "Plast, Metal, MDK",
+        "Plast, Mad- og drikkekartoner, Småt Pap og Papir",
     ],
     "farligtaffald": [
         "Farligt affald",
@@ -99,6 +99,7 @@ SUPPORTED_ITEMS = {
         "Plast/MDK/Metal",
         "Plast-metal",
         "Plast/Metal",
+        "Plast, Metal, MDK",
     ],
     "restaffald": ["",],
     "storskrald": [

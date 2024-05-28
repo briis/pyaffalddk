@@ -7,7 +7,7 @@
 ### What's Changed
 
 * Fixing missing details for Slagelse. Closing #97
-- Bump `pyaffalddk` to V2.0.30
+* Bump `pyaffalddk` to V2.0.30
 
 <details>
   <summary><b>Previous Changes</b></summary>

@@ -173,6 +173,7 @@ MATERIAL_LIST = {
     "glas": [
         "240 L glas (1 stk.)",
         "Glas, 660 liter (2 stk.)",
+        "400 liter - Glas - Tømmes hver 8. uge (1 stk.)",
     ],
     "metalglas": [
         "Glas/metal (1 stk.)",
@@ -205,6 +206,7 @@ MATERIAL_LIST = {
     "jern": [
         "240 L metal (1 stk.)",
         "Metal, 660 liter (1 stk.)",
+        "240 liter - Metal - Tømmes hver 8. uge (1 stk.)",
     ],
     "genbrug": [
         "Tekstiler",
@@ -232,6 +234,7 @@ MATERIAL_LIST = {
         "Beholder til pap (1 stk.)",
         "770 L pap (1 stk.)",
         "Pap, 660 liter (3 stk.)",
+        "400 liter - Pap og papir - Tømmes hver 2. uge (1 stk.)",
     ],
     "plastmetal": [
         "Plast, småt metal & MDK - 240 l. (1 stk.)",
@@ -267,6 +270,7 @@ MATERIAL_LIST = {
         "Genbrug henteordning (1 stk.)",
         "660 L plast, mad- og drikkekartoner (1 stk.)",
         "240 l genbrug - blåt låg (1 stk.)",
+        "660 liter - Plast/MDK - Tømmes hver 2. uge (1 stk.)",
     ],
     "papirglasdaaser": [
         "240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",

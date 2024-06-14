@@ -7,6 +7,7 @@
 ### What's Changed
 
 * Fixing missing details for Faxe. Closing #4
+* Fixing missing details for Lyngby-Taarbæk. Cloising [AffaldDK #105](https://github.com/briis/affalddk/issues/105)
 * Bump `pyaffalddk` to V2.0.31
 
 <details>

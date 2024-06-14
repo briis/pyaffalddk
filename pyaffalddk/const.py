@@ -198,8 +198,9 @@ MATERIAL_LIST = {
         "",
     ],
     "farligtaffaldmiljoboks": [
-        "Miljøkasse (1 stk.)",
         "Miljøboks",
+        "Miljøkasse (1 stk.)",
+        "Miljøskab (1 stk.)",
         "Rød kasse henteordning (1 stk.)",
     ],
     "flis": [""],

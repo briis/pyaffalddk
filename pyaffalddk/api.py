@@ -1,4 +1,5 @@
 """This module contains the code to get garbage data from AffaldDK."""
+
 from __future__ import annotations
 
 import abc
@@ -209,28 +210,48 @@ class GarbageCollection:
                     _pickup_date = to_date(row["toemningsdato"])
                 elif str(row["toemningsdage"]).capitalize() in WEEKDAYS:
                     _pickup_date = get_next_weekday(row["toemningsdage"])
+                elif find_weekday_in_string(row["toemningsdage"]) != "None":
+                    _weekday = find_weekday_in_string(row["toemningsdage"])
+                    _pickup_date = get_next_weekday(_weekday)
                 else:
                     continue
 
-                if any(
+                if (
+                    any(
                         group in row["ordningnavn"].lower()
                         for group in [
-                            "genbrug", "storskrald", "papir og glas/dåser","miljøkasse/tekstiler"
-                        ]) and self._municipality.lower() == "gladsaxe":
-                    key = get_garbage_type_from_material(row["materielnavn"], self._municipality, self._address_id)
-                elif  any(
-                        group in row["ordningnavn"].lower()
-                        for group in [
-                            "genbrug", "papir og glas/dåser","miljøkasse/tekstiler", "standpladser"
-                        ]):
-                    key = get_garbage_type_from_material(row["materielnavn"], self._municipality, self._address_id)
+                            "genbrug",
+                            "storskrald",
+                            "papir og glas/dåser",
+                            "miljøkasse/tekstiler",
+                        ]
+                    )
+                    and self._municipality.lower() == "gladsaxe"
+                ):
+                    key = get_garbage_type_from_material(
+                        row["materielnavn"], self._municipality, self._address_id
+                    )
+                elif any(
+                    group in row["ordningnavn"].lower()
+                    for group in [
+                        "genbrug",
+                        "papir og glas/dåser",
+                        "miljøkasse/tekstiler",
+                        "standpladser",
+                    ]
+                ):
+                    key = get_garbage_type_from_material(
+                        row["materielnavn"], self._municipality, self._address_id
+                    )
                 else:
                     key = get_garbage_type(row["ordningnavn"])
 
                 if key == row["ordningnavn"] and key != "Bestillerordning":
                     _LOGGER.warning(
                         "Garbage type [%s] is not defined in the system. Please notify the developer. Municipality: %s, Address ID: %s",
-                        key, self._municipality, self._address_id
+                        key,
+                        self._municipality,
+                        self._address_id,
                     )
                     continue
 
@@ -299,7 +320,9 @@ def get_garbage_type(item: str) -> str:
     return item
 
 
-def get_garbage_type_from_material(item: str, municipality: str, address_id: str) -> str:
+def get_garbage_type_from_material(
+    item: str, municipality: str, address_id: str
+) -> str:
     """Get the garbage type from the materialnavn."""
     # _LOGGER.debug("Material: %s", item)
     for key, value in MATERIAL_LIST.items():
@@ -312,7 +335,9 @@ def get_garbage_type_from_material(item: str, municipality: str, address_id: str
 
     _LOGGER.warning(
         "Material type [%s] is not defined in the system for Genbrug. Please notify the developer. Municipality: %s, Address ID: %s",
-        item, municipality, address_id
+        item,
+        municipality,
+        address_id,
     )
     return "genbrug"
 
@@ -323,9 +348,18 @@ def get_next_weekday(weekday: str) -> dt.date:
     target_weekday = weekdays.index(weekday.capitalize())
     days_ahead = (target_weekday - current_weekday) % 7
     next_date: dt.date = dt.datetime.now() + dt.timedelta(days=days_ahead)
-    return next_date
+    return next_date.date()
 
 
 def list_to_string(list: list[str]) -> str:
     """Convert a list to a string."""
     return " | ".join(list)
+
+
+def find_weekday_in_string(text: str) -> str:
+    """Loop through each word in a text string and compare with another word."""
+    words = text.split()
+    for w in words:
+        if w.capitalize() in WEEKDAYS:
+            return w.capitalize()
+    return "None"

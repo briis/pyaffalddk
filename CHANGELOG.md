@@ -7,7 +7,7 @@
 ### What's Changed
 
 * Adding Bornholm as new Municipality. I have limited test data to go on, but some data is being returned. If anything is missing, please report back. Closing [AffaldDK #114](https://github.com/briis/affalddk/issues/114)
-* Bump `pyaffalddk` to V2.0.32
+* Bump `pyaffalddk` to V2.0.33
 
 <details>
   <summary><b>Previous Changes</b></summary>

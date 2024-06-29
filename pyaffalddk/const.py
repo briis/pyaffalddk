@@ -79,6 +79,7 @@ SUPPORTED_ITEMS = {
     "papir": [
         "Papir",
         "Papir 660 L",
+        "Papir // Tekstilaffald",
     ],
     "papirglasdaaser": [
         "Papir og glas/dåser",
@@ -101,7 +102,9 @@ SUPPORTED_ITEMS = {
         "Plast/Metal",
         "Plast, Metal, MDK",
     ],
-    "restaffald": ["",],
+    "restaffald": [
+        "Restaffald // Batterier og Småt Elektronik",
+    ],
     "storskrald": [
         "Storskrald",
         "Stort elektronik",
@@ -385,6 +388,7 @@ MUNICIPALITIES_LIST = {
     "Albertslund": "albertslund",
     "Allerød": "allerod",
     "Billund": "billund",
+    "Bornholm": "bofa",
     "Brøndby": "brondby",
     "Brønderslev": "bronderslev",
     "Dragør": "dragoer",

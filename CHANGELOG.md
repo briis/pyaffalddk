@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.32
+
+**Date**: `2024-06-29`
+
+### What's Changed
+
+* Adding Bornholm as new Municipality. I have limited test data to go on, but some data is being returned. If anything is missing, please report back. Closing [AffaldDK #114](https://github.com/briis/affalddk/issues/114)
+* Bump `pyaffalddk` to V2.0.32
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.31
 
 **Date**: `2024-06-14`
@@ -9,9 +21,6 @@
 * Fixing missing details for Faxe. Closing #4
 * Fixing missing details for Lyngby-Taarbæk. Cloising [AffaldDK #105](https://github.com/briis/affalddk/issues/105)
 * Bump `pyaffalddk` to V2.0.31
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.30
 

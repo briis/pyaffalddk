@@ -1,6 +1,6 @@
 # Changelog for pyaffalddk
 
-## Version 2.0.32
+## Version 2.0.33
 
 **Date**: `2024-06-29`
 

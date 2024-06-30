@@ -277,9 +277,9 @@ class GarbageCollection:
                 pickup_events.update(_pickup_event)
 
                 if _pickup_date is not None:
-                    if _pickup_date < get_today_with_time(
-                        _next_pickup_hour, _next_pickup_minute
-                    ):
+                    if get_pickupdate_with_current_time(
+                        _pickup_date
+                    ) < get_today_with_time(_next_pickup_hour, _next_pickup_minute):
                         continue
                     if _pickup_date < _next_pickup:
                         _next_pickup = _pickup_date
@@ -390,3 +390,10 @@ def get_today_with_time(hour: int, minute: int) -> dt.datetime:
     """Return a datetime with the current date and a supplied hour and minute."""
     current_date = dt.datetime.now().date()
     return dt.datetime.combine(current_date, dt.time(hour, minute))
+
+
+def get_pickupdate_with_current_time(pickup_date: dt.date) -> dt.datetime:
+    """Return a datetime with the current date and a supplied hour and minute."""
+    current_hour = dt.datetime.now().hour
+    current_minute = dt.datetime.now().minute
+    return dt.datetime.combine(pickup_date, dt.time(current_hour, current_minute))

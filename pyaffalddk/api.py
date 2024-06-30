@@ -106,12 +106,14 @@ class GarbageCollection:
     def __init__(
         self,
         municipality: str,
+        expiry_time: str = "17:00",
         timezone: str = "Europe/Copenhagen",
         session: aiohttp.ClientSession = None,
         api: AffaldDKAPIBase = AffaldDKAPI(),
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
+        self._expiry_time = expiry_time
         self._timezone = timezone
         self._street = None
         self._house_number = None
@@ -192,8 +194,11 @@ class GarbageCollection:
             # _LOGGER.debug("Garbage Data: %s", garbage_data)
 
             pickup_events: PickupEvents = {}
+            _next_pickup_time = self._expiry_time.split(":")
+            _next_pickup_hour = int(_next_pickup_time[0])
+            _next_pickup_minute = int(_next_pickup_time[1])
             _next_pickup = dt.datetime(2030, 12, 31, 23, 59, 0)
-            _next_pickup = _next_pickup.date()
+            # _next_pickup = _next_pickup.date()
             _next_pickup_event: PickupType = None
             _next_name = []
             _next_description = []
@@ -207,7 +212,7 @@ class GarbageCollection:
 
                 _pickup_date = None
                 if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
-                    _pickup_date = to_date(row["toemningsdato"])
+                    _pickup_date = to_datetime(row["toemningsdato"])
                 elif str(row["toemningsdage"]).capitalize() in WEEKDAYS:
                     _pickup_date = get_next_weekday(row["toemningsdage"])
                 elif find_weekday_in_string(row["toemningsdage"]) != "None":
@@ -215,6 +220,8 @@ class GarbageCollection:
                     _pickup_date = get_next_weekday(_weekday)
                 else:
                     continue
+
+                _LOGGER.debug("Pickup Date: %s", _pickup_date)
 
                 if (
                     any(
@@ -270,7 +277,9 @@ class GarbageCollection:
                 pickup_events.update(_pickup_event)
 
                 if _pickup_date is not None:
-                    if _pickup_date < dt.date.today():
+                    if _pickup_date < get_today_with_time(
+                        _next_pickup_hour, _next_pickup_minute
+                    ):
                         continue
                     if _pickup_date < _next_pickup:
                         _next_pickup = _pickup_date
@@ -298,7 +307,7 @@ class GarbageCollection:
 
 
 def to_date(datetext: str) -> dt.date:
-    """Convert a date string to a datetime object."""
+    """Convert a date string to a date object."""
     if datetext == "Ingen tømningsdato fundet!":
         return None
 
@@ -307,6 +316,18 @@ def to_date(datetext: str) -> dt.date:
         return None
     _date = dt.datetime.strptime(f"{datetext[index+1:]}", "%d-%m-%Y")
     return _date.date()
+
+
+def to_datetime(datetext: str) -> dt.datetime:
+    """Convert a date string to a datetime object."""
+    if datetext == "Ingen tømningsdato fundet!":
+        return None
+
+    index = datetext.rfind(" ")
+    if index == -1:
+        return None
+    _date = dt.datetime.strptime(f"{datetext[index+1:]}", "%d-%m-%Y")
+    return _date
 
 
 def get_garbage_type(item: str) -> str:
@@ -342,13 +363,13 @@ def get_garbage_type_from_material(
     return "genbrug"
 
 
-def get_next_weekday(weekday: str) -> dt.date:
+def get_next_weekday(weekday: str) -> dt.datetime:
     weekdays = WEEKDAYS
     current_weekday = dt.datetime.now().weekday()
     target_weekday = weekdays.index(weekday.capitalize())
     days_ahead = (target_weekday - current_weekday) % 7
     next_date: dt.date = dt.datetime.now() + dt.timedelta(days=days_ahead)
-    return next_date.date()
+    return next_date
 
 
 def list_to_string(list: list[str]) -> str:
@@ -363,3 +384,9 @@ def find_weekday_in_string(text: str) -> str:
         if w.capitalize() in WEEKDAYS:
             return w.capitalize()
     return "None"
+
+
+def get_today_with_time(hour: int, minute: int) -> dt.datetime:
+    """Return a datetime with the current date and a supplied hour and minute."""
+    current_date = dt.datetime.now().date()
+    return dt.datetime.combine(current_date, dt.time(hour, minute))

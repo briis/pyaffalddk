@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.1.0
+
+**Date**: `2024-06-30`
+
+### What's Changed
+
+* Adding Expiry time of next pickup. When the time is reached for the current day, the next item in the list will be selected. Default is 17:00 on the current day, but can be adjusted in the Settings of the Home Assistant Integration. Closing [AffaldDK #93](https://github.com/briis/affalddk/issues/93)
+* Bump `pyaffalddk` to V2.1.0
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.33
 
 **Date**: `2024-06-29`
@@ -8,9 +20,6 @@
 
 * Adding Bornholm as new Municipality. I have limited test data to go on, but some data is being returned. If anything is missing, please report back. Closing [AffaldDK #114](https://github.com/briis/affalddk/issues/114)
 * Bump `pyaffalddk` to V2.0.33
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.31
 

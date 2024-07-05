@@ -221,8 +221,6 @@ class GarbageCollection:
                 else:
                     continue
 
-                _LOGGER.debug("Pickup Date: %s", _pickup_date)
-
                 if (
                     any(
                         group in row["ordningnavn"].lower()
@@ -276,10 +274,16 @@ class GarbageCollection:
                 }
                 pickup_events.update(_pickup_event)
 
+                _LOGGER.debug(
+                    "Pickup Date Current: %s - Next Pickup: %s",
+                    get_pickupdate_with_current_time(_pickup_date),
+                    get_today_with_time(_next_pickup_hour, _next_pickup_minute),
+                )
+
                 if _pickup_date is not None:
-                    if get_pickupdate_with_current_time(
-                        _pickup_date
-                    ) < get_today_with_time(_next_pickup_hour, _next_pickup_minute):
+                    if get_today_with_time(
+                        _next_pickup_hour, _next_pickup_minute
+                    ) < get_pickupdate_with_current_time(_pickup_date):
                         continue
                     if _pickup_date < _next_pickup:
                         _next_pickup = _pickup_date

@@ -1,6 +1,6 @@
 # ruff: noqa: F401
-"""This module is only used to run some realtime data tests using the async functions, while developing the module.
-"""
+"""This module is only used to run some realtime data tests using the async functions, while developing the module."""
+
 from __future__ import annotations
 
 import asyncio
@@ -28,7 +28,9 @@ async def main() -> None:
     start = time.time()
 
     session = aiohttp.ClientSession()
-    garbage = GarbageCollection(municipality=sys.argv[2], session=session)
+    garbage = GarbageCollection(
+        municipality=sys.argv[2], expiry_time="10:00", session=session
+    )
 
     if sys.argv[1] == "address_id":
         try:

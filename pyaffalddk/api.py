@@ -231,6 +231,19 @@ class GarbageCollection:
                     key = get_garbage_type_from_material(
                         row["materielnavn"], self._municipality, self._address_id
                     )
+                elif (
+                    any(
+                        group in row["ordningnavn"].lower()
+                        for group in [
+                            "dagrenovation",
+                        ]
+                    )
+                    and self._municipality.lower() == "gribskov"
+                ):
+                    key = get_garbage_type_from_material(
+                        row["materielnavn"], self._municipality, self._address_id
+                    )
+
                 elif any(
                     group in row["ordningnavn"].lower()
                     for group in [

@@ -169,6 +169,7 @@ MATERIAL_LIST = {
     ],
     "dagrenovation": [
         "240 l. container 1 x ugentligt (12 stk.)",
+        "*140 l grøn (1 stk.)",
     ],
     "elektronik": [
         "Småt elektronik i pose på låg (1 stk.)",
@@ -246,6 +247,7 @@ MATERIAL_LIST = {
     "plastmdkglasmetal": [
         "240 L todelt genbrugsspand hver 4. uge (1 stk.)",
         "240L plast, MDK/metal, glas gl. (1 stk.)",
+        "Genbrugsbeholder, 190 ltr (1 stk.)",
     ],
     "plast": [
         "Plast og MDK 240 L (ejer.kommune) (1 stk.)",
@@ -302,10 +304,15 @@ MATERIAL_LIST = {
     "papirglasmetalplast": [
         "4-kammer (370 l) (1 stk.)",
         "Pap og papir/metal, glas og hård plast - 240 L (1 stk.)",
-        "240 l genbrug låg i låg (1 stk.)"
+        "240 l genbrug låg i låg (1 stk.)",
     ],
-    "madaffald": ["140 L madaffald (1 stk.)",],
-    "restaffald": ["9505: 770 L restaffald uge (2 stk.)",],
+    "madaffald": [
+        "140 L madaffald (1 stk.)",
+        "*190 l rød (1 stk.)",
+    ],
+    "restaffald": [
+        "9505: 770 L restaffald uge (2 stk.)",
+    ],
 }
 
 ICON_LIST = {

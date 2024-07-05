@@ -1,13 +1,14 @@
 # Changelog for pyaffalddk
 
-## Version 2.0.33
+## Version 2.0.34
 
-**Date**: `2024-06-29`
+**Date**: `2024-07-05`
 
 ### What's Changed
 
-* Adding Bornholm as new Municipality. I have limited test data to go on, but some data is being returned. If anything is missing, please report back. Closing [AffaldDK #114](https://github.com/briis/affalddk/issues/114)
-* Bump `pyaffalddk` to V2.0.33
+* Fixing missing containers in Esbjerg. Closing [AffaldDK #117](https://github.com/briis/affalddk/issues/117)
+* Fixing missing containers in Gribskov. Closing [AffaldDK #118](https://github.com/briis/affalddk/issues/118)
+* Bump `pyaffalddk` to V2.0.34
 
 <details>
   <summary><b>Previous Changes</b></summary>
@@ -17,6 +18,15 @@
 **Date**: `2024-06-14`
 
 ### What's Changed
+
+## Version 2.0.33
+
+**Date**: `2024-06-29`
+
+### What's Changed
+
+* Adding Bornholm as new Municipality. I have limited test data to go on, but some data is being returned. If anything is missing, please report back. Closing [AffaldDK #114](https://github.com/briis/affalddk/issues/114)
+* Bump `pyaffalddk` to V2.0.33
 
 * Fixing missing details for Faxe. Closing #4
 * Fixing missing details for Lyngby-Taarbæk. Cloising [AffaldDK #105](https://github.com/briis/affalddk/issues/105)

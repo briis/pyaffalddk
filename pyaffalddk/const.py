@@ -89,6 +89,7 @@ SUPPORTED_ITEMS = {
         "Papir/metal",
         "Metal/papir",
         "Papir og Metal",
+        "Pap & metal",
     ],
     "pap": [
         "Pap",
@@ -122,7 +123,12 @@ SUPPORTED_ITEMS = {
         "Haveaffald 140 L",
         "Frivillig Haveaffald tømmes fra mandag til onsdag",
     ],
-    "papirglas": ["Papir og pap/Glas", "Glas-papir", "Papir, Pap/Glas"],
+    "papirglas": [
+        "Papir og pap/Glas",
+        "Glas-papir",
+        "Papir, Pap/Glas",
+        "Papir & glas",
+    ],
     "plastmadkarton": [
         "Plast/MDK",
         "Plast & mad- og drikkekartoner",

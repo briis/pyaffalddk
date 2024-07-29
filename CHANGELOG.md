@@ -1,5 +1,18 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.35
+
+**Date**: `2024-07-29`
+
+### What's Changed
+
+* Fixing missing Types in Albertslund. Closing [AffaldDK #129](https://github.com/briis/affalddk/issues/129)
+* Bump `pyaffalddk` to V2.0.35
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
+
 ## Version 2.0.34
 
 **Date**: `2024-07-05`
@@ -10,8 +23,6 @@
 * Fixing missing containers in Gribskov. Closing [AffaldDK #118](https://github.com/briis/affalddk/issues/118)
 * Bump `pyaffalddk` to V2.0.34
 
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.31
 

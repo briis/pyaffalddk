@@ -6,11 +6,20 @@
 
 ### What's Changed
 
-* Fixing missing Types in Albertslund. Closing [AffaldDK #129](https://github.com/briis/affalddk/issues/129)
-* Bump `pyaffalddk` to V2.0.35
+* Fixing missing Types in Ringsted. Closing [AffaldDK #133](https://github.com/briis/affalddk/issues/133)
+* Bump `pyaffalddk` to V2.0.36
 
 <details>
   <summary><b>Previous Changes</b></summary>
+
+## Version 2.0.35
+
+**Date**: `2024-07-29`
+
+### What's Changed
+
+* Fixing missing Types in Albertslund. Closing [AffaldDK #129](https://github.com/briis/affalddk/issues/129)
+* Bump `pyaffalddk` to V2.0.35
 
 
 ## Version 2.0.34

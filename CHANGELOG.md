@@ -1,6 +1,18 @@
 # Changelog for pyaffalddk
 
-## Version 2.0.35
+## Version 2.0.37
+
+**Date**: `2024-08-13`
+
+### What's Changed
+
+* Fixing missing Types in Vordingborg. Closing [AffaldDK #136](https://github.com/briis/affalddk/issues/136)
+* Bump `pyaffalddk` to V2.0.37
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
+## Version 2.0.36
 
 **Date**: `2024-07-29`
 
@@ -8,9 +20,6 @@
 
 * Fixing missing Types in Ringsted. Closing [AffaldDK #133](https://github.com/briis/affalddk/issues/133)
 * Bump `pyaffalddk` to V2.0.36
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.35
 

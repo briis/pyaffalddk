@@ -194,6 +194,7 @@ MATERIAL_LIST = {
         "240 l glas/metal - 4 tømninger (1 stk.)",
         "240 liter - Metal/Glas - tømmes hver 8. uge (1 stk.)",
         "Metal/glas 240 l (hver 12. uge) (1 stk.)",
+        "240 L. Glas/Metal - 4 tømninger (1 stk.)",
     ],
     "pappi": [
         "Plast/papir (1 stk.)",
@@ -205,6 +206,7 @@ MATERIAL_LIST = {
         "240 l PMDK/PP 3 ugers tømning (1 stk.)",
         "240 liter - Plast, MDK, papir, pap – tømmes hver 2. uge (1 stk.)",
         "PP/MDK-plast 240 l (hver 2. uge) (1 stk.)",
+        "240 L. PMDK/PP 3 ugers tømning (1 stk.)",
     ],
     "farligtaffald": [
         "",

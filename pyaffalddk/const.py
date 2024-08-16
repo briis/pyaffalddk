@@ -216,6 +216,7 @@ MATERIAL_LIST = {
         "Miljøkasse (1 stk.)",
         "Miljøskab (1 stk.)",
         "Rød kasse henteordning (1 stk.)",
+        "*Miljøkasse (1 stk.)",
     ],
     "flis": [""],
     "jern": [
@@ -290,6 +291,7 @@ MATERIAL_LIST = {
     ],
     "papirglasdaaser": [
         "240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",
+        "*240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",
     ],
     "pappapirglasmetal": [
         "240L metal, glas, plast/papir gl. (1 stk.)",

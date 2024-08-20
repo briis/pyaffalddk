@@ -199,6 +199,7 @@ MATERIAL_LIST = {
     "pappi": [
         "Plast/papir (1 stk.)",
         "370 l Plast+MDK/Papir - Egenløsning (1 stk.)",
+        "240 l Plast+MDK/Papir - Egenløsning (1 stk.)",
         "Papir/Plast og MDK 240 l - 2-kammer (1 stk.)",
         "Plast/papir, afstand over 5 meter (1 stk.)",
         "240 L - Plast og Papir (1 stk.)",

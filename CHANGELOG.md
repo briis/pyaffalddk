@@ -7,6 +7,7 @@
 ### What's Changed
 
 * Fixing missing Types in Solrød. Closing [AffaldDK #139](https://github.com/briis/affalddk/issues/139)
+* Fixing missing Types in Egedal. Closing [AffaldDK #142](https://github.com/briis/affalddk/issues/142)
 * Bump `pyaffalddk` to V2.0.38
 
 <details>

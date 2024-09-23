@@ -264,6 +264,7 @@ MATERIAL_LIST = {
     "plast": [
         "Plast og MDK 240 L (ejer.kommune) (1 stk.)",
         "Plast, 660 liter (2 stk.)",
+        "Plastaffald henteordning (1 stk.)",
     ],
     "storskrald": [
         "Storskrald - fortovsindsamling (1 stk.)",

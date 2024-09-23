@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.39
+
+**Date**: `2024-09-23`
+
+### What's Changed
+
+* Fixing missing Types in Svendborg. Closing [AffaldDK #151](https://github.com/briis/affalddk/issues/151)
+* Bump `pyaffalddk` to V2.0.39
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.38
 
 **Date**: `2024-08-16`
@@ -9,9 +21,6 @@
 * Fixing missing Types in Solrød. Closing [AffaldDK #139](https://github.com/briis/affalddk/issues/139)
 * Fixing missing Types in Egedal. Closing [AffaldDK #142](https://github.com/briis/affalddk/issues/142)
 * Bump `pyaffalddk` to V2.0.38
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.37
 

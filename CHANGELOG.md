@@ -7,6 +7,7 @@
 ### What's Changed
 
 * Fixing missing Types in Svendborg. Closing [AffaldDK #151](https://github.com/briis/affalddk/issues/151)
+* Fixing missing Types in Horsens. Closing [pyaffalddk #14](https://github.com/briis/pyaffalddk/issues/14)
 * Bump `pyaffalddk` to V2.0.39
 
 <details>

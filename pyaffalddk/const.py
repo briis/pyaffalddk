@@ -144,8 +144,15 @@ SUPPORTED_ITEMS = {
         "Plast/Metal/Mad- & drikkekartoner",
         "Plast, mad- og drikkekartoner og metal",
     ],
-    "plastmdkglasmetal": [],
-    "pappapir": ["Pap/Papir", "Papir/Pap", "Papir og Pap"],
+    "plastmdkglasmetal": [
+        "Plast og drikkekarton – Glas og metal",
+    ],
+    "pappapir": [
+        "Pap/Papir",
+        "Papir/Pap",
+        "Papir og Pap",
+        "Papir, pap og tekstilaffald",
+    ],
     "tekstil": [
         "Tekstiler",
         "Standplads",

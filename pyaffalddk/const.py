@@ -36,7 +36,7 @@ SUPPORTED_ITEMS = {
         "Energibeholder (mad/rest)",
         "Rest- og Madaffald",
     ],
-    "madaffald": [""],
+    "madaffald": ["Madaffald"],
     "batterier": ["Batterier"],
     "dagrenovation": ["Dagrenovation"],
     "elektronik": [""],
@@ -139,6 +139,7 @@ SUPPORTED_ITEMS = {
         "Pap, papir, tekstil & metal og glas",
         "4delt beholder",
         "Ressourcebeholder (pap/papir og glas/metal)",
+        "Papir/pap og glas/metal",
     ],
     "plastmetalmadmdk": [
         "Plast/Metal/Mad- & drikkekartoner",
@@ -169,6 +170,9 @@ SUPPORTED_ITEMS = {
         "Genbrugsspand - Obligatorisk min. 1 spand",
     ],
     "plast": ["Plast - Obligatorisk min. 1 spand", "Plast"],
+    "restplast": [
+        "Rest + plast/MDK",
+    ],
 }
 
 NON_MATERIAL_LIST = [
@@ -370,6 +374,7 @@ ICON_LIST = {
     "plast": "mdi:trash-can",
     "madaffald": "mdi:trash-can",
     "restaffald": "mdi:trash-can",
+    "restplast": "mdi:trash-can",
 }
 
 NAME_LIST = {
@@ -403,6 +408,7 @@ NAME_LIST = {
     "plastmetalpapir": "Plast, Metal & Papir",
     "restaffald": "Restaffald",
     "restaffaldmadaffald": "Rest & Madaffald",
+    "restplast": "Restaffald & Plast/Madkartoner",
     "storskrald": "Storskrald",
     "storskraldogtekstilaffald": "Storskrald & Tekstilaffald",
     "tekstil": "Tekstilaffald",

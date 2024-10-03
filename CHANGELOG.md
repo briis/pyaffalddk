@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.40
+
+**Date**: `2024-10-03`
+
+### What's Changed
+
+* Start Fixing issues, after Bornholm has changed naming of many un its. Contributing to [AffaldDK #159](https://github.com/briis/affalddk/issues/159)
+* Bump `pyaffalddk` to V2.0.40
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.39
 
 **Date**: `2024-09-23`
@@ -9,9 +21,6 @@
 * Fixing missing Types in Svendborg. Closing [AffaldDK #151](https://github.com/briis/affalddk/issues/151)
 * Fixing missing Types in Horsens. Closing [pyaffalddk #14](https://github.com/briis/pyaffalddk/issues/14)
 * Bump `pyaffalddk` to V2.0.39
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.38
 

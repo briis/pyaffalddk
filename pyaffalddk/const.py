@@ -338,6 +338,9 @@ MATERIAL_LIST = {
     "restaffald": [
         "9505: 770 L restaffald uge (2 stk.)",
     ],
+    "juletrae": [
+        "Juletræer (1 stk.)",
+    ],
 }
 
 ICON_LIST = {
@@ -375,6 +378,7 @@ ICON_LIST = {
     "madaffald": "mdi:trash-can",
     "restaffald": "mdi:trash-can",
     "restplast": "mdi:trash-can",
+    "juletrae": "mdi:pine-tree",
 }
 
 NAME_LIST = {
@@ -389,6 +393,7 @@ NAME_LIST = {
     "glasplast": "Glas, Plast & Madkartoner",
     "haveaffald": "Haveaffald",
     "jern": "Metal",
+    "juletrae": "Juletræer",
     "madaffald": "Madaffald",
     "metalglas": "Metal & Glas",
     "pap": "Pap",

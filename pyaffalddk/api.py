@@ -206,16 +206,18 @@ class GarbageCollection:
                     continue
 
                 _pickup_date = None
+                _pickup_date_found = True
                 if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
                     _pickup_date = to_date(row["toemningsdato"])
                 elif str(row["toemningsdage"]).capitalize() in WEEKDAYS:
                     _pickup_date = get_next_weekday(row["toemningsdage"])
-                elif (
-                    find_weekday_in_string(row["toemningsdage"]) != "None"
-                    and row["toemningsdato"] not in NON_SUPPORTED_ITEMS
-                ):
-                    _weekday = find_weekday_in_string(row["toemningsdage"])
-                    _pickup_date = get_next_weekday(_weekday)
+                elif find_weekday_in_string(row["toemningsdage"]) != "None":
+                    if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
+                        _weekday = find_weekday_in_string(row["toemningsdage"])
+                        _pickup_date = get_next_weekday(_weekday)
+                    else:
+                        _pickup_date = "Ingen dato"
+                        _pickup_date_found = False
                 else:
                     continue
 
@@ -285,7 +287,7 @@ class GarbageCollection:
                 }
                 pickup_events.update(_pickup_event)
 
-                if _pickup_date is not None:
+                if _pickup_date is not None and _pickup_date_found:
                     if _pickup_date < dt.date.today():
                         continue
                     if _pickup_date < _next_pickup:

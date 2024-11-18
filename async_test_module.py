@@ -1,6 +1,6 @@
 # ruff: noqa: F401
-"""This module is only used to run some realtime data tests using the async functions, while developing the module.
-"""
+"""This module is only used to run some realtime data tests using the async functions, while developing the module."""
+
 from __future__ import annotations
 
 import asyncio
@@ -66,7 +66,10 @@ async def main() -> None:
                 print("  Nøgle: ", item)
                 print("  Gruppe: ", data[item].group)
                 print("  Navn: ", data[item].friendly_name)
-                print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
+                try:
+                    print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
+                except:  # noqa: E722
+                    print("  Dato: ", data[item].date)
                 print("  Beskrivelse: ", data[item].description)
                 print("  Icon: ", data[item].icon)
                 print("  Picture: ", data[item].entity_picture)

@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.0.42
+
+**Date**: `2024-11-18`
+
+### What's Changed
+
+* Fixing issue where there is a weekday present but next pick-up is undefined. Typically occurs around New Years time. Closing [AffaldDK #179](https://github.com/briis/affalddk/issues/179)
+* Bump `pyaffalddk` to V2.0.42
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.41
 
 **Date**: `2024-10-16`
@@ -8,9 +20,6 @@
 
 * Added new Material Type `juletrae` and also added new image. Closing [AffaldDK #165](https://github.com/briis/affalddk/issues/165)
 * Bump `pyaffalddk` to V2.0.41
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.40
 

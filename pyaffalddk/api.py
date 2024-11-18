@@ -210,7 +210,10 @@ class GarbageCollection:
                     _pickup_date = to_date(row["toemningsdato"])
                 elif str(row["toemningsdage"]).capitalize() in WEEKDAYS:
                     _pickup_date = get_next_weekday(row["toemningsdage"])
-                elif find_weekday_in_string(row["toemningsdage"]) != "None":
+                elif (
+                    find_weekday_in_string(row["toemningsdage"]) != "None"
+                    and row["toemningsdato"] not in NON_SUPPORTED_ITEMS
+                ):
                     _weekday = find_weekday_in_string(row["toemningsdage"])
                     _pickup_date = get_next_weekday(_weekday)
                 else:

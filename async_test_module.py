@@ -25,6 +25,7 @@ async def main() -> None:
     """Async test module."""
 
     logging.basicConfig(level=logging.DEBUG)
+    logging.getLogger("ical").setLevel(logging.WARNING)
     start = time.time()
 
     session = aiohttp.ClientSession()

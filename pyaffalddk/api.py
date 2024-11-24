@@ -16,8 +16,6 @@ import aiohttp
 
 from .const import (
     API_DATA_LIST,
-    API_URL_DATA,
-    API_URL_SEARCH,
     ICON_LIST,
     MATERIAL_LIST,
     MUNICIPALITIES_LIST,
@@ -76,7 +74,6 @@ class AffaldDKAPI(AffaldDKAPIBase):
             is_new_session = True
 
         headers = {"Content-Type": "application/json"}
-        # self.session.headers.update(headers)
 
         async with self.session.post(
             url, headers=headers, data=json.dumps(body)
@@ -106,8 +103,6 @@ class AffaldDKAPI(AffaldDKAPIBase):
     async def async_api_request_2(self, url: str) -> dict[str, Any]:
         """Get data from standard REST API."""
 
-        _LOGGER.debug("URL 2 CALLED: %s", url)
-
         is_new_session = False
         if self.session is None:
             self.session = aiohttp.ClientSession()
@@ -135,8 +130,6 @@ class AffaldDKAPI(AffaldDKAPIBase):
 
     async def async_get_ical_data(self, url: str) -> dict[str, Any]:
         """Get data from iCal API."""
-
-        _LOGGER.debug("URL iCal CALLED: %s", url)
 
         is_new_session = False
         if self.session is None:
@@ -238,7 +231,7 @@ class GarbageCollection:
                     raise AffaldDKNotValidAddressError("Address not found")
 
             else:
-                url = f"https://{self._municipality_url}{API_URL_SEARCH}"
+                url = f"https://{self._municipality_url}{self._api_url_search}"
                 body = {
                     "searchterm": f"{street} {house_number}",
                     "addresswithmateriel": 7,
@@ -304,11 +297,6 @@ class GarbageCollection:
                             if _pickup_date < dt.date.today():
                                 continue
 
-                            _LOGGER.debug(
-                                "Garbage Type: %s Date: %s",
-                                garbage_type,
-                                _pickup_date.strftime("%d-%m-%Y"),
-                            )
                             key = get_garbage_type_from_material(
                                 garbage_type, self._municipality, self._address_id
                             )
@@ -566,3 +554,8 @@ def split_ical_garbage_types(text: str) -> list[str]:
 def key_exists_in_pickup_events(pickup_events: PickupEvents, key: str) -> bool:
     """Check if a key exists in PickupEvents."""
     return key in pickup_events
+
+
+def value_exists_in_pickup_events(pickup_events: PickupEvents, value: Any) -> bool:
+    """Check if a value exists in PickupEvents."""
+    return any(event for event in pickup_events.values() if event == value)

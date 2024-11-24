@@ -116,6 +116,7 @@ class GarbageCollection:
         self._street = None
         self._house_number = None
         self._api = api
+        self._api_data = None
         self._data = None
         self._municipality_url = None
         self._address_id = None
@@ -123,7 +124,13 @@ class GarbageCollection:
             self._api.session = session
         for key, value in MUNICIPALITIES_LIST.items():
             if key.lower() == self._municipality.lower():
-                self._municipality_url = value
+                self._municipality_url = value[0]
+                self._api_data = value[1]
+                _LOGGER.debug(
+                    "Municipality URL: %s, API Data: %s",
+                    self._municipality_url,
+                    self._api_data,
+                )
                 break
 
     async def async_init(self) -> None:

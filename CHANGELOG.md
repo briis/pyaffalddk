@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.1.0
+
+**Date**: `TBD`
+
+### What's Changed
+
+* Adding the option to use iCalendar file as input source for Calendar data. Enabling a few new Municipalities, like Odense.
+* Bump `pyaffalddk` to V2.1.0
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.0.44
 
 **Date**: `2024-11-18`
@@ -9,9 +21,6 @@
 * Fixing issue where there is a weekday present but next pick-up is undefined. Typically occurs around New Years time. Closing [AffaldDK #179](https://github.com/briis/affalddk/issues/179)
 * Added December 31st of next year, if a Pickup Type is valid, but no current date is given.
 * Bump `pyaffalddk` to V2.0.44
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.41
 

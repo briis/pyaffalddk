@@ -1,6 +1,17 @@
 API_URL_DATA = ".renoweb.dk/Legacy/JService.asmx/GetAffaldsplanMateriel_mitAffald"
 API_URL_SEARCH = ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString"
 
+API_DATA_LIST = {
+    "1": [
+        ".renoweb.dk/Legacy/JService.asmx/GetAffaldsplanMateriel_mitAffald",
+        ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString",
+    ],
+    "2": [
+        "https://mit.odenserenovation.dk/api/Calendar/GetCalendar?addressId=",
+        "https://mit.odenserenovation.dk/api/Calendar/CommunicationHouseNumbers?addressString=",
+    ],
+}
+
 NON_SUPPORTED_ITEMS = [
     "Asbest",
     "Beholderservice",

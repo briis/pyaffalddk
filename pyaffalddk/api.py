@@ -294,19 +294,28 @@ class GarbageCollection:
                 self._address_id = address_id
                 url = f"{self._api_url_data}{self._address_id}"
                 data = await self._api.async_get_ical_data(url)
+
                 try:
                     ics = IcsCalendarStream.calendar_from_ics(data)
                     for event in ics.timeline:
                         _garbage_types = split_ical_garbage_types(event.summary)
                         for garbage_type in _garbage_types:
                             _pickup_date = event.start_datetime.date()
+                            if _pickup_date < dt.date.today():
+                                continue
+
+                            _LOGGER.debug(
+                                "Garbage Type: %s Date: %s",
+                                garbage_type,
+                                _pickup_date.strftime("%d-%m-%Y"),
+                            )
                             key = get_garbage_type_from_material(
                                 garbage_type, self._municipality, self._address_id
                             )
                             _pickup_event = {
                                 key: PickupType(
                                     date=_pickup_date,
-                                    group=key.capitalize(),
+                                    group=key,
                                     friendly_name=NAME_LIST.get(key),
                                     icon=ICON_LIST.get(key),
                                     entity_picture=f"{key}.svg",
@@ -315,7 +324,8 @@ class GarbageCollection:
                                     utc_timestamp=_utc_timestamp,
                                 )
                             }
-                            pickup_events.update(_pickup_event)
+                            if not key_exists_in_pickup_events(pickup_events, key):
+                                pickup_events.update(_pickup_event)
 
                             if _pickup_date is not None:
                                 if _pickup_date < dt.date.today():
@@ -551,3 +561,8 @@ def split_ical_garbage_types(text: str) -> list[str]:
     if "på" in text:
         text = text.split("på")[0]
     return [item.strip() for item in text.split(",")]
+
+
+def key_exists_in_pickup_events(pickup_events: PickupEvents, key: str) -> bool:
+    """Check if a key exists in PickupEvents."""
+    return key in pickup_events

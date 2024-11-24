@@ -39,6 +39,7 @@ SUPPORTED_ITEMS = {
         "Rest-/madaffald",
         "Mad/Rest",
         "Mad og restaffald",
+        "Mad- og restaffald",
         "Mad-/ og restaffald",
         "Rest / Mad",
         "Rest Mad",

@@ -7,7 +7,7 @@ API_DATA_LIST = {
         ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString",
     ],
     "2": [
-        "https://mit.odenserenovation.dk/api/Calendar/GetCalendar?addressId=",
+        "https://mit.odenserenovation.dk/api/Calendar/GetICalCalendar?addressNo=",
         "https://mit.odenserenovation.dk/api/Calendar/CommunicationHouseNumbers?addressString=",
     ],
 }
@@ -191,7 +191,9 @@ NON_MATERIAL_LIST = [
 ]
 
 MATERIAL_LIST = {
-    "restaffaldmadaffald": [""],
+    "restaffaldmadaffald": [
+        "Mad- og restaffald",
+    ],
     "batterier": [
         "Batterier i pose på låg (1 stk.)",
     ],
@@ -312,6 +314,7 @@ MATERIAL_LIST = {
         "660 L plast, mad- og drikkekartoner (1 stk.)",
         "240 l genbrug - blåt låg (1 stk.)",
         "660 liter - Plast/MDK - Tømmes hver 2. uge (1 stk.)",
+        "Plast og mad- & drikkekartoner",
     ],
     "papirglasdaaser": [
         "240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",
@@ -323,6 +326,7 @@ MATERIAL_LIST = {
         "4-kammer (240 l) (1 stk.)",
         "240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",
         "240 l delt genbrug - grønt låg (1 stk.)",
+        "Glas & metal og papir & småt pap",
     ],
     "plastmetalmadmdk": [""],
     "pappapir": [

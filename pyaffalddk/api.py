@@ -13,6 +13,7 @@ from typing import Any
 import aiohttp
 
 from .const import (
+    API_DATA_LIST,
     API_URL_DATA,
     API_URL_SEARCH,
     ICON_LIST,
@@ -99,6 +100,37 @@ class AffaldDKAPI(AffaldDKAPIBase):
             json_data = json.loads(data)
             return json_data
 
+    async def async_api_request_2(self, url: str) -> dict[str, Any]:
+        """Get data from standard REST API."""
+
+        _LOGGER.debug("URL 2 CALLED: %s", url)
+
+        is_new_session = False
+        if self.session is None:
+            self.session = aiohttp.ClientSession()
+            is_new_session = True
+
+        async with self.session.get(url) as response:
+            if response.status != 200:
+                if is_new_session:
+                    await self.session.close()
+                if response.status == 400:
+                    raise AffaldDKNotSupportedError("Municipality not supported")
+                if response.status == 404:
+                    raise AffaldDKNotSupportedError("Municipality not supported")
+                if response.status == 500:
+                    raise AffaldDKNoConnection("System API is currently not available")
+
+                raise AffaldDKNoConnection(f"Error {response.status} from {url}")
+
+            data = await response.text()
+            if is_new_session:
+                await self.session.close()
+
+            json_data = json.loads(data)
+
+            return json_data
+
 
 class GarbageCollection:
     """Class to get garbage collection data."""
@@ -117,6 +149,8 @@ class GarbageCollection:
         self._house_number = None
         self._api = api
         self._api_data = None
+        self._api_url_data = None
+        self._api_url_search = None
         self._data = None
         self._municipality_url = None
         self._address_id = None
@@ -126,22 +160,34 @@ class GarbageCollection:
             if key.lower() == self._municipality.lower():
                 self._municipality_url = value[0]
                 self._api_data = value[1]
-                _LOGGER.debug(
-                    "Municipality URL: %s, API Data: %s",
-                    self._municipality_url,
-                    self._api_data,
-                )
                 break
 
     async def async_init(self) -> None:
         """Initialize the connection."""
         if self._municipality is not None:
-            url = f"https://{self._municipality_url}{API_URL_SEARCH}"
-            body = {
-                "searchterm": f"{self._street} {self._house_number}",
-                "addresswithmateriel": 1,
-            }
-            await self._api.async_api_request(url, body)
+            for key, value in API_DATA_LIST.items():
+                if key == self._api_data:
+                    self._api_url_data = value[0]
+                    self._api_url_search = value[1]
+                    # _LOGGER.debug(
+                    #     "API Data: %s, URL Data: %s, URL Search: %s",
+                    #     self._api_data,
+                    #     self._api_url_data,
+                    #     self._api_url_search,
+                    # )
+                    break
+
+            if self._api_data == "2":
+                url = f"{self._api_url_search}{self._street}"
+                _LOGGER.debug("URL: %s", url)
+                await self._api.async_api_request_2(url)
+            else:
+                url = f"https://{self._municipality_url}{self._api_url_search}"
+                body = {
+                    "searchterm": f"{self._street} {self._house_number}",
+                    "addresswithmateriel": 1,
+                }
+                await self._api.async_api_request(url, body)
 
     async def get_address_id(
         self, zipcode: str, street: str, house_number: str
@@ -149,30 +195,58 @@ class GarbageCollection:
         """Get the address id."""
 
         if self._municipality_url is not None:
-            url = f"https://{self._municipality_url}{API_URL_SEARCH}"
-            body = {"searchterm": f"{street} {house_number}", "addresswithmateriel": 7}
-            # _LOGGER.debug("Municipality URL: %s %s", url, body)
-            data: dict[str, Any] = await self._api.async_api_request(url, body)
-            result = json.loads(data["d"])
-            # _LOGGER.debug("Address Data: %s", result)
-            if "list" not in result:
-                raise AffaldDKNoConnection(
-                    f"AffaldDK API: {result['status']['status']} - {result['status']['msg']}"
-                )
+            for key, value in API_DATA_LIST.items():
+                if key == self._api_data:
+                    self._api_url_data = value[0]
+                    self._api_url_search = value[1]
+                    break
 
-            _result_count = len(result["list"])
-            _item: int = 0
-            _row_index: int = 0
-            if _result_count > 1:
-                for row in result["list"]:
-                    if zipcode in row["label"]:
-                        _item = _row_index
-                        break
-                    _row_index += 1
-            self._address_id = result["list"][_item]["value"]
+            if self._api_data == "2":
+                url = f"{self._api_url_search}{street}"
+                data: dict[str, Any] = await self._api.async_api_request_2(url)
+                _result_count = len(data)
+                _item: int = 0
+                _row_index: int = 0
+                if _result_count > 1:
+                    for row in data:
+                        if (
+                            zipcode in row["PostCode"]
+                            and house_number == row["FullHouseNumber"]
+                        ):
+                            self._address_id = row["AddressNo"]
+                            break
 
-            if self._address_id == "0000":
-                raise AffaldDKNotValidAddressError("Address not found")
+                if self._address_id is None:
+                    raise AffaldDKNotValidAddressError("Address not found")
+
+            else:
+                url = f"https://{self._municipality_url}{API_URL_SEARCH}"
+                body = {
+                    "searchterm": f"{street} {house_number}",
+                    "addresswithmateriel": 7,
+                }
+                # _LOGGER.debug("Municipality URL: %s %s", url, body)
+                data: dict[str, Any] = await self._api.async_api_request(url, body)
+                result = json.loads(data["d"])
+                # _LOGGER.debug("Address Data: %s", result)
+                if "list" not in result:
+                    raise AffaldDKNoConnection(
+                        f"AffaldDK API: {result['status']['status']} - {result['status']['msg']}"
+                    )
+
+                _result_count = len(result["list"])
+                _item: int = 0
+                _row_index: int = 0
+                if _result_count > 1:
+                    for row in result["list"]:
+                        if zipcode in row["label"]:
+                            _item = _row_index
+                            break
+                        _row_index += 1
+                self._address_id = result["list"][_item]["value"]
+
+                if self._address_id == "0000":
+                    raise AffaldDKNotValidAddressError("Address not found")
 
             address_data = AffaldDKAddressInfo(
                 self._address_id,

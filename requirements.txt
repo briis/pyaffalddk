@@ -2,6 +2,7 @@ aiohttp
 black
 coverage
 flake8
+ical
 mock
 pyflakes
 pylint

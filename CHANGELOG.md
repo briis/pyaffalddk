@@ -2,11 +2,12 @@
 
 ## Version 2.1.0
 
-**Date**: `TBD`
+**Date**: `2024-11-25`
 
 ### What's Changed
 
-* Adding the option to use iCalendar file as input source for Calendar data. Enabling a few new Municipalities, like Odense.
+* Adding the option to use iCalendar file as input source for Calendar data.
+* Adding Odense Kommune to the list of supported municipalities
 * Bump `pyaffalddk` to V2.1.0
 
 <details>

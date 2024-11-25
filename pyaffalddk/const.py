@@ -10,6 +10,10 @@ API_DATA_LIST = {
         "https://mit.odenserenovation.dk/api/Calendar/GetICalCalendar?addressNo=",
         "https://mit.odenserenovation.dk/api/Calendar/CommunicationHouseNumbers?addressString=",
     ],
+    "3": [
+        "https://portal-api.kredslob.dk/api/calendar/address/",
+        "https://api.dataforsyningen.dk/adresser?kommunekode=751&q=",
+    ],
 }
 
 NON_SUPPORTED_ITEMS = [

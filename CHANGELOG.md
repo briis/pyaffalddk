@@ -8,8 +8,9 @@
 
 * Adding the option to use iCalendar file as input source for Calendar data.
 * Adding Odense Kommune to the list of supported municipalities
+* Adding Århus Kommune to the list of supported municipalities
 * Added new Material Type `Genbrugsspand, 240L (2-delt) (1 stk.)`. Closing [AffaldDK #186](https://github.com/briis/affalddk/issues/186)
-* Bump `pyaffalddk` to V2.1.0
+* Bump `pyaffalddk` to V2.1.1
 
 <details>
   <summary><b>Previous Changes</b></summary>

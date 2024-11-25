@@ -2,14 +2,17 @@ API_URL_DATA = ".renoweb.dk/Legacy/JService.asmx/GetAffaldsplanMateriel_mitAffal
 API_URL_SEARCH = ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString"
 
 API_DATA_LIST = {
+    # Renoweb API
     "1": [
         ".renoweb.dk/Legacy/JService.asmx/GetAffaldsplanMateriel_mitAffald",
         ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString",
     ],
+    # Odense Renovation API
     "2": [
         "https://mit.odenserenovation.dk/api/Calendar/GetICalCalendar?addressNo=",
         "https://mit.odenserenovation.dk/api/Calendar/CommunicationHouseNumbers?addressString=",
     ],
+    # Aarhus Forsyning API
     "3": [
         "https://portal-api.kredslob.dk/api/calendar/address/",
         "https://api.dataforsyningen.dk/adresser?kommunekode=751&q=",

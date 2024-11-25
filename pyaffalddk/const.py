@@ -285,6 +285,7 @@ MATERIAL_LIST = {
         "240 L todelt genbrugsspand hver 4. uge (1 stk.)",
         "240L plast, MDK/metal, glas gl. (1 stk.)",
         "Genbrugsbeholder, 190 ltr (1 stk.)",
+        "Genbrugsspand, 240L (2-delt) (1 stk.)",
     ],
     "plast": [
         "Plast og MDK 240 L (ejer.kommune) (1 stk.)",

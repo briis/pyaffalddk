@@ -196,7 +196,9 @@ class GarbageCollection:
         if self._municipality is not None:
             if self._api_data == "2":
                 url = f"{self._api_url_search}{self._street}"
-                _LOGGER.debug("URL: %s", url)
+                await self._api.async_api_request_2(url)
+            elif self._api_data == "3":
+                url = f"{self._api_url_search}{self._street}*"
                 await self._api.async_api_request_2(url)
             else:
                 url = f"https://{self._municipality_url}{self._api_url_search}"
@@ -230,6 +232,23 @@ class GarbageCollection:
                 if self._address_id is None:
                     raise AffaldDKNotValidAddressError("Address not found")
 
+            elif self._api_data == "3":
+                _street_name = street.capitalize()
+                url = f"{self._api_url_search}{_street_name}*"
+                _LOGGER.debug("URL: %s", url)
+                data: dict[str, Any] = await self._api.async_api_request_2(url)
+                _result_count = len(data)
+                if _result_count > 1:
+                    for row in data:
+                        if (
+                            zipcode in row["adgangsadresse"]["postnummer"]["nr"]
+                            and house_number == row["adgangsadresse"]["husnr"]
+                        ):
+                            self._address_id = row["kvhx"]
+                            break
+
+                if self._address_id is None:
+                    raise AffaldDKNotValidAddressError("Address not found")
             else:
                 url = f"https://{self._municipality_url}{self._api_url_search}"
                 body = {

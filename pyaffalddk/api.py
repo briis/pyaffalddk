@@ -362,6 +362,60 @@ class GarbageCollection:
 
                 except CalendarParseError as err:
                     _LOGGER.error("Error parsing iCal data: %s", err)
+            elif self._api_data == "3":
+                self._address_id = address_id
+                url = f"{self._api_url_data}{self._address_id}"
+                data = await self._api.async_api_request_2(url)
+                garbage_data = data[0]["plannedLoads"]
+                for row in garbage_data:
+                    _pickup_date = iso_string_to_date(row["date"])
+                    if _pickup_date < dt.date.today():
+                        continue
+                    for item in row["fractions"]:
+                        key = get_garbage_type_from_material(
+                            item, self._municipality, self._address_id
+                        )
+                        _pickup_event = {
+                            key: PickupType(
+                                date=_pickup_date,
+                                group=key,
+                                friendly_name=NAME_LIST.get(key),
+                                icon=ICON_LIST.get(key),
+                                entity_picture=f"{key}.svg",
+                                description=item,
+                                last_updated=_utc_date,
+                                utc_timestamp=_utc_timestamp,
+                            )
+                        }
+                        if not key_exists_in_pickup_events(pickup_events, key):
+                            pickup_events.update(_pickup_event)
+
+                        if _pickup_date is not None:
+                            if _pickup_date < dt.date.today():
+                                continue
+                            if _pickup_date < _next_pickup:
+                                _next_pickup = _pickup_date
+                                _next_name = []
+                                _next_description = []
+                            if _pickup_date == _next_pickup:
+                                _next_name.append(NAME_LIST.get(key))
+                                _next_description.append(item)
+
+                _next_pickup_event = {
+                    "next_pickup": PickupType(
+                        date=_next_pickup,
+                        group="genbrug",
+                        friendly_name=list_to_string(_next_name),
+                        icon=ICON_LIST.get("genbrug"),
+                        entity_picture="genbrug.svg",
+                        description=list_to_string(_next_description),
+                        last_updated=_utc_date,
+                        utc_timestamp=_utc_timestamp,
+                    )
+                }
+                pickup_events.update(_next_pickup_event)
+
+                return pickup_events
             else:
                 self._address_id = address_id
                 url = f"https://{self._municipality_url}{self._api_url_data}"
@@ -496,6 +550,14 @@ def to_date(datetext: str) -> dt.date:
         return None
     _date = dt.datetime.strptime(f"{datetext[index+1:]}", "%d-%m-%Y")
     return _date.date()
+
+
+def iso_string_to_date(datetext: str) -> dt.date:
+    """Convert a date string to a datetime object."""
+    if datetext == "Ingen tømningsdato fundet!":
+        return None
+
+    return dt.datetime.fromisoformat(datetext).date()
 
 
 def get_garbage_type(item: str) -> str:

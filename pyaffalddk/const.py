@@ -213,6 +213,7 @@ MATERIAL_LIST = {
         "240 L glas (1 stk.)",
         "Glas, 660 liter (2 stk.)",
         "400 liter - Glas - Tømmes hver 8. uge (1 stk.)",
+        "Glas",
     ],
     "metalglas": [
         "Glas/metal (1 stk.)",
@@ -253,6 +254,7 @@ MATERIAL_LIST = {
         "240 L metal (1 stk.)",
         "Metal, 660 liter (1 stk.)",
         "240 liter - Metal - Tømmes hver 8. uge (1 stk.)",
+        "Metal",
     ],
     "genbrug": [
         "Tekstiler",
@@ -265,6 +267,7 @@ MATERIAL_LIST = {
     "papir": [
         "660 L papir (1 stk.)",
         "Papir, 660 liter (3 stk.)",
+        "Papir",
     ],
     "papirmetal": [
         "Metal og papir 240 L (ejer.kommune) (1 stk.)",
@@ -281,6 +284,7 @@ MATERIAL_LIST = {
         "770 L pap (1 stk.)",
         "Pap, 660 liter (3 stk.)",
         "400 liter - Pap og papir - Tømmes hver 2. uge (1 stk.)",
+        "Pap",
     ],
     "plastmetal": [
         "Plast, småt metal & MDK - 240 l. (1 stk.)",
@@ -295,6 +299,7 @@ MATERIAL_LIST = {
         "Plast og MDK 240 L (ejer.kommune) (1 stk.)",
         "Plast, 660 liter (2 stk.)",
         "Plastaffald henteordning (1 stk.)",
+        "Plast",
     ],
     "storskrald": [
         "Storskrald - fortovsindsamling (1 stk.)",
@@ -321,6 +326,7 @@ MATERIAL_LIST = {
         "240 l genbrug - blåt låg (1 stk.)",
         "660 liter - Plast/MDK - Tømmes hver 2. uge (1 stk.)",
         "Plast og mad- & drikkekartoner",
+        "Mad- og drikkekartoner",
     ],
     "papirglasdaaser": [
         "240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",
@@ -355,9 +361,11 @@ MATERIAL_LIST = {
     "madaffald": [
         "140 L madaffald (1 stk.)",
         "*190 l rød (1 stk.)",
+        "Madaffald",
     ],
     "restaffald": [
         "9505: 770 L restaffald uge (2 stk.)",
+        "Restaffald",
     ],
     "juletrae": [
         "Juletræer (1 stk.)",

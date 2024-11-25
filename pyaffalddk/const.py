@@ -445,6 +445,7 @@ NAME_ARRAY = list(NAME_LIST.keys())
 MUNICIPALITIES_LIST = {
     "Aabenraa": ["aabenraa", "1"],
     "Aalborg": ["aalborg", "1"],
+    "Aarhus": ["aarhus", "3"],
     "Albertslund": ["albertslund", "1"],
     "Allerød": ["allerod", "1"],
     "Billund": ["billund", "1"],

@@ -58,35 +58,36 @@ async def main() -> None:
     elif sys.argv[1] == "pickup_data":
         try:
             data: PickupEvents = await garbage.get_pickup_data(address_id=sys.argv[3])
-            print("")
-            print("========================================================")
-            for item in NAME_ARRAY:
-                if data.get(item) is None:
-                    continue
-                print(f"{data[item].friendly_name}:")
-                print("  Nøgle: ", item)
+            if data is not None:
+                print("")
+                print("========================================================")
+                for item in NAME_ARRAY:
+                    if data.get(item) is None:
+                        continue
+                    print(f"{data[item].friendly_name}:")
+                    print("  Nøgle: ", item)
+                    print("  Gruppe: ", data[item].group)
+                    print("  Navn: ", data[item].friendly_name)
+                    try:
+                        print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
+                    except:  # noqa: E722
+                        print("  Dato: ", data[item].date)
+                    print("  Beskrivelse: ", data[item].description)
+                    print("  Icon: ", data[item].icon)
+                    print("  Picture: ", data[item].entity_picture)
+                    print("  Sidst Opdateret: ", data[item].last_updated)
+                    print("  ======================================================")
+
+                item = "next_pickup"
+                print("Mext Pickup:")
                 print("  Gruppe: ", data[item].group)
                 print("  Navn: ", data[item].friendly_name)
-                try:
-                    print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
-                except:  # noqa: E722
-                    print("  Dato: ", data[item].date)
+                print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
                 print("  Beskrivelse: ", data[item].description)
                 print("  Icon: ", data[item].icon)
                 print("  Picture: ", data[item].entity_picture)
                 print("  Sidst Opdateret: ", data[item].last_updated)
                 print("  ======================================================")
-
-            item = "next_pickup"
-            print("Mext Pickup:")
-            print("  Gruppe: ", data[item].group)
-            print("  Navn: ", data[item].friendly_name)
-            print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
-            print("  Beskrivelse: ", data[item].description)
-            print("  Icon: ", data[item].icon)
-            print("  Picture: ", data[item].entity_picture)
-            print("  Sidst Opdateret: ", data[item].last_updated)
-            print("  ======================================================")
 
         except AffaldDKNoConnection as err:
             print(err)

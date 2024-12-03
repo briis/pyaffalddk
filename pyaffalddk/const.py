@@ -95,6 +95,9 @@ SUPPORTED_ITEMS = {
     "jern": [
         "Jern",
     ],
+    "juletrae": [
+        "Juletræ",
+    ],
     "papir": [
         "Papir",
         "Papir 660 L",
@@ -228,6 +231,7 @@ MATERIAL_LIST = {
         "240 liter - Metal/Glas - tømmes hver 8. uge (1 stk.)",
         "Metal/glas 240 l (hver 12. uge) (1 stk.)",
         "240 L. Glas/Metal - 4 tømninger (1 stk.)",
+        "240 l Glas/metal Egenløsning (Privat) (1 stk.)",
     ],
     "pappi": [
         "Plast/papir (1 stk.)",
@@ -241,6 +245,7 @@ MATERIAL_LIST = {
         "240 liter - Plast, MDK, papir, pap – tømmes hver 2. uge (1 stk.)",
         "PP/MDK-plast 240 l (hver 2. uge) (1 stk.)",
         "240 L. PMDK/PP 3 ugers tømning (1 stk.)",
+        "370 l Plast+MDK/Papir - Egenløsning (Privat) (1 stk.)",
     ],
     "farligtaffald": [
         "",
@@ -288,6 +293,7 @@ MATERIAL_LIST = {
         "Pap, 660 liter (3 stk.)",
         "400 liter - Pap og papir - Tømmes hver 2. uge (1 stk.)",
         "Pap",
+        "240 l Pap Egenløsning (Privat) (1 stk.)",
     ],
     "plastmetal": [
         "Plast, småt metal & MDK - 240 l. (1 stk.)",
@@ -372,6 +378,7 @@ MATERIAL_LIST = {
     ],
     "juletrae": [
         "Juletræer (1 stk.)",
+        "Juletræ",
     ],
 }
 

@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.1.2
+
+**Date**: `2024-12-04`
+
+### What's Changed
+
+* Fixing renamed containers in Egedal kommune. Closing [AffaldDK #194](https://github.com/briis/affalddk/issues/194)
+* Bump `pyaffalddk` to V2.1.2
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.1.1
 
 **Date**: `2024-11-25`
@@ -11,9 +23,6 @@
 * Adding Århus Kommune to the list of supported municipalities
 * Added new Material Type `Genbrugsspand, 240L (2-delt) (1 stk.)`. Closing [AffaldDK #186](https://github.com/briis/affalddk/issues/186)
 * Bump `pyaffalddk` to V2.1.1
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.0.44
 

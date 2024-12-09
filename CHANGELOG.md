@@ -2,7 +2,7 @@
 
 ## Version 2.1.2
 
-**Date**: `2024-12-04`
+**Date**: `2024-12-09`
 
 ### What's Changed
 

@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## Version 2.1.3
+
+**Date**: `2024-01-05`
+
+### What's Changed
+
+* Fixing missing DAYLIGHT information in iCal data. Closing [AffaldDK #205](https://github.com/briis/affalddk/issues/205)
+* Bump `pyaffalddk` to V2.1.3
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.1.2
 
 **Date**: `2024-12-09`
@@ -8,9 +20,6 @@
 
 * Fixing renamed containers in Egedal kommune. Closing [AffaldDK #194](https://github.com/briis/affalddk/issues/194)
 * Bump `pyaffalddk` to V2.1.2
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.1.1
 

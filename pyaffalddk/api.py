@@ -2,13 +2,11 @@
 
 from __future__ import annotations
 
-import asyncio
-from datetime import datetime, timezone
 import abc
 import datetime as dt
 from datetime import timezone
 import zoneinfo
-from functools import lru_cache
+from functools import lru_cache, partial
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
 import json
@@ -30,6 +28,9 @@ from .const import (
     WEEKDAYS,
 )
 from .data import PickupEvents, PickupType, AffaldDKAddressInfo
+
+UTC = dt.UTC
+DEFAULT_TIME_ZONE: dt.tzinfo = dt.UTC
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -66,9 +67,9 @@ def get_denmark_timezone():
     return zoneinfo.ZoneInfo("Europe/Copenhagen")
 
 @lru_cache(maxsize=1)
-def get_utc_timezone():
-    """Get UTC timezone object safely."""
-    return zoneinfo.ZoneInfo("Europe/Copenhagen")
+def get_default_time_zone() -> dt.tzinfo:
+    """Get the default time zone."""
+    return DEFAULT_TIME_ZONE
 
 class AffaldDKAPI(AffaldDKAPIBase):
     """Class to get data from AffaldDK."""
@@ -77,11 +78,6 @@ class AffaldDKAPI(AffaldDKAPIBase):
         """Initialize the class."""
         self.session = None
         self.request_timeout = 10
-
-    async def get_current_time(self) -> datetime:
-        """ Run datetime.now() in the thread pool."""
-        return await asyncio.to_thread(datetime.now, timezone.utc)
-
 
     async def async_api_request(self, url: str, body: str) -> dict[str, Any]:
         """Make an API request."""
@@ -196,6 +192,7 @@ class GarbageCollection:
         self._data = None
         self._municipality_url = None
         self._address_id = None
+        self._utcnow = partial(dt.datetime.now, UTC)
         if session:
             self._api.session = session
         for key, value in MUNICIPALITIES_LIST.items():
@@ -316,7 +313,7 @@ class GarbageCollection:
             _next_pickup_event: PickupType = None
             _next_name = []
             _next_description = []
-            _last_update = await self._api.get_current_time()
+            _last_update = self._utcnow
             _utc_date = _last_update.replace(tzinfo=timezone.utc)
             _utc_timestamp = _utc_date.timestamp()
 

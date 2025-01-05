@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import abc
+import asyncio
 import datetime as dt
 from datetime import timezone
 from ical.calendar_stream import IcsCalendarStream
@@ -298,7 +299,7 @@ class GarbageCollection:
             _next_pickup_event: PickupType = None
             _next_name = []
             _next_description = []
-            _last_update = dt.datetime.now(timezone.utc)
+            _last_update = await asyncio.to_thread(dt.datetime.now, timezone.utc)
             _utc_date = _last_update.replace(tzinfo=timezone.utc)
             _utc_timestamp = _utc_date.timestamp()
 

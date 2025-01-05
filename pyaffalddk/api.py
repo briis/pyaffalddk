@@ -30,6 +30,9 @@ from .const import (
 )
 from .data import PickupEvents, PickupType, AffaldDKAddressInfo
 
+UTC = dt.UTC
+UTC_TIME_ZONE: dt.tzinfo = dt.UTC
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -320,9 +323,8 @@ class GarbageCollection:
             _next_pickup_event: PickupType = None
             _next_name = []
             _next_description = []
-            _tzutc = await self._api.async_get_time_zone("UTC")
-            _last_update = dt.datetime.now(_tzutc)
-            _utc_date =  _last_update.astimezone(_tzutc) #_last_update.replace(tzinfo=_tzutc)
+            _last_update = dt.datetime.now(UTC_TIME_ZONE)
+            _utc_date =  _last_update #_last_update.replace(tzinfo=_tzutc)
             _utc_timestamp = _utc_date.timestamp()
 
             if self._api_data == "2":

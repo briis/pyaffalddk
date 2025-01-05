@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import abc
 import datetime as dt
-import zoneinfo
-from aiozoneinfo import async_get_time_zone as _async_get_time_zone
+# import zoneinfo
+# from aiozoneinfo import async_get_time_zone as _async_get_time_zone
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
 import json
@@ -172,14 +172,12 @@ class GarbageCollection:
     def __init__(
         self,
         municipality: str,
-        timezone: str = "Europe/Copenhagen",
         session: aiohttp.ClientSession = None,
         api: AffaldDKAPIBase = AffaldDKAPI(),
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
-        self._timezone = timezone
-        self._tzinfo = None
+        # self._tzinfo = None
         self._street = None
         self._house_number = None
         self._api = api

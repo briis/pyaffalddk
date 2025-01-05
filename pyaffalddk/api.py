@@ -30,9 +30,6 @@ from .const import (
 )
 from .data import PickupEvents, PickupType, AffaldDKAddressInfo
 
-UTC = dt.UTC
-DEFAULT_TIME_ZONE: dt.tzinfo = dt.UTC
-
 _LOGGER = logging.getLogger(__name__)
 
 

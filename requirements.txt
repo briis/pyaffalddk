@@ -10,6 +10,7 @@ pytest
 pytest-asyncio
 pytest-cov
 python-dotenv
+pytz
 requests
 requests-toolbelt
 ruff

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import asyncio
+from datetime import datetime, timezone
 import abc
 import datetime as dt
 from datetime import timezone
@@ -75,6 +77,11 @@ class AffaldDKAPI(AffaldDKAPIBase):
         """Initialize the class."""
         self.session = None
         self.request_timeout = 10
+
+    async def get_current_time(self) -> datetime:
+        """ Run datetime.now() in the thread pool."""
+        return await asyncio.to_thread(datetime.now, timezone.utc)
+
 
     async def async_api_request(self, url: str, body: str) -> dict[str, Any]:
         """Make an API request."""
@@ -309,7 +316,7 @@ class GarbageCollection:
             _next_pickup_event: PickupType = None
             _next_name = []
             _next_description = []
-            _last_update = dt.datetime.now(timezone.utc)
+            _last_update = await self._api.get_current_time()
             _utc_date = _last_update.replace(tzinfo=timezone.utc)
             _utc_timestamp = _utc_date.timestamp()
 

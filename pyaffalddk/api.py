@@ -306,8 +306,23 @@ class GarbageCollection:
                 self._address_id = address_id
                 url = f"{self._api_url_data}{self._address_id}"
                 data = await self._api.async_get_ical_data(url)
+                # _LOGGER.debug("iCal Data: %s", data)
 
                 try:
+                    # Insert standard timezone rules before parsing
+                    data = data.replace("END:VTIMEZONE", """BEGIN:STANDARD
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+END:DAYLIGHT
+END:VTIMEZONE""")
                     ics = IcsCalendarStream.calendar_from_ics(data)
                     for event in ics.timeline:
                         _garbage_types = split_ical_garbage_types(event.summary)

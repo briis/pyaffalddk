@@ -30,9 +30,6 @@ from .const import (
 )
 from .data import PickupEvents, PickupType, AffaldDKAddressInfo
 
-UTC = dt.UTC
-UTC_TIME_ZONE: dt.tzinfo = dt.UTC
-
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -61,16 +58,6 @@ class AffaldDKAPIBase:
         raise NotImplementedError(
             "users must define async_api_request to use this base class"
         )
-
-@lru_cache(maxsize=1)
-def get_denmark_timezone():
-    """Get Denmark timezone object safely."""
-    return zoneinfo.ZoneInfo("Europe/Copenhagen")
-
-@lru_cache(maxsize=1)
-def get_default_time_zone() -> dt.tzinfo:
-    """Get the default time zone."""
-    return DEFAULT_TIME_ZONE
 
 class AffaldDKAPI(AffaldDKAPIBase):
     """Class to get data from AffaldDK."""
@@ -193,7 +180,8 @@ class GarbageCollection:
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
-        self._timezone = get_denmark_timezone()
+        self._timezone = timezone
+        self._tzinfo = None
         self._street = None
         self._house_number = None
         self._api = api
@@ -316,6 +304,8 @@ class GarbageCollection:
     async def get_pickup_data(self, address_id: str) -> PickupEvents:
         """Get the garbage collection data."""
 
+        self._tzinfo = await self._api.async_get_time_zone("UTC")
+
         if self._municipality_url is not None:
             pickup_events: PickupEvents = {}
             _next_pickup = dt.datetime(2030, 12, 31, 23, 59, 0)
@@ -323,7 +313,7 @@ class GarbageCollection:
             _next_pickup_event: PickupType = None
             _next_name = []
             _next_description = []
-            _last_update = dt.datetime.now(UTC_TIME_ZONE)
+            _last_update = dt.datetime.now(self._tzinfo)
             _utc_date =  _last_update #_last_update.replace(tzinfo=_tzutc)
             _utc_timestamp = _utc_date.timestamp()
 

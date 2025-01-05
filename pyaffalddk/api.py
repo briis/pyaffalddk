@@ -203,7 +203,6 @@ class GarbageCollection:
         self._data = None
         self._municipality_url = None
         self._address_id = None
-        self._utcnow = partial(dt.datetime.now, UTC)
         if session:
             self._api.session = session
         for key, value in MUNICIPALITIES_LIST.items():
@@ -326,7 +325,7 @@ class GarbageCollection:
             _next_description = []
             _tzutc = await self._api.async_get_time_zone("UTC")
             _last_update = dt.datetime.now(_tzutc)
-            _utc_date =  _last_update.astimezone(dt.timezone.utc) #_last_update.replace(tzinfo=_tzutc)
+            _utc_date =  _last_update.astimezone(_tzutc) #_last_update.replace(tzinfo=_tzutc)
             _utc_timestamp = _utc_date.timestamp()
 
             if self._api_data == "2":

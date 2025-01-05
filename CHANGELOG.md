@@ -7,6 +7,7 @@
 ### What's Changed
 
 * Fixing missing DAYLIGHT information in iCal data. Closing [AffaldDK #205](https://github.com/briis/affalddk/issues/205)
+* Fixing missing containers in Køge after renaming. Closing [AffaldDK #207](https://github.com/briis/affalddk/issues/207)
 * Bump `pyaffalddk` to V2.1.3
 
 <details>

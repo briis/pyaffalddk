@@ -60,7 +60,12 @@ SUPPORTED_ITEMS = {
     "dagrenovation": ["Dagrenovation"],
     "elektronik": [""],
     "glas": ["Industri Genbrugeligt"],
-    "metalglas": ["Glas og metal", "Metal-Glas", "Glas/Metal", "Metal og Glas"],
+    "metalglas": [
+        "Glas og metal",
+        "Metal-Glas",
+        "Glas/Metal",
+        "Metal og Glas",
+        "Glas / Metal",],
     "pappi": [
         "Plast MDK og papir",
         "PAPPI",
@@ -69,6 +74,7 @@ SUPPORTED_ITEMS = {
         "Papir/Plast og kartoner",
         "Plast og Mad- & drikkekartoner/Papir",
         "Plast, Mad- og drikkekartoner, Småt Pap og Papir",
+        "Papir & Pap / Plast & MDK",
     ],
     "farligtaffald": [
         "Farligt affald",

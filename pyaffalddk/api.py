@@ -4,8 +4,7 @@ from __future__ import annotations
 
 import abc
 import datetime as dt
-# import zoneinfo
-# from aiozoneinfo import async_get_time_zone as _async_get_time_zone
+from datetime import timezone
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
 import json
@@ -57,6 +56,7 @@ class AffaldDKAPIBase:
             "users must define async_api_request to use this base class"
         )
 
+
 class AffaldDKAPI(AffaldDKAPIBase):
     """Class to get data from AffaldDK."""
 
@@ -64,16 +64,6 @@ class AffaldDKAPI(AffaldDKAPIBase):
         """Initialize the class."""
         self.session = None
         self.request_timeout = 10
-
-    # async def async_get_time_zone(self, time_zone_str: str) -> zoneinfo.ZoneInfo | None:
-    #     """Get time zone from string. Return None if unable to determine.
-
-    #     Async friendly.
-    #     """
-    #     try:
-    #         return await _async_get_time_zone(time_zone_str)
-    #     except zoneinfo.ZoneInfoNotFoundError:
-    #         return None
 
     async def async_api_request(self, url: str, body: str) -> dict[str, Any]:
         """Make an API request."""
@@ -172,12 +162,13 @@ class GarbageCollection:
     def __init__(
         self,
         municipality: str,
+        timezone: str = "Europe/Copenhagen",
         session: aiohttp.ClientSession = None,
         api: AffaldDKAPIBase = AffaldDKAPI(),
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
-        # self._tzinfo = None
+        self._timezone = timezone
         self._street = None
         self._house_number = None
         self._api = api
@@ -300,8 +291,6 @@ class GarbageCollection:
     async def get_pickup_data(self, address_id: str) -> PickupEvents:
         """Get the garbage collection data."""
 
-        # self._tzinfo = await self._api.async_get_time_zone("UTC")
-
         if self._municipality_url is not None:
             pickup_events: PickupEvents = {}
             _next_pickup = dt.datetime(2030, 12, 31, 23, 59, 0)
@@ -309,9 +298,9 @@ class GarbageCollection:
             _next_pickup_event: PickupType = None
             _next_name = []
             _next_description = []
-            # _last_update = dt.datetime.now(self._tzinfo)
-            # _utc_date =  _last_update #_last_update.replace(tzinfo=_tzutc)
-            # _utc_timestamp = _utc_date.timestamp()
+            _last_update = dt.datetime.now(timezone.utc)
+            _utc_date = _last_update.replace(tzinfo=timezone.utc)
+            _utc_timestamp = _utc_date.timestamp()
 
             if self._api_data == "2":
                 self._address_id = address_id
@@ -353,8 +342,8 @@ END:VTIMEZONE""")
                                     icon=ICON_LIST.get(key),
                                     entity_picture=f"{key}.svg",
                                     description=garbage_type,
-                                    # last_updated=_utc_date,
-                                    # utc_timestamp=_utc_timestamp,
+                                    last_updated=_utc_date,
+                                    utc_timestamp=_utc_timestamp,
                                 )
                             }
                             if not key_exists_in_pickup_events(pickup_events, key):
@@ -379,8 +368,8 @@ END:VTIMEZONE""")
                             icon=ICON_LIST.get("genbrug"),
                             entity_picture="genbrug.svg",
                             description=list_to_string(_next_description),
-                            # last_updated=_utc_date,
-                            # utc_timestamp=_utc_timestamp,
+                            last_updated=_utc_date,
+                            utc_timestamp=_utc_timestamp,
                         )
                     }
 
@@ -409,8 +398,8 @@ END:VTIMEZONE""")
                                 icon=ICON_LIST.get(key),
                                 entity_picture=f"{key}.svg",
                                 description=item,
-                                # last_updated=_utc_date,
-                                # utc_timestamp=_utc_timestamp,
+                                last_updated=_utc_date,
+                                utc_timestamp=_utc_timestamp,
                             )
                         }
                         if not key_exists_in_pickup_events(pickup_events, key):
@@ -435,8 +424,8 @@ END:VTIMEZONE""")
                         icon=ICON_LIST.get("genbrug"),
                         entity_picture="genbrug.svg",
                         description=list_to_string(_next_description),
-                        # last_updated=_utc_date,
-                        # utc_timestamp=_utc_timestamp,
+                        last_updated=_utc_date,
+                        utc_timestamp=_utc_timestamp,
                     )
                 }
                 pickup_events.update(_next_pickup_event)
@@ -531,8 +520,8 @@ END:VTIMEZONE""")
                             icon=ICON_LIST.get(key),
                             entity_picture=f"{key}.svg",
                             description=row["materielnavn"],
-                            # last_updated=_utc_date,
-                            # utc_timestamp=_utc_timestamp,
+                            last_updated=_utc_date,
+                            utc_timestamp=_utc_timestamp,
                         )
                     }
                     pickup_events.update(_pickup_event)
@@ -556,8 +545,8 @@ END:VTIMEZONE""")
                         icon=ICON_LIST.get("genbrug"),
                         entity_picture="genbrug.svg",
                         description=list_to_string(_next_description),
-                        # last_updated=_utc_date,
-                        # utc_timestamp=_utc_timestamp,
+                        last_updated=_utc_date,
+                        utc_timestamp=_utc_timestamp,
                     )
                 }
 

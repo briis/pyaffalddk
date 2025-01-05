@@ -5,6 +5,8 @@ from __future__ import annotations
 import abc
 import datetime as dt
 from datetime import timezone
+import zoneinfo
+from functools import lru_cache
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
 import json
@@ -56,6 +58,15 @@ class AffaldDKAPIBase:
             "users must define async_api_request to use this base class"
         )
 
+@lru_cache(maxsize=1)
+def get_denmark_timezone():
+    """Get Denmark timezone object safely."""
+    return zoneinfo.ZoneInfo("Europe/Copenhagen")
+
+@lru_cache(maxsize=1)
+def get_utc_timezone():
+    """Get UTC timezone object safely."""
+    return zoneinfo.ZoneInfo("Europe/Copenhagen")
 
 class AffaldDKAPI(AffaldDKAPIBase):
     """Class to get data from AffaldDK."""
@@ -168,7 +179,7 @@ class GarbageCollection:
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
-        self._timezone = timezone
+        self._timezone = get_denmark_timezone()
         self._street = None
         self._house_number = None
         self._api = api

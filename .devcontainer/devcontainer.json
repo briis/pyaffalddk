@@ -1,7 +1,7 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
 	"name": "pyaffalddk",
-	"image": "python:3.12-bookworm",
+	"image": "python:3.13-bookworm",
 	"containerEnv": {
 		"TZ": "Europe/Copenhagen"
 	},

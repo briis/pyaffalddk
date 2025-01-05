@@ -6,6 +6,7 @@ import abc
 import datetime as dt
 from datetime import timezone
 import zoneinfo
+from aiozoneinfo import async_get_time_zone as _async_get_time_zone
 from functools import lru_cache, partial
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
@@ -78,6 +79,16 @@ class AffaldDKAPI(AffaldDKAPIBase):
         """Initialize the class."""
         self.session = None
         self.request_timeout = 10
+
+    async def async_get_time_zone(self, time_zone_str: str) -> zoneinfo.ZoneInfo | None:
+        """Get time zone from string. Return None if unable to determine.
+
+        Async friendly.
+        """
+        try:
+            return await _async_get_time_zone(time_zone_str)
+        except zoneinfo.ZoneInfoNotFoundError:
+            return None
 
     async def async_api_request(self, url: str, body: str) -> dict[str, Any]:
         """Make an API request."""
@@ -313,8 +324,9 @@ class GarbageCollection:
             _next_pickup_event: PickupType = None
             _next_name = []
             _next_description = []
-            _last_update = self._utcnow
-            _utc_date = _last_update.replace(tzinfo=timezone.utc)
+            _tzutc = await self._api.async_get_time_zone("UTC")
+            _last_update = dt.datetime.now(_tzutc)
+            _utc_date =  _last_update.astimezone(dt.timezone.utc) #_last_update.replace(tzinfo=_tzutc)
             _utc_timestamp = _utc_date.timestamp()
 
             if self._api_data == "2":

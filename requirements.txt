@@ -1,4 +1,5 @@
 aiohttp
+aiozoneinfo
 black
 coverage
 flake8

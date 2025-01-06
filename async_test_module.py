@@ -75,7 +75,6 @@ async def main() -> None:
                     print("  Beskrivelse: ", data[item].description)
                     print("  Icon: ", data[item].icon)
                     print("  Picture: ", data[item].entity_picture)
-                    print("  Sidst Opdateret: ", data[item].last_updated)
                     print("  ======================================================")
 
                 item = "next_pickup"
@@ -86,7 +85,6 @@ async def main() -> None:
                 print("  Beskrivelse: ", data[item].description)
                 print("  Icon: ", data[item].icon)
                 print("  Picture: ", data[item].entity_picture)
-                print("  Sidst Opdateret: ", data[item].last_updated)
                 print("  ======================================================")
 
         except AffaldDKNoConnection as err:

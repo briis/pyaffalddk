@@ -4,6 +4,8 @@ coverage
 flake8
 ical
 mock
+mypy
+pre-commit
 pyflakes
 pylint
 pytest
@@ -13,5 +15,4 @@ python-dotenv
 requests
 requests-toolbelt
 ruff
-mypy
-pre-commit
+setuptools

@@ -25,6 +25,9 @@ class PickupType:
     icon: str | None = None
     entity_picture: str | None = None
     description: str | None = None
+    last_updated: dt.datetime | None = None
+    utc_timestamp: int | None = None
+
 
 
 @dataclass(frozen=True)

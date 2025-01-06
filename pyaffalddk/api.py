@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import abc
 import datetime as dt
-from zoneinfo import ZoneInfo
-from functools import lru_cache
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
 import json
@@ -27,12 +25,9 @@ from .const import (
     WEEKDAYS,
 )
 from .data import PickupEvents, PickupType, AffaldDKAddressInfo
+from .dt import DEFAULT_TIME_ZONE, async_get_time_zone
 
 _LOGGER = logging.getLogger(__name__)
-
-@lru_cache(maxsize=1)
-def get_utc_tz() -> ZoneInfo:
-    return ZoneInfo("UTC")
 
 class AffaldDKNotSupportedError(Exception):
     """Raised when the municipality is not supported."""
@@ -180,7 +175,6 @@ class GarbageCollection:
         self._data = None
         self._municipality_url = None
         self._address_id = None
-        self._timezone = get_utc_tz()
 
         if session:
             self._api.session = session
@@ -300,8 +294,9 @@ class GarbageCollection:
         _next_pickup_event: PickupType = None
         _next_name = []
         _next_description = []
-        _utc_date = dt.datetime.now(tz=self._timezone).now()
-        _utc_timestamp = dt.datetime.now(tz=self._timezone).timestamp()
+        _tz_info: dt.tzinfo = await async_get_time_zone("UTC")
+        _utc_date = dt.datetime.now(tz=_tz_info).now()
+        _utc_timestamp = dt.datetime.now(tz=_tz_info).timestamp()
 
         if self._api_data == "2":
             self._address_id = address_id

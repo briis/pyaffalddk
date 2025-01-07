@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import asyncio
 import aiohttp
+import datetime as dt
 import logging
 import time
 import sys
@@ -75,7 +76,7 @@ async def main() -> None:
                     print("  Beskrivelse: ", data[item].description)
                     print("  Icon: ", data[item].icon)
                     print("  Picture: ", data[item].entity_picture)
-                    # print("  Sidst Opdateret: ", data[item].last_updated)
+                    print("  Sidst Opdateret: ", dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
                     print("  ======================================================")
 
                 item = "next_pickup"
@@ -86,7 +87,7 @@ async def main() -> None:
                 print("  Beskrivelse: ", data[item].description)
                 print("  Icon: ", data[item].icon)
                 print("  Picture: ", data[item].entity_picture)
-                # print("  Sidst Opdateret: ", data[item].last_updated)
+                print("  Sidst Opdateret: ", dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
                 print("  ======================================================")
 
         except AffaldDKNoConnection as err:

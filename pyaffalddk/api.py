@@ -55,6 +55,7 @@ class AffaldDKAPIBase:
             "users must define async_api_request to use this base class"
         )
 
+
 class AffaldDKAPI(AffaldDKAPIBase):
     """Class to get data from AffaldDK."""
 
@@ -81,15 +82,19 @@ class AffaldDKAPI(AffaldDKAPIBase):
                     await self.session.close()
 
                 if response.status == 400:
-                    raise AffaldDKNotSupportedError("Municipality not supported")
+                    raise AffaldDKNotSupportedError(
+                        "Municipality not supported")
 
                 if response.status == 404:
-                    raise AffaldDKNotSupportedError("Municipality not supported")
+                    raise AffaldDKNotSupportedError(
+                        "Municipality not supported")
 
                 if response.status == 503:
-                    raise AffaldDKNoConnection("System API is currently not available")
+                    raise AffaldDKNoConnection(
+                        "System API is currently not available")
 
-                raise AffaldDKNoConnection(f"Error {response.status} from {url}")
+                raise AffaldDKNoConnection(
+                    f"Error {response.status} from {url}")
 
             data = await response.text()
             if is_new_session:
@@ -111,13 +116,17 @@ class AffaldDKAPI(AffaldDKAPIBase):
                 if is_new_session:
                     await self.session.close()
                 if response.status == 400:
-                    raise AffaldDKNotSupportedError("Municipality not supported")
+                    raise AffaldDKNotSupportedError(
+                        "Municipality not supported")
                 if response.status == 404:
-                    raise AffaldDKNotSupportedError("Municipality not supported")
+                    raise AffaldDKNotSupportedError(
+                        "Municipality not supported")
                 if response.status == 500:
-                    raise AffaldDKNoConnection("System API is currently not available")
+                    raise AffaldDKNoConnection(
+                        "System API is currently not available")
 
-                raise AffaldDKNoConnection(f"Error {response.status} from {url}")
+                raise AffaldDKNoConnection(
+                    f"Error {response.status} from {url}")
 
             data = await response.text()
             if is_new_session:
@@ -139,13 +148,17 @@ class AffaldDKAPI(AffaldDKAPIBase):
                 if is_new_session:
                     await self.session.close()
                 if response.status == 400:
-                    raise AffaldDKNotSupportedError("Municipality not supported")
+                    raise AffaldDKNotSupportedError(
+                        "Municipality not supported")
                 if response.status == 404:
-                    raise AffaldDKNotSupportedError("Municipality not supported")
+                    raise AffaldDKNotSupportedError(
+                        "Municipality not supported")
                 if response.status == 500:
-                    raise AffaldDKNoConnection("System API is currently not available")
+                    raise AffaldDKNoConnection(
+                        "System API is currently not available")
 
-                raise AffaldDKNoConnection(f"Error {response.status} from {url}")
+                raise AffaldDKNoConnection(
+                    f"Error {response.status} from {url}")
 
             data = await response.text()
             if is_new_session:
@@ -258,7 +271,8 @@ class GarbageCollection:
                 # _LOGGER.debug("Address Data: %s", result)
                 if "list" not in result:
                     raise AffaldDKNoConnection(
-                        f"AffaldDK API: {result['status']['status']} - {result['status']['msg']}"
+                        f"AffaldDK API: {
+                            result['status']['status']} - {result['status']['msg']}"
                     )
 
                 _result_count = len(result["list"])
@@ -266,7 +280,7 @@ class GarbageCollection:
                 _row_index: int = 0
                 if _result_count > 1:
                     for row in result["list"]:
-                        if zipcode in row["label"]:
+                        if zipcode in row["label"] and house_number in row["label"]:
                             _item = _row_index
                             break
                         _row_index += 1
@@ -321,7 +335,8 @@ END:DAYLIGHT
 END:VTIMEZONE""")
                     ics = IcsCalendarStream.calendar_from_ics(data)
                     for event in ics.timeline:
-                        _garbage_types = split_ical_garbage_types(event.summary)
+                        _garbage_types = split_ical_garbage_types(
+                            event.summary)
                         for garbage_type in _garbage_types:
                             _pickup_date = event.start_datetime.date()
                             if _pickup_date < dt.date.today():
@@ -428,7 +443,7 @@ END:VTIMEZONE""")
                 data = await self._api.async_api_request(url, body)
                 result = json.loads(data["d"])
                 garbage_data = result["list"]
-                # _LOGGER.debug("Garbage Data: %s", garbage_data)
+                _LOGGER.debug("Garbage Data: %s", garbage_data)
 
                 for row in garbage_data:
                     if row["ordningnavn"] in NON_SUPPORTED_ITEMS:
@@ -441,7 +456,8 @@ END:VTIMEZONE""")
                         _pickup_date = get_next_weekday(row["toemningsdage"])
                     elif find_weekday_in_string(row["toemningsdage"]) != "None":
                         if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
-                            _weekday = find_weekday_in_string(row["toemningsdage"])
+                            _weekday = find_weekday_in_string(
+                                row["toemningsdage"])
                             _pickup_date = get_next_weekday(_weekday)
                         else:
                             _pickup_date = get_next_year_end()
@@ -625,7 +641,7 @@ def get_next_year_end() -> dt.date:
 def split_ical_garbage_types(text: str) -> list[str]:
     """Split a text string at every comma and ignore everything from 'på' or if it starts with 'Tømning af'."""
     if text.startswith("Tømning af"):
-        text = text[len("Tømning af ") :]
+        text = text[len("Tømning af "):]
     if "på" in text:
         text = text.split("på")[0]
     return [item.strip() for item in text.split(",")]

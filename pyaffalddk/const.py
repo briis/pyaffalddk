@@ -252,6 +252,7 @@ MATERIAL_LIST = {
         "PP/MDK-plast 240 l (hver 2. uge) (1 stk.)",
         "240 L. PMDK/PP 3 ugers tømning (1 stk.)",
         "370 l Plast+MDK/Papir - Egenløsning (Privat) (1 stk.)",
+        "240 l Plast+MDK/Papir - Egenløsning (Privat) (1 stk.)",
     ],
     "farligtaffald": [
         "",
@@ -372,6 +373,7 @@ MATERIAL_LIST = {
         "4-kammer (370 l) (1 stk.)",
         "Pap og papir/metal, glas og hård plast - 240 L (1 stk.)",
         "240 l genbrug låg i låg (1 stk.)",
+        "Pap og papir/metal, glas og hård plast - 240 L (EX) (1 stk.)",
     ],
     "madaffald": [
         "140 L madaffald (1 stk.)",
@@ -528,5 +530,8 @@ MUNICIPALITIES_LIST = {
 
 MUNICIPALITIES_ARRAY = list(MUNICIPALITIES_LIST.keys())
 
-WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+ODD_EVEN_ARRAY = ["lige", "ulige"]
+
+WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag",
+            "Torsdag", "Fredag", "Lørdag", "Søndag"]
 WEEKDAYS_SHORT = ["Man", "Tir", "Ons", "Tor", "Fre", "Lør", "Søn"]

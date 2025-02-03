@@ -21,6 +21,7 @@ from .const import (
     NAME_LIST,
     NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
+    ODD_EVEN_ARRAY,
     SUPPORTED_ITEMS,
     WEEKDAYS,
 )
@@ -443,7 +444,7 @@ END:VTIMEZONE""")
                 data = await self._api.async_api_request(url, body)
                 result = json.loads(data["d"])
                 garbage_data = result["list"]
-                _LOGGER.debug("Garbage Data: %s", garbage_data)
+                # _LOGGER.debug("Garbage Data: %s", garbage_data)
 
                 for row in garbage_data:
                     if row["ordningnavn"] in NON_SUPPORTED_ITEMS:
@@ -454,11 +455,20 @@ END:VTIMEZONE""")
                         _pickup_date = to_date(row["toemningsdato"])
                     elif str(row["toemningsdage"]).capitalize() in WEEKDAYS:
                         _pickup_date = get_next_weekday(row["toemningsdage"])
+                        _LOGGER.debug("FOUND IN TOEMNINGSDAGE")
                     elif find_weekday_in_string(row["toemningsdage"]) != "None":
                         if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
                             _weekday = find_weekday_in_string(
                                 row["toemningsdage"])
                             _pickup_date = get_next_weekday(_weekday)
+                        elif find_odd_even_in_string(row["toemningsdage"]) != "None":
+                            _weekday = find_weekday_in_string(
+                                row["toemningsdage"])
+                            _odd_even = find_odd_even_in_string(
+                                row["toemningsdage"])
+                            _LOGGER.debug("WEEK: %s - %s", _odd_even, _weekday)
+                            _pickup_date = get_next_weekday_odd_even(
+                                _weekday, _odd_even)
                         else:
                             _pickup_date = get_next_year_end()
                     else:
@@ -609,11 +619,45 @@ def get_garbage_type_from_material(
 
 
 def get_next_weekday(weekday: str) -> dt.date:
+
     weekdays = WEEKDAYS
     current_weekday = dt.datetime.now().weekday()
     target_weekday = weekdays.index(weekday.capitalize())
     days_ahead = (target_weekday - current_weekday) % 7
     next_date: dt.date = dt.datetime.now() + dt.timedelta(days=days_ahead)
+    return next_date.date()
+
+
+def get_next_weekday_odd_even(weekday: str, odd_even: str) -> dt.date:
+    """Get next date for a weekday considering odd/even weeks.
+
+    Args:
+        weekday: String with weekday name
+        odd_even: String with 'ulige' or 'lige' for odd/even weeks
+
+    Returns:
+        dt.date: Next date matching weekday and odd/even week criteria
+    """
+    weekdays = WEEKDAYS
+    current_date = dt.datetime.now()
+    target_weekday = weekdays.index(weekday.capitalize())
+
+    # Find next occurrence of weekday
+    days_ahead = (target_weekday - current_date.weekday()) % 7
+    next_date = current_date + dt.timedelta(days=days_ahead)
+    if days_ahead == 0:  # If today is the target weekday, move to next week
+        next_date += dt.timedelta(days=7)
+
+    # Check if week number matches odd/even criteria using ISO week numbers
+    week_number = next_date.isocalendar()[1]
+    _LOGGER.debug("Week Number: %s", week_number)
+    is_odd_week = week_number % 2 == 1
+    needs_odd = odd_even.lower() == 'ulige'
+
+    # If initial date doesn't match odd/even criteria, add a week
+    if is_odd_week != needs_odd:
+        next_date += dt.timedelta(days=7)
+
     return next_date.date()
 
 
@@ -628,6 +672,15 @@ def find_weekday_in_string(text: str) -> str:
     for w in words:
         if w.capitalize() in WEEKDAYS:
             return w.capitalize()
+    return "None"
+
+
+def find_odd_even_in_string(text: str) -> str:
+    """Loop through each word in a text string and compare with another word."""
+    words = text.split()
+    for w in words:
+        if w.lower() in ODD_EVEN_ARRAY:
+            return w.lower()
     return "None"
 
 

@@ -1,5 +1,18 @@
 # Changelog for pyaffalddk
 
+## Version 2.1.7
+
+**Date**: `2025-01-04`
+
+### What's Changed
+
+* Fixing Missing Material in Egedal Kommune. Closing [AffaldDK #221](https://github.com/briis/affalddk/issues/221)
+* Added function to find a date based on Weekday and Odd or Even week. Closing [AffaldDK #226](https://github.com/briis/affalddk/issues/226)
+* Bump `pyaffalddk` to V2.1.7
+
+<details>
+  <summary><b>Previous Changes</b></summary>
+
 ## Version 2.1.6
 
 **Date**: `2024-01-07`
@@ -10,9 +23,6 @@
 * Fixing missing DAYLIGHT information in iCal data. Closing [AffaldDK #205](https://github.com/briis/affalddk/issues/205)
 * Fixing missing containers in Køge after renaming. Closing [AffaldDK #207](https://github.com/briis/affalddk/issues/207)
 * Bump `pyaffalddk` to V2.1.6
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## Version 2.1.3
 

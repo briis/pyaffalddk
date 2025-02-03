@@ -7,7 +7,7 @@ with open("README.md") as fh:
 
 setuptools.setup(
     name="pyaffalddk",
-    version="2.1.6",
+    version="2.1.7",
     author="briis",
     author_email="bjarne@briis.com",
     description="Gets garbage collection data from danish Municipalities",

@@ -518,7 +518,6 @@ MUNICIPALITIES_LIST = {
     "Samsø": ["samsoe", "1"],
     "Slagelse": ["slagelse", "1"],
     "Solrød": ["solrod", "1"],
-    "Sorø": ["soroe", "1"],
     "Stevns": ["stevns", "1"],
     "Svendborg": ["svendborg", "1"],
     "Sønderborg": ["sonderborg", "1"],

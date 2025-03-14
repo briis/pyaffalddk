@@ -326,6 +326,9 @@ MATERIAL_LIST = {
         "Storskrald og genbrug",
         "Pap og Storskrald",
         "Storskrald distrikt 8 (1 stk.)",
+        "Møbler/indbo  (1 stk.)",
+        "Elektronik, stort metal, keramik og porcelæn (1 stk.)",
+        "Småt brændbart (1 stk.)",
     ],
     "storskraldogtekstilaffald": [""],
     "haveaffald": [
@@ -366,6 +369,7 @@ MATERIAL_LIST = {
         "Tekstilpose tømning (1 stk.)",
         "Tekstilaffald (1 stk.)",
         "Tekstilpose 25 L (1 stk.)",
+        "Tekstilaffald (i lukket pose) (1 stk.)",
     ],
     "glasplast": [""],
     "plastmetalpapir": [""],

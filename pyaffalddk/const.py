@@ -210,6 +210,7 @@ NON_MATERIAL_LIST = [
 MATERIAL_LIST = {
     "restaffaldmadaffald": [
         "Mad- og restaffald",
+        "*190 l rød, 14 dags tømning (1 stk.)",
     ],
     "batterier": [
         "Batterier i pose på låg (1 stk.)",
@@ -372,7 +373,9 @@ MATERIAL_LIST = {
         "Tekstilaffald (i lukket pose) (1 stk.)",
     ],
     "glasplast": [""],
-    "plastmetalpapir": [""],
+    "plastmetalpapir": [
+        "*140 l grøn, 14 dags tømning (1 stk.)",
+    ],
     "papirglasmetalplast": [
         "4-kammer (370 l) (1 stk.)",
         "Pap og papir/metal, glas og hård plast - 240 L (1 stk.)",

@@ -66,9 +66,8 @@ class AffaldDKAPIBase:
         if body:
             method = 'POST'
             headers = {"Content-Type": "application/json"}
-            data = json.dumps(body)
 
-        async with self.session.request(method, url, headers=headers, data=data) as response:
+        async with self.session.request(method, url, headers=headers, json=body) as response:
             if response.status != 200:
                 if is_new_session:
                     await self.session.close()
@@ -88,12 +87,13 @@ class AffaldDKAPIBase:
                 raise AffaldDKNoConnection(
                     f"Error {response.status} from {url}")
 
-            data = await response.text()
+            if as_json:
+                data = await response.json()
+            else:
+                data = await response.text()
             if is_new_session:
                 await self.session.close()
 
-            if as_json:
-                return json.loads(data)
             return data
 
 
@@ -192,15 +192,13 @@ END:VTIMEZONE""")
 
     async def get_address_id(self, zipcode, street, house_number):
         url = f"{self.url_search}{street}"
-        data: dict[str, Any] = await self.async_api_request(url)
-        _result_count = len(data)
-        if _result_count > 1:
-            for row in data:
-                if (
-                    zipcode in row["PostCode"]
-                    and house_number == row["FullHouseNumber"]
-                ):
-                    return row["AddressNo"]
+        data = await self.async_api_request(url)
+        for row in data:
+            if (
+                zipcode in row["PostCode"]
+                and house_number == row["FullHouseNumber"]
+            ):
+                return row["AddressNo"]
         return None
 
 
@@ -220,7 +218,7 @@ class AffaldDKAPI(AffaldDKAPIBase):
             "addresswithmateriel": 7,
         }
         # _LOGGER.debug("Municipality URL: %s %s", url, body)
-        data: dict[str, Any] = await self.async_api_request(url, body)
+        data = await self.async_api_request(url, body)
         result = json.loads(data["d"])
         # _LOGGER.debug("Address Data: %s", result)
         if "list" not in result:
@@ -266,6 +264,9 @@ class GarbageCollection:
                 self._api_data = value[1]
                 if self._api_data == '1':
                     self._api = AffaldDKAPI(session=session)
+                    self._municipality_url = value[0]
+                if self._api_data == '2':
+                    self._api = OdenseAffaldAPI(session=session)
                     self._municipality_url = value[0]
                 elif self._api_data == '3':
                     self._api = AarhusAffaldAPI(session=session)
@@ -501,8 +502,7 @@ class GarbageCollection:
                 body = {"adrid": f"{address_id}", "common": "false"}
                 # _LOGGER.debug("Body: %s", body)
                 data = await self._api.async_api_request(url, body)
-                result = json.loads(data["d"])
-                garbage_data = result["list"]
+                garbage_data = json.loads(data["d"])["list"]
                 # _LOGGER.debug("Garbage Data: %s", garbage_data)
 
                 for row in garbage_data:

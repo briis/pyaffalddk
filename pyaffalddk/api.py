@@ -2,19 +2,19 @@
 
 from __future__ import annotations
 
-import abc
 import datetime as dt
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
 import json
 import logging
+import re
+from urllib.parse import urlparse, parse_qsl
 
 from typing import Any
 
 import aiohttp
 
 from .const import (
-    API_DATA_LIST,
     ICON_LIST,
     MATERIAL_LIST,
     MUNICIPALITIES_LIST,
@@ -48,24 +48,11 @@ class AffaldDKGarbageTypeNotFound(Exception):
 
 class AffaldDKAPIBase:
     """Base class for the API."""
-
-    @abc.abstractmethod
-    async def async_api_request(self, url: str) -> dict[str, Any]:
-        """Override this."""
-        raise NotImplementedError(
-            "users must define async_api_request to use this base class"
-        )
-
-
-class AffaldDKAPI(AffaldDKAPIBase):
-    """Class to get data from AffaldDK."""
-
-    def __init__(self) -> None:
+    def __init__(self, session=None) -> None:
         """Initialize the class."""
-        self.session = None
-        self.request_timeout = 10
+        self.session = session
 
-    async def async_api_request(self, url: str, body: str) -> dict[str, Any]:
+    async def async_api_request(self, url: str, body=None, as_json=True) -> dict[str, Any]:
         """Make an API request."""
 
         is_new_session = False
@@ -73,11 +60,15 @@ class AffaldDKAPI(AffaldDKAPIBase):
             self.session = aiohttp.ClientSession()
             is_new_session = True
 
-        headers = {"Content-Type": "application/json"}
+        method = 'GET'
+        headers = None
+        data = None
+        if body:
+            method = 'POST'
+            headers = {"Content-Type": "application/json"}
+            data = json.dumps(body)
 
-        async with self.session.post(
-            url, headers=headers, data=json.dumps(body)
-        ) as response:
+        async with self.session.request(method, url, headers=headers, data=data) as response:
             if response.status != 200:
                 if is_new_session:
                     await self.session.close()
@@ -101,71 +92,156 @@ class AffaldDKAPI(AffaldDKAPIBase):
             if is_new_session:
                 await self.session.close()
 
-            json_data = json.loads(data)
-            return json_data
-
-    async def async_api_request_2(self, url: str) -> dict[str, Any]:
-        """Get data from standard REST API."""
-
-        is_new_session = False
-        if self.session is None:
-            self.session = aiohttp.ClientSession()
-            is_new_session = True
-
-        async with self.session.get(url) as response:
-            if response.status != 200:
-                if is_new_session:
-                    await self.session.close()
-                if response.status == 400:
-                    raise AffaldDKNotSupportedError(
-                        "Municipality not supported")
-                if response.status == 404:
-                    raise AffaldDKNotSupportedError(
-                        "Municipality not supported")
-                if response.status == 500:
-                    raise AffaldDKNoConnection(
-                        "System API is currently not available")
-
-                raise AffaldDKNoConnection(
-                    f"Error {response.status} from {url}")
-
-            data = await response.text()
-            if is_new_session:
-                await self.session.close()
-
-            json_data = json.loads(data)
-            return json_data
-
-    async def async_get_ical_data(self, url: str) -> dict[str, Any]:
-        """Get data from iCal API."""
-
-        is_new_session = False
-        if self.session is None:
-            self.session = aiohttp.ClientSession()
-            is_new_session = True
-
-        async with self.session.get(url) as response:
-            if response.status != 200:
-                if is_new_session:
-                    await self.session.close()
-                if response.status == 400:
-                    raise AffaldDKNotSupportedError(
-                        "Municipality not supported")
-                if response.status == 404:
-                    raise AffaldDKNotSupportedError(
-                        "Municipality not supported")
-                if response.status == 500:
-                    raise AffaldDKNoConnection(
-                        "System API is currently not available")
-
-                raise AffaldDKNoConnection(
-                    f"Error {response.status} from {url}")
-
-            data = await response.text()
-            if is_new_session:
-                await self.session.close()
-
+            if as_json:
+                return json.loads(data)
             return data
+
+
+class NemAffaldAPI(AffaldDKAPIBase):
+    # NemAffaldService API
+    def __init__(self, domain, session=None):
+        super().__init__(session)
+        self._token = None
+        self._id = None
+        self.street = None
+        self.base_url = f'https://nemaffaldsservice.{domain}.dk'
+
+    @property
+    async def token(self):
+        if self._token is None:
+            await self._get_token()
+        return self._token
+
+    async def _get_token(self):
+        data = ''
+        async with self.session.get(self.base_url) as response:
+            data = await response.text()
+
+        if data:
+            match = re.search(r'name="__RequestVerificationToken"\s+[^>]*value="([^"]+)"', data)
+            if match:
+                self._token = match.group(1)
+
+    async def get_address_id(self, zipcode, street, house_number):
+        if self._id is None:
+            data = {
+                '__RequestVerificationToken': await self.token, 
+                'SearchTerm': f"{street} {house_number}"
+            }
+            async with self.session.post(f"{self.base_url}/WasteHome/SearchCustomerRelation", data=data) as response:
+                if len(response.history) > 1:
+                    o = urlparse(response.history[1].headers['Location'])
+                    self._id = dict(parse_qsl(o.query))['customerId']
+        return self._id
+
+    async def async_get_ical_data(self, customerid):
+        ics_data = ''
+        data = {'customerId': customerid, 'type': 'ics'}
+        async with self.session.get(f"{self.base_url}/Calendar/GetICaldendar", data=data) as response:
+            ics_data = await response.text()
+        return ics_data
+
+
+class AarhusAffaldAPI(AffaldDKAPIBase):
+    # Aarhus Forsyning API
+    def __init__(self, session=None):
+        super().__init__(session)
+        self.url_data = "https://portal-api.kredslob.dk/api/calendar/address/"
+        self.url_search = "https://api.dataforsyningen.dk/adresser?kommunekode=751&q="
+
+    async def get_address_id(self, zipcode, street, house_number):
+        url = f"{self.url_search}{street.capitalize()}*"
+        _LOGGER.debug("URL: %s", url)
+        data: dict[str, Any] = await self.async_api_request(url)
+        _result_count = len(data)
+        if _result_count > 1:
+            for row in data:
+                if (
+                    zipcode in row["adgangsadresse"]["postnummer"]["nr"]
+                    and house_number == row["adgangsadresse"]["husnr"]
+                ):
+                    return row["kvhx"]
+        return None
+
+
+class OdenseAffaldAPI(AffaldDKAPIBase):
+    # Odense Renovation API
+    def __init__(self, session=None):
+        super().__init__(session)
+        self.url_data = "https://mit.odenserenovation.dk/api/Calendar/GetICalCalendar?addressNo="
+        self.url_search = "https://mit.odenserenovation.dk/api/Calendar/CommunicationHouseNumbers?addressString="
+
+    async def async_get_ical_data(self, address_id) -> dict[str, Any]:
+        """Get data from iCal API."""
+        url = f"{self.url_data}{address_id}"
+        data = await self.async_api_request(url, as_json=False)
+        data = data.replace("END:VTIMEZONE", """BEGIN:STANDARD
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+END:DAYLIGHT
+END:VTIMEZONE""")
+        return data
+
+    async def get_address_id(self, zipcode, street, house_number):
+        url = f"{self.url_search}{street}"
+        data: dict[str, Any] = await self.async_api_request(url)
+        _result_count = len(data)
+        if _result_count > 1:
+            for row in data:
+                if (
+                    zipcode in row["PostCode"]
+                    and house_number == row["FullHouseNumber"]
+                ):
+                    return row["AddressNo"]
+        return None
+
+
+class AffaldDKAPI(AffaldDKAPIBase):
+    # Renoweb API
+    """Class to get data from AffaldDK."""
+
+    def __init__(self, session=None):
+        super().__init__(session)
+        self.url_data = ".renoweb.dk/Legacy/JService.asmx/GetAffaldsplanMateriel_mitAffald"
+        self.url_search = ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString"
+
+    async def get_address_id(self, municipality_url, zipcode, street, house_number):
+        url = f"https://{municipality_url}{self.url_search}"
+        body = {
+            "searchterm": f"{street} {house_number}",
+            "addresswithmateriel": 7,
+        }
+        # _LOGGER.debug("Municipality URL: %s %s", url, body)
+        data: dict[str, Any] = await self.async_api_request(url, body)
+        result = json.loads(data["d"])
+        # _LOGGER.debug("Address Data: %s", result)
+        if "list" not in result:
+            raise AffaldDKNoConnection(
+                f'''AffaldDK API: {
+                    result['status']['status']} - {result['status']['msg']}'''
+            )
+
+        _result_count = len(result["list"])
+        _item: int = 0
+        _row_index: int = 0
+        if _result_count > 1:
+            for row in result["list"]:
+                if zipcode in row["label"] and house_number in row["label"]:
+                    _item = _row_index
+                    break
+                _row_index += 1
+        address_id = result["list"][_item]["value"]
+        if address_id == "0000":
+            return None
+        return address_id
 
 
 class GarbageCollection:
@@ -175,44 +251,44 @@ class GarbageCollection:
         self,
         municipality: str,
         session: aiohttp.ClientSession = None,
-        api: AffaldDKAPIBase = AffaldDKAPI(),
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
         # self._tzinfo = None
         self._street = None
         self._house_number = None
-        self._api = api
         self._api_data = None
-        self._api_url_data = None
-        self._api_url_search = None
         self._data = None
         self._municipality_url = None
         self._address_id = None
-        if session:
-            self._api.session = session
         for key, value in MUNICIPALITIES_LIST.items():
             if key.lower() == self._municipality.lower():
-                self._municipality_url = value[0]
                 self._api_data = value[1]
-                for key, value in API_DATA_LIST.items():
-                    if key == self._api_data:
-                        self._api_url_data = value[0]
-                        self._api_url_search = value[1]
-                        break
-                break
+                if self._api_data == '1':
+                    self._api = AffaldDKAPI(session=session)
+                    self._municipality_url = value[0]
+                elif self._api_data == '3':
+                    self._api = AarhusAffaldAPI(session=session)
+                    self._municipality_url = value[0]
+                elif self._api_data == '4':
+                    self._api = NemAffaldAPI(value[0], session=session)
+                    self._municipality_url = self._api.base_url
+        if session:
+            self._api.session = session
 
     async def async_init(self) -> None:
         """Initialize the connection."""
         if self._municipality is not None:
             if self._api_data == "2":
-                url = f"{self._api_url_search}{self._street}"
-                await self._api.async_api_request_2(url)
+                url = f"{self._api.url_search}{self._street}"
+                await self._api.async_api_request(url)
             elif self._api_data == "3":
-                url = f"{self._api_url_search}{self._street}*"
-                await self._api.async_api_request_2(url)
+                url = f"{self._api.url_search}{self._street}*"
+                await self._api.async_api_request(url)
+            elif self._api_data == "4":
+                await self._api.token
             else:
-                url = f"https://{self._municipality_url}{self._api_url_search}"
+                url = f"https://{self._municipality_url}{self._api.url_search}"
                 body = {
                     "searchterm": f"{self._street} {self._house_number}",
                     "addresswithmateriel": 1,
@@ -226,69 +302,18 @@ class GarbageCollection:
 
         if self._municipality_url is not None:
             if self._api_data == "2":
-                url = f"{self._api_url_search}{street}"
-                data: dict[str, Any] = await self._api.async_api_request_2(url)
-                _result_count = len(data)
-                _item: int = 0
-                _row_index: int = 0
-                if _result_count > 1:
-                    for row in data:
-                        if (
-                            zipcode in row["PostCode"]
-                            and house_number == row["FullHouseNumber"]
-                        ):
-                            self._address_id = row["AddressNo"]
-                            break
-
-                if self._address_id is None:
-                    raise AffaldDKNotValidAddressError("Address not found")
-
+                self._address_id = await self._api.get_address_id(zipcode, street, house_number)
             elif self._api_data == "3":
-                _street_name = street.capitalize()
-                url = f"{self._api_url_search}{_street_name}*"
-                _LOGGER.debug("URL: %s", url)
-                data: dict[str, Any] = await self._api.async_api_request_2(url)
-                _result_count = len(data)
-                if _result_count > 1:
-                    for row in data:
-                        if (
-                            zipcode in row["adgangsadresse"]["postnummer"]["nr"]
-                            and house_number == row["adgangsadresse"]["husnr"]
-                        ):
-                            self._address_id = row["kvhx"]
-                            break
-
-                if self._address_id is None:
-                    raise AffaldDKNotValidAddressError("Address not found")
+                self._address_id = await self._api.get_address_id(zipcode, street, house_number)
+            elif self._api_data == "4":
+                self._address_id = await self._api.get_address_id(zipcode, street, house_number)
+                # self._api.street = f"{street} {house_number}"
+                # self._address_id = await self._api.customerid
             else:
-                url = f"https://{self._municipality_url}{self._api_url_search}"
-                body = {
-                    "searchterm": f"{street} {house_number}",
-                    "addresswithmateriel": 7,
-                }
-                # _LOGGER.debug("Municipality URL: %s %s", url, body)
-                data: dict[str, Any] = await self._api.async_api_request(url, body)
-                result = json.loads(data["d"])
-                # _LOGGER.debug("Address Data: %s", result)
-                if "list" not in result:
-                    raise AffaldDKNoConnection(
-                        f"AffaldDK API: {
-                            result['status']['status']} - {result['status']['msg']}"
-                    )
+                self._address_id = await self._api.get_address_id(self._municipality_url, zipcode, street, house_number)
 
-                _result_count = len(result["list"])
-                _item: int = 0
-                _row_index: int = 0
-                if _result_count > 1:
-                    for row in result["list"]:
-                        if zipcode in row["label"] and house_number in row["label"]:
-                            _item = _row_index
-                            break
-                        _row_index += 1
-                self._address_id = result["list"][_item]["value"]
-
-                if self._address_id == "0000":
-                    raise AffaldDKNotValidAddressError("Address not found")
+            if self._address_id is None:
+                raise AffaldDKNotValidAddressError("Address not found")
 
             address_data = AffaldDKAddressInfo(
                 self._address_id,
@@ -303,8 +328,6 @@ class GarbageCollection:
     async def get_pickup_data(self, address_id: str) -> PickupEvents:
         """Get the garbage collection data."""
 
-        # self._tzinfo = await self._api.async_get_time_zone("UTC")
-
         if self._municipality_url is not None:
             pickup_events: PickupEvents = {}
             _next_pickup = dt.datetime(2030, 12, 31, 23, 59, 0)
@@ -314,26 +337,8 @@ class GarbageCollection:
             _next_description = []
 
             if self._api_data == "2":
-                self._address_id = address_id
-                url = f"{self._api_url_data}{self._address_id}"
-                data = await self._api.async_get_ical_data(url)
-                # _LOGGER.debug("iCal Data: %s", data)
-
+                data = await self._api.async_get_ical_data(address_id)
                 try:
-                    # Insert standard timezone rules before parsing
-                    data = data.replace("END:VTIMEZONE", """BEGIN:STANDARD
-DTSTART:19701025T030000
-RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
-TZOFFSETFROM:+0200
-TZOFFSETTO:+0100
-END:STANDARD
-BEGIN:DAYLIGHT
-DTSTART:19700329T020000
-RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3
-TZOFFSETFROM:+0100
-TZOFFSETTO:+0200
-END:DAYLIGHT
-END:VTIMEZONE""")
                     ics = IcsCalendarStream.calendar_from_ics(data)
                     for event in ics.timeline:
                         _garbage_types = split_ical_garbage_types(
@@ -370,25 +375,25 @@ END:VTIMEZONE""")
                                     _next_name.append(NAME_LIST.get(key))
                                     _next_description.append(garbage_type)
 
-                    _next_pickup_event = {
-                        "next_pickup": PickupType(
-                            date=_next_pickup,
-                            group="genbrug",
-                            friendly_name=list_to_string(_next_name),
-                            icon=ICON_LIST.get("genbrug"),
-                            entity_picture="genbrug.svg",
-                            description=list_to_string(_next_description),
-                        )
-                    }
-
-                    pickup_events.update(_next_pickup_event)
-
+                    if _next_name:
+                        _next_pickup_event = {
+                            "next_pickup": PickupType(
+                                date=_next_pickup,
+                                group="genbrug",
+                                friendly_name=list_to_string(_next_name),
+                                icon=ICON_LIST.get("genbrug"),
+                                entity_picture="genbrug.svg",
+                                description=list_to_string(_next_description),
+                            )
+                        }
+                        pickup_events.update(_next_pickup_event)
                 except CalendarParseError as err:
                     _LOGGER.error("Error parsing iCal data: %s", err)
+
             elif self._api_data == "3":
                 self._address_id = address_id
-                url = f"{self._api_url_data}{self._address_id}"
-                data = await self._api.async_api_request_2(url)
+                url = f"{self._api.url_data}{self._address_id}"
+                data = await self._api.async_api_request(url)
                 garbage_data = data[0]["plannedLoads"]
                 for row in garbage_data:
                     _pickup_date = iso_string_to_date(row["date"])
@@ -422,22 +427,76 @@ END:VTIMEZONE""")
                                 _next_name.append(NAME_LIST.get(key))
                                 _next_description.append(item)
 
-                _next_pickup_event = {
-                    "next_pickup": PickupType(
-                        date=_next_pickup,
-                        group="genbrug",
-                        friendly_name=list_to_string(_next_name),
-                        icon=ICON_LIST.get("genbrug"),
-                        entity_picture="genbrug.svg",
-                        description=list_to_string(_next_description),
-                    )
-                }
-                pickup_events.update(_next_pickup_event)
+                if _next_name:
+                    _next_pickup_event = {
+                        "next_pickup": PickupType(
+                            date=_next_pickup,
+                            group="genbrug",
+                            friendly_name=list_to_string(_next_name),
+                            icon=ICON_LIST.get("genbrug"),
+                            entity_picture="genbrug.svg",
+                            description=list_to_string(_next_description),
+                        )
+                    }
+                    pickup_events.update(_next_pickup_event)
 
-                return pickup_events
+            elif self._api_data == "4":
+                data = await self._api.async_get_ical_data(address_id)
+                try:
+                    ics = IcsCalendarStream.calendar_from_ics(data)
+                    for event in ics.timeline:
+                        _garbage_types = split_ical_garbage_types(
+                            event.summary)
+                        for garbage_type in _garbage_types:
+                            _pickup_date = event.start_datetime.date()
+                            if _pickup_date < dt.date.today():
+                                continue
+
+                            key = get_garbage_type(garbage_type)
+                            if key == garbage_type:
+                                _LOGGER.warning(f"{garbage_type} is not defined in the system. Please notify the developer.")
+                                continue
+                            _pickup_event = {
+                                key: PickupType(
+                                    date=_pickup_date,
+                                    group=key,
+                                    friendly_name=NAME_LIST.get(key),
+                                    icon=ICON_LIST.get(key),
+                                    entity_picture=f"{key}.svg",
+                                    description=garbage_type,
+                                )
+                            }
+                            if not key_exists_in_pickup_events(pickup_events, key):
+                                pickup_events.update(_pickup_event)
+
+                            if _pickup_date is not None:
+                                if _pickup_date < dt.date.today():
+                                    continue
+                                if _pickup_date < _next_pickup:
+                                    _next_pickup = _pickup_date
+                                    _next_name = []
+                                    _next_description = []
+                                if _pickup_date == _next_pickup:
+                                    _next_name.append(NAME_LIST.get(key))
+                                    _next_description.append(garbage_type)
+                    if _next_name:
+                        _next_pickup_event = {
+                            "next_pickup": PickupType(
+                                date=_next_pickup,
+                                group="genbrug",
+                                friendly_name=list_to_string(_next_name),
+                                icon=ICON_LIST.get("genbrug"),
+                                entity_picture="genbrug.svg",
+                                description=list_to_string(_next_description),
+                            )
+                        }
+                        pickup_events.update(_next_pickup_event)
+                except CalendarParseError as err:
+                    _LOGGER.error("Error parsing iCal data: %s", err)
+
             else:
                 self._address_id = address_id
-                url = f"https://{self._municipality_url}{self._api_url_data}"
+                url = f"https://{self._municipality_url}{self._api.url_data}"
                 # _LOGGER.debug("URL: %s", url)
                 body = {"adrid": f"{address_id}", "common": "false"}
                 # _LOGGER.debug("Body: %s", body)
@@ -549,19 +608,18 @@ END:VTIMEZONE""")
                             _next_name.append(NAME_LIST.get(key))
                             _next_description.append(row["materielnavn"])
 
-                _next_pickup_event = {
-                    "next_pickup": PickupType(
-                        date=_next_pickup,
-                        group="genbrug",
-                        friendly_name=list_to_string(_next_name),
-                        icon=ICON_LIST.get("genbrug"),
-                        entity_picture="genbrug.svg",
-                        description=list_to_string(_next_description),
-                    )
-                }
-
-                pickup_events.update(_next_pickup_event)
-
+                if _next_name:
+                    _next_pickup_event = {
+                        "next_pickup": PickupType(
+                            date=_next_pickup,
+                            group="genbrug",
+                            friendly_name=list_to_string(_next_name),
+                            icon=ICON_LIST.get("genbrug"),
+                            entity_picture="genbrug.svg",
+                            description=list_to_string(_next_description),
+                        )
+                    }
+                    pickup_events.update(_next_pickup_event)
             return pickup_events
 
 

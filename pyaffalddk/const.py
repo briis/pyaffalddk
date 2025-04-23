@@ -221,6 +221,7 @@ MATERIAL_LIST = {
         "Metal/glas 240 l (hver 12. uge) (1 stk.)",
         "240 L. Glas/Metal - 4 tømninger (1 stk.)",
         "240 l Glas/metal Egenløsning (Privat) (1 stk.)",
+        "Glas & Metal",
     ],
     "pappi": [
         "Plast/papir (1 stk.)",
@@ -236,6 +237,7 @@ MATERIAL_LIST = {
         "240 L. PMDK/PP 3 ugers tømning (1 stk.)",
         "370 l Plast+MDK/Papir - Egenløsning (Privat) (1 stk.)",
         "240 l Plast+MDK/Papir - Egenløsning (Privat) (1 stk.)",
+        "Papir & småt pap",
     ],
     "farligtaffald": [
         "",

@@ -1,24 +1,3 @@
-API_URL_DATA = ".renoweb.dk/Legacy/JService.asmx/GetAffaldsplanMateriel_mitAffald"
-API_URL_SEARCH = ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString"
-
-API_DATA_LIST = {
-    # Renoweb API
-    "1": [
-        ".renoweb.dk/Legacy/JService.asmx/GetAffaldsplanMateriel_mitAffald",
-        ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString",
-    ],
-    # Odense Renovation API
-    "2": [
-        "https://mit.odenserenovation.dk/api/Calendar/GetICalCalendar?addressNo=",
-        "https://mit.odenserenovation.dk/api/Calendar/CommunicationHouseNumbers?addressString=",
-    ],
-    # Aarhus Forsyning API
-    "3": [
-        "https://portal-api.kredslob.dk/api/calendar/address/",
-        "https://api.dataforsyningen.dk/adresser?kommunekode=751&q=",
-    ],
-}
-
 NON_SUPPORTED_ITEMS = [
     "Asbest",
     "Beholderservice",
@@ -57,6 +36,7 @@ SUPPORTED_ITEMS = {
     ],
     "madaffald": ["Madaffald"],
     "batterier": ["Batterier"],
+    "bioposer": ["Bioposer"],
     "dagrenovation": ["Dagrenovation"],
     "elektronik": [""],
     "glas": ["Industri Genbrugeligt"],
@@ -133,6 +113,7 @@ SUPPORTED_ITEMS = {
     ],
     "restaffald": [
         "Restaffald // Batterier og Småt Elektronik",
+        "Industri Restaffald",
     ],
     "storskrald": [
         "Storskrald",
@@ -227,6 +208,7 @@ MATERIAL_LIST = {
         "Glas, 660 liter (2 stk.)",
         "400 liter - Glas - Tømmes hver 8. uge (1 stk.)",
         "Glas",
+        "Cube 1500 L (Flasker) (1 stk.)",
     ],
     "metalglas": [
         "Glas/metal (1 stk.)",
@@ -409,6 +391,7 @@ ICON_LIST = {
     "farligtaffaldmiljoboks": "mdi:recycle",
     "flis": "mdi:tree",
     "genbrug": "mdi:recycle",
+    "bioposer": "mdi:recycle",
     "jern": "mdi:bucket",
     "papir": "mdi:file",
     "papirmetal": "mdi:delete-empty",
@@ -437,6 +420,7 @@ ICON_LIST = {
 
 NAME_LIST = {
     "batterier": "Batterier",
+    "bioposer": "Bioposer",
     "elektronik": "Elektronik",
     "dagrenovation": "Dagrenovation",
     "farligtaffald": "Farligt affald",
@@ -509,6 +493,7 @@ MUNICIPALITIES_LIST = {
     "Hørsholm": ["hoersholm", "1"],
     "Jammerbugt": ["jammerbugt", "1"],
     "Kerteminde": ["kerteminde", "1"],
+    "København": ["kk", "4"],
     "Køge": ["koege", "1"],
     "Lejre": ["lejre", "1"],
     "Lyngby-Taarbæk": ["ltf", "1"],

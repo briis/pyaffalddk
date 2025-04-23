@@ -1,11 +1,5 @@
 import pytest
-from pathlib import Path
-import sys
 from aiohttp import ClientSession
-
-
-basedir = Path(__file__).parent.parent
-sys.path.insert(0, str((basedir).resolve()))
 from pyaffalddk import GarbageCollection
 
 

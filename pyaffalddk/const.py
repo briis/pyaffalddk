@@ -1,3 +1,6 @@
+"""Constants for the pyaffalddk integration."""
+from __future__ import annotations
+
 NON_SUPPORTED_ITEMS = [
     "Asbest",
     "Beholderservice",
@@ -34,12 +37,17 @@ SUPPORTED_ITEMS = {
         "Energibeholder (mad/rest)",
         "Rest- og Madaffald",
     ],
-    "madaffald": ["Madaffald"],
+    "madaffald": [
+        "Madaffald",
+        "Bioposer",
+    ],
     "batterier": ["Batterier"],
-    "bioposer": ["Bioposer"],
     "dagrenovation": ["Dagrenovation"],
-    "elektronik": [""],
-    "glas": ["Industri Genbrugeligt"],
+    "elektronik": ["Elektronik"],
+    "glas": [
+        "Industri Genbrugeligt",
+        "Glas",
+    ],
     "metalglas": [
         "Glas og metal",
         "Metal-Glas",
@@ -80,6 +88,7 @@ SUPPORTED_ITEMS = {
     ],
     "jern": [
         "Jern",
+        "Metal",
     ],
     "juletrae": [
         "Juletræ",
@@ -120,6 +129,7 @@ SUPPORTED_ITEMS = {
         "Stort elektronik",
         "Storskrald og genbrug",
         "Pap og Storskrald",
+        "Stort indbo og Indendørs træ",
     ],
     "storskraldogtekstilaffald": [
         "Storskrald og tekstilaffald",
@@ -386,14 +396,13 @@ ICON_LIST = {
     "elektronik": "mdi:power-plug",
     "restaffaldmadaffald": "mdi:trash-can",
     "dagrenovation": "mdi:trash-can",
-    "glas": "liquor",
+    "glas": "mdi:bottle-soda",
     "metalglas": "mdi:glass-fragile",
     "pappi": "mdi:trash-can",
     "farligtaffald": "mdi:recycle",
     "farligtaffaldmiljoboks": "mdi:recycle",
     "flis": "mdi:tree",
     "genbrug": "mdi:recycle",
-    "bioposer": "mdi:recycle",
     "jern": "mdi:bucket",
     "papir": "mdi:file",
     "papirmetal": "mdi:delete-empty",
@@ -418,6 +427,7 @@ ICON_LIST = {
     "restaffald": "mdi:trash-can",
     "restplast": "mdi:trash-can",
     "juletrae": "mdi:pine-tree",
+    "metal": "mdi:anvil",
 }
 
 NAME_LIST = {
@@ -435,6 +445,7 @@ NAME_LIST = {
     "jern": "Metal",
     "juletrae": "Juletræer",
     "madaffald": "Madaffald",
+    "metal": "Metal",
     "metalglas": "Metal & Glas",
     "pap": "Pap",
     "papir": "Papir",

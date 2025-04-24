@@ -1,6 +1,6 @@
 # Changelog for pyaffalddk
 
-## UNRELEASED
+## [UNRELEASED]
 
 ### Added
 * Support for **Københavns Kommune** added. Thank you to @TermeHansen for implementing this

@@ -48,6 +48,7 @@ class AffaldDKGarbageTypeNotFound(Exception):
 
 class AffaldDKAPIBase:
     """Base class for the API."""
+
     def __init__(self, session=None) -> None:
         """Initialize the class."""
         self.session = session
@@ -118,14 +119,15 @@ class NemAffaldAPI(AffaldDKAPIBase):
             data = await response.text()
 
         if data:
-            match = re.search(r'name="__RequestVerificationToken"\s+[^>]*value="([^"]+)"', data)
+            match = re.search(
+                r'name="__RequestVerificationToken"\s+[^>]*value="([^"]+)"', data)
             if match:
                 self._token = match.group(1)
 
     async def get_address_id(self, zipcode, street, house_number):
         if self._id is None:
             data = {
-                '__RequestVerificationToken': await self.token, 
+                '__RequestVerificationToken': await self.token,
                 'SearchTerm': f"{street} {house_number}"
             }
             async with self.session.post(f"{self.base_url}/WasteHome/SearchCustomerRelation", data=data) as response:
@@ -449,13 +451,17 @@ class GarbageCollection:
                         _garbage_types = split_ical_garbage_types(
                             event.summary)
                         for garbage_type in _garbage_types:
-                            _pickup_date = event.start_datetime.date()
+                            # _start_date = event.start_datetime.date()
+                            _pickup_date = event.end_datetime.date()
+                            # _LOGGER.debug(
+                            #     "Start Date: %s - End Date: %s", _start_date, _pickup_date)
                             if _pickup_date < dt.date.today():
                                 continue
 
                             key = get_garbage_type(garbage_type)
                             if key == garbage_type:
-                                _LOGGER.warning(f"{garbage_type} is not defined in the system. Please notify the developer.")
+                                _LOGGER.warning(
+                                    "%s is not defined in the system. Please notify the developer.", garbage_type)
                                 continue
                             _pickup_event = {
                                 key: PickupType(

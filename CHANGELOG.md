@@ -1,13 +1,15 @@
 # Changelog for pyaffalddk
 
-## [UNRELEASED]
+## [2.2.0] - `2025-04-24`
 
 ### Added
 * Support for **Københavns Kommune** added. Thank you to @TermeHansen for implementing this
 
-## Version 2.1.7
 
-**Date**: `2025-03-19`
+<details>
+  <summary><b>Previous Changes</b></summary>
+
+## [2.1.7] - `2025-03-19`
 
 ### What's Changed
 
@@ -18,12 +20,7 @@
 * Removed Sorø Kommune as they no longer have en open API.
 * Bump `pyaffalddk` to V2.1.7
 
-<details>
-  <summary><b>Previous Changes</b></summary>
-
-## Version 2.1.6
-
-**Date**: `2024-01-07`
+## [2.1.6] - `2024-01-07`
 
 ### What's Changed
 
@@ -32,9 +29,7 @@
 * Fixing missing containers in Køge after renaming. Closing [AffaldDK #207](https://github.com/briis/affalddk/issues/207)
 * Bump `pyaffalddk` to V2.1.6
 
-## Version 2.1.3
-
-**Date**: `2024-01-05`
+## [2.1.3] - `2024-01-05`
 
 ### What's Changed
 
@@ -42,18 +37,14 @@
 * Fixing missing containers in Køge after renaming. Closing [AffaldDK #207](https://github.com/briis/affalddk/issues/207)
 * Bump `pyaffalddk` to V2.1.3
 
-## Version 2.1.2
-
-**Date**: `2024-12-09`
+## [2.1.2] - `2024-12-09`
 
 ### What's Changed
 
 * Fixing renamed containers in Egedal kommune. Closing [AffaldDK #194](https://github.com/briis/affalddk/issues/194)
 * Bump `pyaffalddk` to V2.1.2
 
-## Version 2.1.1
-
-**Date**: `2024-11-25`
+## [2.1.1] - `2024-11-25`
 
 ### What's Changed
 
@@ -63,9 +54,7 @@
 * Added new Material Type `Genbrugsspand, 240L (2-delt) (1 stk.)`. Closing [AffaldDK #186](https://github.com/briis/affalddk/issues/186)
 * Bump `pyaffalddk` to V2.1.1
 
-## Version 2.0.44
-
-**Date**: `2024-11-18`
+## [2.0.44] - `2024-11-18`
 
 ### What's Changed
 
@@ -73,27 +62,21 @@
 * Added December 31st of next year, if a Pickup Type is valid, but no current date is given.
 * Bump `pyaffalddk` to V2.0.44
 
-## Version 2.0.41
-
-**Date**: `2024-10-16`
+## [2.0.41] - `2024-10-16`
 
 ### What's Changed
 
 * Added new Material Type `juletrae` and also added new image. Closing [AffaldDK #165](https://github.com/briis/affalddk/issues/165)
 * Bump `pyaffalddk` to V2.0.41
 
-## Version 2.0.40
-
-**Date**: `2024-10-03`
+## [2.0.40] - `2024-10-03`
 
 ### What's Changed
 
 * Start Fixing issues, after Bornholm has changed naming of many un its. Contributing to [AffaldDK #159](https://github.com/briis/affalddk/issues/159)
 * Bump `pyaffalddk` to V2.0.40
 
-## Version 2.0.39
-
-**Date**: `2024-09-23`
+## [2.0.39] - `2024-09-23`
 
 ### What's Changed
 
@@ -101,9 +84,7 @@
 * Fixing missing Types in Horsens. Closing [pyaffalddk #14](https://github.com/briis/pyaffalddk/issues/14)
 * Bump `pyaffalddk` to V2.0.39
 
-## Version 2.0.38
-
-**Date**: `2024-08-16`
+## [2.0.38] - `2024-08-16`
 
 ### What's Changed
 
@@ -111,27 +92,21 @@
 * Fixing missing Types in Egedal. Closing [AffaldDK #142](https://github.com/briis/affalddk/issues/142)
 * Bump `pyaffalddk` to V2.0.38
 
-## Version 2.0.37
-
-**Date**: `2024-08-13`
+## [2.0.37] - `2024-08-13`
 
 ### What's Changed
 
 * Fixing missing Types in Vordingborg. Closing [AffaldDK #136](https://github.com/briis/affalddk/issues/136)
 * Bump `pyaffalddk` to V2.0.37
 
-## Version 2.0.36
-
-**Date**: `2024-07-29`
+## [2.0.36] - `2024-07-29`
 
 ### What's Changed
 
 * Fixing missing Types in Ringsted. Closing [AffaldDK #133](https://github.com/briis/affalddk/issues/133)
 * Bump `pyaffalddk` to V2.0.36
 
-## Version 2.0.35
-
-**Date**: `2024-07-29`
+## [2.0.35] - `2024-07-29`
 
 ### What's Changed
 
@@ -139,9 +114,7 @@
 * Bump `pyaffalddk` to V2.0.35
 
 
-## Version 2.0.34
-
-**Date**: `2024-07-05`
+## [2.0.34] - `2024-07-05`
 
 ### What's Changed
 
@@ -149,16 +122,7 @@
 * Fixing missing containers in Gribskov. Closing [AffaldDK #118](https://github.com/briis/affalddk/issues/118)
 * Bump `pyaffalddk` to V2.0.34
 
-
-## Version 2.0.31
-
-**Date**: `2024-06-14`
-
-### What's Changed
-
-## Version 2.0.33
-
-**Date**: `2024-06-29`
+## [2.0.33] - `2024-06-29`
 
 ### What's Changed
 
@@ -169,27 +133,21 @@
 * Fixing missing details for Lyngby-Taarbæk. Cloising [AffaldDK #105](https://github.com/briis/affalddk/issues/105)
 * Bump `pyaffalddk` to V2.0.31
 
-## Version 2.0.30
-
-**Date**: `2024-05-27`
+## [2.0.30] - `2024-05-27`
 
 ### What's Changed
 
 * Fixing missing details for Slagelse. Closing #97
 * Bump `pyaffalddk` to V2.0.30
 
-## Version 2.0.29
-
-**Date**: `2024-05-12`
+## [2.0.29] - `2024-05-12`
 
 ### What's Changed
 
 * Fixing missing details for Vejen and Randers. Closing #87
 - Bump `pyaffalddk` to V2.0.29
 
-# Version 2.0.28
-
-**Date**: `2024-05-04`
+# [2.0.28] - `2024-05-04`
 
 ### What's Changed
 
@@ -199,18 +157,14 @@
 - Fixed missing containers for Glostrup Kommune. Closing #79
 - Added two new Categories: `restaffald` and `madaffald`. These are new as separat containers.
 
-## Version 2.0.26
-
-**Date**: `2024-04-22`
+## [2.0.26] - `2024-04-22`
 
 ### What's Changed
 
 - Modified change from 2.0.25, as it caused problems for many with the category Storskrald. It will now work for all, including Gladsaxe.
 - Added more details to warning if category not found. Makes it easier to debug when people report errors.
 
-## Version 2.0.25
-
-**Date**: `2024-04-19`
+## [2.0.25] - `2024-04-19`
 
 ### What's Changed
 
@@ -218,18 +172,14 @@
 - Added missing containers for Varde kommune. Closing #75
 - Added missing storskrald for Solrød
 
-## Version 2.0.23
-
-**Date**: `2024-04-16`
+## [2.0.23] - `2024-04-16`
 
 ### What's Changed
 
 - Added `|` as separator to Next Pickup sensor, to easier identify items.
 - Added missing containers for Papir & Plast and Metal & Glas for Faxe kommune. Closing #71
 
-## Version 2.0.22
-
-**Date**: `2024-04-07`
+## [2.0.22] - `2024-04-07`
 
 ### What's Changed
 
@@ -237,51 +187,39 @@
 - Added missing container for Mariagerfjord kommune. Closing [#67](https://github.com/briis/affalddk/issues/67)
 - Exporting danish `WEEKDAYS` and the short form `WEEKDAYS_SHORT` so that it can be used in other programs
 
-## Version 2.0.21
-
-**Date**: `2024-04-05`
+## [2.0.21] - `2024-04-05`
 
 ### What's Changed
 
 - Re-added `Miljøboks` for Gentofte kommune. Closing [#64](https://github.com/briis/affalddk/issues/64)
 
-## Version 2.0.20
-
-**Date**: `2024-04-02`
+## [2.0.20] - `2024-04-02`
 
 ### What's Changed
 
 - Converted last_updated value to a UTC Datetime object
 - Added `Miljøboks` for Gentofte kommune. Closing [#64](https://github.com/briis/affalddk/issues/64)
 
-## Version 2.0.19
-
-**Date**: `2024-03-29`
+## [2.0.19] - `2024-03-29`
 
 ### What's Changed
 
 - Converted last_updated value to a Datetime string
 - Added missing categories to PickupEvents Dataclass
 
-## Version 2.0.18
-
-**Date**: `2024-03-29`
+## [2.0.18]- `2024-03-29`
 
 ### What's Changed
 
 - The API Wrapper module is now renamed to `pyaffalddk`, as the plan is to support more than RenoWeb in the future. So even though this is V2.0.18, this is basically the first version, and contains the same functionality as `pyrenoweb` V2.0.17, just with new function and procedure names.
 
-## Version 2.0.17
-
-**Date**: `2024-03-26`
+## [2.0.17] - `2024-03-26`
 
 ### What's Changed
 
 - Fixed categories for Sorø kommune
 
-## Version 2.0.16
-
-**Date**: `2024-03-26`
+## [2.0.16] - `2024-03-26`
 
 ### What's Changed
 
@@ -289,9 +227,7 @@
 - Added Lejre kommune, that was left out in the initial release.
 - Fixed categories for Solrød kommune
 
-## Version 2.0.15
-
-**Date**: `2024-03-23`
+## [2.0.15] - `2024-03-23`
 
 ### What's Changed
 
@@ -300,9 +236,7 @@
 - Fixing missing containers for Lyngby-Taarbæk
 - Fixing occasionally wrong address id being returned.
 
-## Version 2.0.14
-
-**Date**: `2024-03-22`
+## [2.0.14] - `2024-03-22`
 
 ### What's Changed
 
@@ -310,33 +244,25 @@
 - Fixing missing containers for Vordingborg Kommune
 
 
-## Version 2.0.13
-
-**Date**: `2024-03-22`
+## [2.0.13] - `2024-03-22`
 
 ### What's Changed
 
 - Fixing datetime to date conversion
 
-## Version 2.0.12
-
-**Date**: `2024-03-22`
+## [2.0.12] - `2024-03-22`
 
 ### What's Changed
 
 - see release notes for V2.0.5 of https://github.com/briis/affalddk as alle changes here are reflected there.
 
-## Version 2.0.11
-
-**Date**: `2024-03-12`
+## [2.0.11] - `2024-03-12`
 
 ### What's Changed
 
 - Fixing the Genbrug category for Kerteminde kommune
 
-## Version 2.0.10
-
-**Date**: `2024-03-10`
+## [2.0.10] - `2024-03-10`
 
 ### What's Changed
 
@@ -346,34 +272,26 @@
 - Fixing the Genbrug category for Rudersdal kommune
 - Fixing the Genbrug category for Høje-Taastrup kommune
 
-## Version 2.0.9
-
-**Date**: `2024-03-09`
+## [2.0.9] - `2024-03-09`
 
 ### What's Changed
 - `Genbrug` is used for many different types of Containers, so there is now a new function that can handle these type of containers more generic, instead of by Municipality.
 - Adding more material details to identify containers
 
 
-  ## Version 2.0.8
-
-  **Date**: `2024-03-09`
+  ## [2.0.8] - `2024-03-09`
 
   ### What's Changed
   - `Genbrug` is used for many different types of Containers, so there is now a new function that can handle these type of containers more generic, instead of by Municipality.
   - Reverting the 2.0.7 implementation of embedded images, as size was too big for HA. Will be reimplemented, once I find a way to reduce the size.
 
-  ## Version 2.0.6
-
-  **Date**: `2024-03-07`
+  ## [2.0.6] - `2024-03-07`
 
   ### What's Changed
 
   - Added Allerød to the list of Municipalities that need special handling of the `Genbrug` container.
 
-  ## Version 2.0.5
-
-  **Date**: `2024-03-07`
+  ## [2.0.5] - `2024-03-07`
 
   ### What's Changed
 
@@ -382,9 +300,7 @@
   - Fixing missing containers in Aalborg. Closing https://github.com/briis/affalddk/issues/11
   - Added Rudersdal back to the list as they do work with this Integration. Closing https://github.com/briis/affalddk/issues/8
 
-  ## Version 2.0.4
-
-  **Date**: `2024-03-02`
+  ## [2.0.4] - `2024-03-02`
 
   ### Changes
 

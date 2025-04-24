@@ -451,8 +451,7 @@ class GarbageCollection:
                         _garbage_types = split_ical_garbage_types(
                             event.summary)
                         for garbage_type in _garbage_types:
-                            # _start_date = event.start_datetime.date()
-                            _pickup_date = event.end_datetime.date()
+                            _pickup_date = event.start_datetime.date()
                             # _LOGGER.debug(
                             #     "Start Date: %s - End Date: %s", _start_date, _pickup_date)
                             if _pickup_date < dt.date.today():

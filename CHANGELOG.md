@@ -1,13 +1,15 @@
 # Changelog for pyaffalddk
 
+## [2.2.1] - `2025-04-24`
+
+### Added
+* Support for **Københavns Kommune** added. Thank you to @TermeHansen for implementing this
+* Fixing wrong pickup date for KK, due to conversion to UTC
+
 ## [2.2.0] - `2025-04-24`
 
 ### Added
 * Support for **Københavns Kommune** added. Thank you to @TermeHansen for implementing this
-
-
-<details>
-  <summary><b>Previous Changes</b></summary>
 
 ## [2.1.7] - `2025-03-19`
 

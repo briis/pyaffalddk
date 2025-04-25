@@ -3,12 +3,12 @@ name: Python unit-testing and ruff linting
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  build-linux:
+  test-linux:
     runs-on: ubuntu-latest
 
     steps:

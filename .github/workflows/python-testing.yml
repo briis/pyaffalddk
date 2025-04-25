@@ -17,11 +17,9 @@ jobs:
     - name: provision-with-micromamba
       uses: mamba-org/setup-micromamba@v1
       with:
-        environment-file: false
         environment-name: testenv
-        extra-specs: |
+        create-args: >-
           python=3.12
-        channels: conda-forge
         cache-environment: true
 
     - name: Install with pip
@@ -38,4 +36,7 @@ jobs:
     - name: Test unittests
       shell: bash -l {0}
       run: |
+        export TZ=UTC
+        pytest tests --disable-warnings
+        export TZ=Europe/Copenhagen
         pytest tests --disable-warnings

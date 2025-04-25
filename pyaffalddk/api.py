@@ -9,7 +9,6 @@ import json
 import logging
 import re
 from urllib.parse import urlparse, parse_qsl
-
 from typing import Any
 
 import aiohttp
@@ -27,7 +26,9 @@ from .const import (
 )
 from .data import PickupEvents, PickupType, AffaldDKAddressInfo
 
+
 _LOGGER = logging.getLogger(__name__)
+utc_offset = dt.datetime.now().astimezone().utcoffset()
 
 
 class AffaldDKNotSupportedError(Exception):
@@ -52,14 +53,16 @@ class AffaldDKAPIBase:
     def __init__(self, session=None) -> None:
         """Initialize the class."""
         self.session = session
-
-    async def async_api_request(self, url: str, body=None, as_json=True) -> dict[str, Any]:
-        """Make an API request."""
-
-        is_new_session = False
         if self.session is None:
             self.session = aiohttp.ClientSession()
-            is_new_session = True
+
+    async def async_api_request(self, url: str, body=None, as_json=True, new_session=False) -> dict[str, Any]:
+        """Make an API request."""
+
+        if new_session:
+            session = aiohttp.ClientSession()
+        else:
+            session = self.session
 
         method = 'GET'
         headers = None
@@ -68,10 +71,10 @@ class AffaldDKAPIBase:
             method = 'POST'
             headers = {"Content-Type": "application/json"}
 
-        async with self.session.request(method, url, headers=headers, json=body) as response:
+        async with session.request(method, url, headers=headers, json=body) as response:
             if response.status != 200:
-                if is_new_session:
-                    await self.session.close()
+                if new_session:
+                    await session.close()
 
                 if response.status == 400:
                     raise AffaldDKNotSupportedError(
@@ -92,8 +95,8 @@ class AffaldDKAPIBase:
                 data = await response.json()
             else:
                 data = await response.text()
-            if is_new_session:
-                await self.session.close()
+            if new_session:
+                await session.close()
 
             return data
 
@@ -177,19 +180,6 @@ class OdenseAffaldAPI(AffaldDKAPIBase):
         """Get data from iCal API."""
         url = f"{self.url_data}{address_id}"
         data = await self.async_api_request(url, as_json=False)
-        data = data.replace("END:VTIMEZONE", """BEGIN:STANDARD
-DTSTART:19701025T030000
-RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
-TZOFFSETFROM:+0200
-TZOFFSETTO:+0100
-END:STANDARD
-BEGIN:DAYLIGHT
-DTSTART:19700329T020000
-RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3
-TZOFFSETFROM:+0100
-TZOFFSETTO:+0200
-END:DAYLIGHT
-END:VTIMEZONE""")
         return data
 
     async def get_address_id(self, zipcode, street, house_number):
@@ -310,8 +300,6 @@ class GarbageCollection:
                 self._address_id = await self._api.get_address_id(zipcode, street, house_number)
             elif self._api_data == "4":
                 self._address_id = await self._api.get_address_id(zipcode, street, house_number)
-                # self._api.street = f"{street} {house_number}"
-                # self._address_id = await self._api.customerid
             else:
                 self._address_id = await self._api.get_address_id(self._municipality_url, zipcode, street, house_number)
 
@@ -352,7 +340,7 @@ class GarbageCollection:
                                 continue
 
                             key = get_garbage_type_from_material(
-                                garbage_type, self._municipality, self._address_id
+                                garbage_type, self._municipality, address_id
                             )
                             _pickup_event = {
                                 key: PickupType(
@@ -394,8 +382,7 @@ class GarbageCollection:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
             elif self._api_data == "3":
-                self._address_id = address_id
-                url = f"{self._api.url_data}{self._address_id}"
+                url = f"{self._api.url_data}{address_id}"
                 data = await self._api.async_api_request(url)
                 garbage_data = data[0]["plannedLoads"]
                 for row in garbage_data:
@@ -404,7 +391,7 @@ class GarbageCollection:
                         continue
                     for item in row["fractions"]:
                         key = get_garbage_type_from_material(
-                            item, self._municipality, self._address_id
+                            item, self._municipality, address_id
                         )
                         _pickup_event = {
                             key: PickupType(
@@ -451,7 +438,7 @@ class GarbageCollection:
                         _garbage_types = split_ical_garbage_types(
                             event.summary)
                         for garbage_type in _garbage_types:
-                            _pickup_date = event.start_datetime.date()
+                            _pickup_date = (event.start_datetime + utc_offset).date()
                             # _LOGGER.debug(
                             #     "Start Date: %s - End Date: %s", _start_date, _pickup_date)
                             if _pickup_date < dt.date.today():
@@ -501,7 +488,6 @@ class GarbageCollection:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
             else:
-                self._address_id = address_id
                 url = f"https://{self._municipality_url}{self._api.url_data}"
                 # _LOGGER.debug("URL: %s", url)
                 body = {"adrid": f"{address_id}", "common": "false"}
@@ -551,7 +537,7 @@ class GarbageCollection:
                         and self._municipality.lower() == "gladsaxe"
                     ):
                         key = get_garbage_type_from_material(
-                            row["materielnavn"], self._municipality, self._address_id
+                            row["materielnavn"], self._municipality, address_id
                         )
                     elif (
                         any(
@@ -563,7 +549,7 @@ class GarbageCollection:
                         and self._municipality.lower() == "gribskov"
                     ):
                         key = get_garbage_type_from_material(
-                            row["materielnavn"], self._municipality, self._address_id
+                            row["materielnavn"], self._municipality, address_id
                         )
 
                     elif any(
@@ -576,7 +562,7 @@ class GarbageCollection:
                         ]
                     ):
                         key = get_garbage_type_from_material(
-                            row["materielnavn"], self._municipality, self._address_id
+                            row["materielnavn"], self._municipality, address_id
                         )
                     else:
                         key = get_garbage_type(row["ordningnavn"])
@@ -586,7 +572,7 @@ class GarbageCollection:
                             "Garbage type [%s] is not defined in the system. Please notify the developer. Municipality: %s, Address ID: %s",
                             key,
                             self._municipality,
-                            self._address_id,
+                            address_id,
                         )
                         continue
 

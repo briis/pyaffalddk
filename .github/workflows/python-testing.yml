@@ -1,0 +1,41 @@
+name: Python unit-testing and ruff linting
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: provision-with-micromamba
+      uses: mamba-org/setup-micromamba@v1
+      with:
+        environment-file: false
+        environment-name: testenv
+        extra-specs: |
+          python=3.12
+        channels: conda-forge
+        cache-environment: true
+
+    - name: Install with pip
+      shell: bash -l {0}
+      run: |
+        pip install -r requirements.txt
+
+    - name: Lint with Ruff
+      shell: bash -l {0}
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        ruff check
+
+    - name: Test unittests
+      shell: bash -l {0}
+      run: |
+        pytest tests --disable-warnings

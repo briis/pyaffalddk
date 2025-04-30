@@ -1,5 +1,10 @@
 # Changelog for pyaffalddk
 
+## [2.2.2] - `2025-04-30`
+
+### Added
+* Fixing wrong pickup date for KK - again, due to conversion to UTC
+
 ## [2.2.1] - `2025-04-24` [YANKED]
 
 ### Added

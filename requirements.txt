@@ -11,6 +11,7 @@ pytest
 pytest-asyncio
 pytest-cov
 python-dotenv
+freezegun
 requests
 requests-toolbelt
 ruff

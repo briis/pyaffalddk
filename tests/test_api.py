@@ -1,4 +1,5 @@
 import pytest
+from freezegun import freeze_time
 from aiohttp import ClientSession
 from pyaffalddk import GarbageCollection
 from pathlib import Path
@@ -9,13 +10,18 @@ from ical.calendar_stream import IcsCalendarStream
 
 
 UPDATE = False
+
+
 datadir = Path(__file__).parent/'data'
 kbh_ics_data = (datadir/'kbh_ics.data').read_text()
 odense_ics_data = (datadir/'odense_ics.data').read_text()
 aalborg_data = json.loads((datadir/'Aalborg.data').read_text())
 aarhus_data = json.loads((datadir/'Aarhus.data').read_text())
-utc_offset = datetime.now().astimezone().utcoffset()
+FREEZE_TIME = "2025-04-25"
 compare_file = (datadir/'compare_data.p')
+
+
+utc_offset = datetime.now().astimezone().utcoffset()
 
 
 def update_and_compare(name, actual_data, update=False):
@@ -27,6 +33,7 @@ def update_and_compare(name, actual_data, update=False):
 
 
 @pytest.mark.asyncio
+@freeze_time(FREEZE_TIME)
 async def test_Aalborg(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
@@ -46,6 +53,7 @@ async def test_Aalborg(capsys, monkeypatch):
 
 
 @pytest.mark.asyncio
+@freeze_time(FREEZE_TIME)
 async def test_Odense(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
@@ -65,6 +73,7 @@ async def test_Odense(capsys, monkeypatch):
 
 
 @pytest.mark.asyncio
+@freeze_time(FREEZE_TIME)
 async def test_Aarhus(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
@@ -84,6 +93,7 @@ async def test_Aarhus(capsys, monkeypatch):
 
 
 @pytest.mark.asyncio
+@freeze_time(FREEZE_TIME)
 async def test_Kbh(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:

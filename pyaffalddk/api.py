@@ -70,7 +70,6 @@ class AffaldDKAPIBase:
         if body:
             method = 'POST'
             headers = {"Content-Type": "application/json"}
-
         async with session.request(method, url, headers=headers, json=body) as response:
             if response.status != 200:
                 if new_session:

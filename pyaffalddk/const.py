@@ -1,5 +1,8 @@
 """Constants for the pyaffalddk integration."""
 from __future__ import annotations
+from pathlib import Path
+
+basedir = Path(__file__).parent
 
 NON_SUPPORTED_ITEMS = [
     "Asbest",
@@ -11,10 +14,12 @@ NON_SUPPORTED_ITEMS = [
     "Skal tilmeldes",
     "Bestil afhentning",
     "Farligt affald (skal bestilles)",
+    "Farligt affald - tilmeld",
     "Storskrald (skal bestilles)",
     "Haveaffald (skal bestilles)",
     "Beholderudbringning",
 ]
+
 
 SUPPORTED_ITEMS = {
     "restaffaldmadaffald": [
@@ -40,6 +45,7 @@ SUPPORTED_ITEMS = {
     "madaffald": [
         "Madaffald",
         "Bioposer",
+        "Mad",
     ],
     "batterier": ["Batterier"],
     "dagrenovation": ["Dagrenovation"],
@@ -123,6 +129,7 @@ SUPPORTED_ITEMS = {
     "restaffald": [
         "Restaffald // Batterier og Småt Elektronik",
         "Industri Restaffald",
+        "Rest",
     ],
     "storskrald": [
         "Storskrald",
@@ -194,9 +201,11 @@ SUPPORTED_ITEMS = {
     ],
 }
 
+
 NON_MATERIAL_LIST = [
     "Pap bundtet, havebolig (1 stk.)",
 ]
+
 
 MATERIAL_LIST = {
     "restaffaldmadaffald": [
@@ -476,8 +485,9 @@ MUNICIPALITIES_LIST = {
     "Aabenraa": ["aabenraa", "1"],
     "Aalborg": ["aalborg", "1"],
     "Aarhus": ["aarhus", "3"],
-    "Albertslund": ["albertslund", "1"],
+    "Albertslund": ["albertslund", "5"],
     "Allerød": ["allerod", "1"],
+    "Ballerup": ["ballerup", "5"],
     "Billund": ["billund", "1"],
     "Bornholm": ["bofa", "1"],
     "Brøndby": ["brondby", "1"],
@@ -485,57 +495,63 @@ MUNICIPALITIES_LIST = {
     "Dragør": ["dragoer", "1"],
     "Egedal": ["egedal", "1"],
     "Esbjerg": ["esbjerg", "1"],
-    "Faxe": ["faxe", "1"],
+    "Faxe": ["faxe", "5"],
     "Fredensborg": ["fredensborg", "1"],
     "Frederiksberg": ["frederiksberg", "1"],
-    "Frederikssund": ["frederikssund", "1"],
+    "Frederikssund": ["frederikssund", "5"],
     "Gentofte": ["gentofte", "1"],
-    "Gladsaxe": ["gladsaxe", "1"],
+    "Gladsaxe": ["gladsaxe", "5"],
     "Glostrup": ["glostrup", "1"],
-    "Greve": ["greve", "1"],
-    "Gribskov": ["gribskov", "1"],
-    "Halsnæs": ["halsnaes", "1"],
+    "Greve": ["greve", "5"],
+    "Gribskov": ["gribskov", "5"],
+    "Guldborgsund": ["guldborgsund", "5"],
+    "Halsnæs": ["halsnaes", "5"],
     "Hedensted": ["hedensted", "1"],
     "Helsingør": ["helsingor", "1"],
     "Herlev": ["herlev", "1"],
-    "Hillerød": ["hillerod", "1"],
+    "Hillerød": ["hillerod", "5"],
     "Hjørring": ["hjoerring", "1"],
-    "Horsens": ["horsens", "1"],
-    "Hvidovre": ["hvidovre", "1"],
-    "Høje-Taastrup": ["htk", "1"],
+    "Horsens": ["horsens", "5"],
+    "Hvidovre": ["hvidovre", "5"],
+    "Høje-Taastrup": ["htk", "5"],
     "Hørsholm": ["hoersholm", "1"],
     "Jammerbugt": ["jammerbugt", "1"],
+    "Kalundborg": ["kalundborg", "5"],
     "Kerteminde": ["kerteminde", "1"],
     "København": ["kk", "4"],
-    "Køge": ["koege", "1"],
+    "Køge": ["koege", "5"],
     "Lejre": ["lejre", "1"],
+    "Lolland": ["lolland", "5"],
     "Lyngby-Taarbæk": ["ltf", "1"],
     "Mariagerfjord": ["mariagerfjord", "1"],
-    "Næstved": ["naestved", "1"],
+    "Næstved": ["naestved", "5"],
     "Odense": ["odense", "2"],
-    "Odsherred": ["odsherred", "1"],
+    "Odsherred": ["odsherred", "5"],
     "Randers": ["randers", "1"],
-    "Ringkøbing-Skjern": ["rksk", "1"],
+    "Ringkøbing-Skjern": ["rksk", "5"],
     "Ringsted": ["ringsted", "1"],
-    "Roskilde": ["roskilde", "1"],
+    "Roskilde": ["roskilde", "5"],
     "Rudersdal": ["rudersdal", "1"],
     "Rødovre": ["rk", "1"],
     "Samsø": ["samsoe", "1"],
-    "Slagelse": ["slagelse", "1"],
+    "Slagelse": ["slagelse", "5"],
     "Solrød": ["solrod", "1"],
-    "Stevns": ["stevns", "1"],
+    "Stevns": ["stevns", "5"],
     "Svendborg": ["svendborg", "1"],
     "Sønderborg": ["sonderborg", "1"],
-    "Tårnby": ["taarnby", "1"],
+    "Tårnby": ["taarnby", "5"],
     "Varde": ["varde", "1"],
-    "Vejen": ["vejen", "1"],
+    "Vejen": ["vejen", "5"],
     "Vordingborg": ["vordingborg", "1"],
 }
 
 MUNICIPALITIES_ARRAY = list(MUNICIPALITIES_LIST.keys())
 
-ODD_EVEN_ARRAY = ["lige", "ulige"]
+lines = (basedir / 'municipaities.txt').read_text().splitlines()
+MUNICIPALITIES_IDS = {line.split(':')[1].strip().lower(): int(line.split(':')[0]) for line in lines}
 
+
+ODD_EVEN_ARRAY = ["lige", "ulige"]
 WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag",
             "Torsdag", "Fredag", "Lørdag", "Søndag"]
 WEEKDAYS_SHORT = ["Man", "Tir", "Ons", "Tor", "Fre", "Lør", "Søn"]

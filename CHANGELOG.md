@@ -1,5 +1,10 @@
 # Changelog for pyaffalddk
 
+## [2.3.0] - `2025-05-04`
+
+### Added
+* Adding interface for Perfect Waste. Thank you @ttopholm for the help.
+
 ## [2.2.2] - `2025-04-30`
 
 ### Added

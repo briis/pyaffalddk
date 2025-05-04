@@ -1,8 +1,6 @@
 """Constants for the pyaffalddk integration."""
 from __future__ import annotations
-from pathlib import Path
 
-basedir = Path(__file__).parent
 
 NON_SUPPORTED_ITEMS = [
     "Asbest",
@@ -546,9 +544,6 @@ MUNICIPALITIES_LIST = {
 }
 
 MUNICIPALITIES_ARRAY = list(MUNICIPALITIES_LIST.keys())
-
-lines = (basedir / 'municipaities.txt').read_text().splitlines()
-MUNICIPALITIES_IDS = {line.split(':')[1].strip().lower(): int(line.split(':')[0]) for line in lines}
 
 
 ODD_EVEN_ARRAY = ["lige", "ulige"]

@@ -17,7 +17,6 @@ from .const import (
     ICON_LIST,
     MATERIAL_LIST,
     MUNICIPALITIES_LIST,
-    MUNICIPALITIES_IDS,
     NAME_LIST,
     NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
@@ -25,6 +24,7 @@ from .const import (
     SUPPORTED_ITEMS,
     WEEKDAYS,
 )
+from .municipalities import MUNICIPALITIES_IDS
 from .data import PickupEvents, PickupType, AffaldDKAddressInfo
 
 

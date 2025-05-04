@@ -17,6 +17,7 @@ from .const import (
     ICON_LIST,
     MATERIAL_LIST,
     MUNICIPALITIES_LIST,
+    MUNICIPALITIES_IDS,
     NAME_LIST,
     NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
@@ -146,6 +147,25 @@ class NemAffaldAPI(AffaldDKAPIBase):
         return ics_data
 
 
+class PerfectWasteAPI(AffaldDKAPIBase):
+    # Perfect Waste API
+    def __init__(self, session=None):
+        super().__init__(session)
+        self.url_data = "https://europe-west3-perfect-waste.cloudfunctions.net/getAddressCollections"
+        self.url_search = "https://europe-west3-perfect-waste.cloudfunctions.net/searchExternalAddresses"
+
+    async def get_address_id(self, municipality, zipcode, street, house_number):
+        body = {'data': {
+            "query": f"{street} {house_number}, {zipcode}",
+            "municipality": municipality,
+            "page": 1, "onlyManual": False
+            }}
+        data = await self.async_api_request(self.url_search, body)
+        if len(data['result']) == 1:
+            return data['result'][0]['addressID']
+        return None
+
+
 class AarhusAffaldAPI(AffaldDKAPIBase):
     # Aarhus Forsyning API
     def __init__(self, session=None):
@@ -265,13 +285,23 @@ class GarbageCollection:
                 elif self._api_data == '4':
                     self._api = NemAffaldAPI(value[0], session=session)
                     self._municipality_url = self._api.base_url
+                elif self._api_data == '5':
+                    self._api = PerfectWasteAPI(session=session)
+                    self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
         if session:
             self._api.session = session
 
     async def async_init(self) -> None:
         """Initialize the connection."""
         if self._municipality is not None:
-            if self._api_data == "2":
+            if self._api_data == "1":
+                url = f"https://{self._municipality_url}{self._api.url_search}"
+                body = {
+                    "searchterm": f"{self._street} {self._house_number}",
+                    "addresswithmateriel": 1,
+                }
+                await self._api.async_api_request(url, body)
+            elif self._api_data == "2":
                 url = f"{self._api.url_search}{self._street}"
                 await self._api.async_api_request(url)
             elif self._api_data == "3":
@@ -279,13 +309,6 @@ class GarbageCollection:
                 await self._api.async_api_request(url)
             elif self._api_data == "4":
                 await self._api.token
-            else:
-                url = f"https://{self._municipality_url}{self._api.url_search}"
-                body = {
-                    "searchterm": f"{self._street} {self._house_number}",
-                    "addresswithmateriel": 1,
-                }
-                await self._api.async_api_request(url, body)
 
     async def get_address_id(
         self, zipcode: str, street: str, house_number: str
@@ -293,14 +316,10 @@ class GarbageCollection:
         """Get the address id."""
 
         if self._municipality_url is not None:
-            if self._api_data == "2":
-                self._address_id = await self._api.get_address_id(zipcode, street, house_number)
-            elif self._api_data == "3":
-                self._address_id = await self._api.get_address_id(zipcode, street, house_number)
-            elif self._api_data == "4":
-                self._address_id = await self._api.get_address_id(zipcode, street, house_number)
-            else:
+            if self._api_data in ['1', '5']:
                 self._address_id = await self._api.get_address_id(self._municipality_url, zipcode, street, house_number)
+            else:
+                self._address_id = await self._api.get_address_id(zipcode, street, house_number)
 
             if self._address_id is None:
                 raise AffaldDKNotValidAddressError("Address not found")
@@ -326,7 +345,132 @@ class GarbageCollection:
             _next_name = []
             _next_description = []
 
-            if self._api_data == "2":
+            if self._api_data == "1":
+                url = f"https://{self._municipality_url}{self._api.url_data}"
+                # _LOGGER.debug("URL: %s", url)
+                body = {"adrid": f"{address_id}", "common": "false"}
+                # _LOGGER.debug("Body: %s", body)
+                data = await self._api.async_api_request(url, body)
+                garbage_data = json.loads(data["d"])["list"]
+                # _LOGGER.debug("Garbage Data: %s", garbage_data)
+
+                for row in garbage_data:
+                    if row["ordningnavn"] in NON_SUPPORTED_ITEMS:
+                        continue
+
+                    _pickup_date = None
+                    if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
+                        _pickup_date = to_date(row["toemningsdato"])
+                    elif str(row["toemningsdage"]).capitalize() in WEEKDAYS:
+                        _pickup_date = get_next_weekday(row["toemningsdage"])
+                        _LOGGER.debug("FOUND IN TOEMNINGSDAGE")
+                    elif find_weekday_in_string(row["toemningsdage"]) != "None":
+                        if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
+                            _weekday = find_weekday_in_string(
+                                row["toemningsdage"])
+                            _pickup_date = get_next_weekday(_weekday)
+                        elif find_odd_even_in_string(row["toemningsdage"]) != "None":
+                            _weekday = find_weekday_in_string(
+                                row["toemningsdage"])
+                            _odd_even = find_odd_even_in_string(
+                                row["toemningsdage"])
+                            _LOGGER.debug("WEEK: %s - %s", _odd_even, _weekday)
+                            _pickup_date = get_next_weekday_odd_even(
+                                _weekday, _odd_even)
+                        else:
+                            _pickup_date = get_next_year_end()
+                    else:
+                        continue
+
+                    if (
+                        any(
+                            group in row["ordningnavn"].lower()
+                            for group in [
+                                "genbrug",
+                                "storskrald",
+                                "papir og glas/dåser",
+                                "miljøkasse/tekstiler",
+                            ]
+                        )
+                        and self._municipality.lower() == "gladsaxe"
+                    ):
+                        key = get_garbage_type_from_material(
+                            row["materielnavn"], self._municipality, address_id
+                        )
+                    elif (
+                        any(
+                            group in row["ordningnavn"].lower()
+                            for group in [
+                                "dagrenovation",
+                            ]
+                        )
+                        and self._municipality.lower() == "gribskov"
+                    ):
+                        key = get_garbage_type_from_material(
+                            row["materielnavn"], self._municipality, address_id
+                        )
+
+                    elif any(
+                        group in row["ordningnavn"].lower()
+                        for group in [
+                            "genbrug",
+                            "papir og glas/dåser",
+                            "miljøkasse/tekstiler",
+                            "standpladser",
+                        ]
+                    ):
+                        key = get_garbage_type_from_material(
+                            row["materielnavn"], self._municipality, address_id
+                        )
+                    else:
+                        key = get_garbage_type(row["ordningnavn"])
+
+                    if key == row["ordningnavn"] and key != "Bestillerordning":
+                        _LOGGER.warning(
+                            "Garbage type [%s] is not defined in the system. Please notify the developer. Municipality: %s, Address ID: %s",
+                            key,
+                            self._municipality,
+                            address_id,
+                        )
+                        continue
+
+                    _pickup_event = {
+                        key: PickupType(
+                            date=_pickup_date,
+                            group=row["ordningnavn"],
+                            friendly_name=NAME_LIST.get(key),
+                            icon=ICON_LIST.get(key),
+                            entity_picture=f"{key}.svg",
+                            description=row["materielnavn"],
+                        )
+                    }
+                    pickup_events.update(_pickup_event)
+
+                    if _pickup_date is not None:
+                        if _pickup_date < dt.date.today():
+                            continue
+                        if _pickup_date < _next_pickup:
+                            _next_pickup = _pickup_date
+                            _next_name = []
+                            _next_description = []
+                        if _pickup_date == _next_pickup:
+                            _next_name.append(NAME_LIST.get(key))
+                            _next_description.append(row["materielnavn"])
+
+                if _next_name:
+                    _next_pickup_event = {
+                        "next_pickup": PickupType(
+                            date=_next_pickup,
+                            group="genbrug",
+                            friendly_name=list_to_string(_next_name),
+                            icon=ICON_LIST.get("genbrug"),
+                            entity_picture="genbrug.svg",
+                            description=list_to_string(_next_description),
+                        )
+                    }
+                    pickup_events.update(_next_pickup_event)
+
+            elif self._api_data == "2":
                 data = await self._api.async_get_ical_data(address_id)
                 try:
                     ics = IcsCalendarStream.calendar_from_ics(data)
@@ -486,117 +630,50 @@ class GarbageCollection:
                 except CalendarParseError as err:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
-            else:
-                url = f"https://{self._municipality_url}{self._api.url_data}"
-                # _LOGGER.debug("URL: %s", url)
-                body = {"adrid": f"{address_id}", "common": "false"}
-                # _LOGGER.debug("Body: %s", body)
-                data = await self._api.async_api_request(url, body)
-                garbage_data = json.loads(data["d"])["list"]
-                # _LOGGER.debug("Garbage Data: %s", garbage_data)
-
+            elif self._api_data == "5":
+                body = {"data": {
+                    "addressID": address_id,
+                    "municipality": self._municipality_url
+                    }}
+                data = await self._api.async_api_request(self._api.url_data, body=body)
+                garbage_data = data["result"]
                 for row in garbage_data:
-                    if row["ordningnavn"] in NON_SUPPORTED_ITEMS:
+                    _pickup_date = iso_string_to_date(row["date"])
+                    if _pickup_date < dt.date.today():
                         continue
-
-                    _pickup_date = None
-                    if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
-                        _pickup_date = to_date(row["toemningsdato"])
-                    elif str(row["toemningsdage"]).capitalize() in WEEKDAYS:
-                        _pickup_date = get_next_weekday(row["toemningsdage"])
-                        _LOGGER.debug("FOUND IN TOEMNINGSDAGE")
-                    elif find_weekday_in_string(row["toemningsdage"]) != "None":
-                        if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
-                            _weekday = find_weekday_in_string(
-                                row["toemningsdage"])
-                            _pickup_date = get_next_weekday(_weekday)
-                        elif find_odd_even_in_string(row["toemningsdage"]) != "None":
-                            _weekday = find_weekday_in_string(
-                                row["toemningsdage"])
-                            _odd_even = find_odd_even_in_string(
-                                row["toemningsdage"])
-                            _LOGGER.debug("WEEK: %s - %s", _odd_even, _weekday)
-                            _pickup_date = get_next_weekday_odd_even(
-                                _weekday, _odd_even)
-                        else:
-                            _pickup_date = get_next_year_end()
-                    else:
-                        continue
-
-                    if (
-                        any(
-                            group in row["ordningnavn"].lower()
-                            for group in [
-                                "genbrug",
-                                "storskrald",
-                                "papir og glas/dåser",
-                                "miljøkasse/tekstiler",
-                            ]
-                        )
-                        and self._municipality.lower() == "gladsaxe"
-                    ):
-                        key = get_garbage_type_from_material(
-                            row["materielnavn"], self._municipality, address_id
-                        )
-                    elif (
-                        any(
-                            group in row["ordningnavn"].lower()
-                            for group in [
-                                "dagrenovation",
-                            ]
-                        )
-                        and self._municipality.lower() == "gribskov"
-                    ):
-                        key = get_garbage_type_from_material(
-                            row["materielnavn"], self._municipality, address_id
-                        )
-
-                    elif any(
-                        group in row["ordningnavn"].lower()
-                        for group in [
-                            "genbrug",
-                            "papir og glas/dåser",
-                            "miljøkasse/tekstiler",
-                            "standpladser",
-                        ]
-                    ):
-                        key = get_garbage_type_from_material(
-                            row["materielnavn"], self._municipality, address_id
-                        )
-                    else:
-                        key = get_garbage_type(row["ordningnavn"])
-
-                    if key == row["ordningnavn"] and key != "Bestillerordning":
-                        _LOGGER.warning(
-                            "Garbage type [%s] is not defined in the system. Please notify the developer. Municipality: %s, Address ID: %s",
-                            key,
-                            self._municipality,
-                            address_id,
-                        )
-                        continue
-
-                    _pickup_event = {
-                        key: PickupType(
-                            date=_pickup_date,
-                            group=row["ordningnavn"],
-                            friendly_name=NAME_LIST.get(key),
-                            icon=ICON_LIST.get(key),
-                            entity_picture=f"{key}.svg",
-                            description=row["materielnavn"],
-                        )
-                    }
-                    pickup_events.update(_pickup_event)
-
-                    if _pickup_date is not None:
-                        if _pickup_date < dt.date.today():
+                    for item in row["fractions"]:
+                        fraction_name = item['fractionName']
+                        key = get_garbage_type(fraction_name)
+                        if fraction_name in NON_SUPPORTED_ITEMS:
                             continue
-                        if _pickup_date < _next_pickup:
-                            _next_pickup = _pickup_date
-                            _next_name = []
-                            _next_description = []
-                        if _pickup_date == _next_pickup:
-                            _next_name.append(NAME_LIST.get(key))
-                            _next_description.append(row["materielnavn"])
+                        if key == fraction_name:
+                            _LOGGER.warning(
+                                "%s is not defined in the system. Please notify the developer.", fraction_name)
+                            continue
+
+                        _pickup_event = {
+                            key: PickupType(
+                                date=_pickup_date,
+                                group=key,
+                                friendly_name=NAME_LIST.get(key),
+                                icon=ICON_LIST.get(key),
+                                entity_picture=f"{key}.svg",
+                                description=fraction_name,
+                            )
+                        }
+                        if not key_exists_in_pickup_events(pickup_events, key):
+                            pickup_events.update(_pickup_event)
+
+                        if _pickup_date is not None:
+                            if _pickup_date < dt.date.today():
+                                continue
+                            if _pickup_date < _next_pickup:
+                                _next_pickup = _pickup_date
+                                _next_name = []
+                                _next_description = []
+                            if _pickup_date == _next_pickup:
+                                _next_name.append(NAME_LIST.get(key))
+                                _next_description.append(fraction_name)
 
                 if _next_name:
                     _next_pickup_event = {
@@ -610,6 +687,7 @@ class GarbageCollection:
                         )
                     }
                     pickup_events.update(_next_pickup_event)
+
             return pickup_events
 
 

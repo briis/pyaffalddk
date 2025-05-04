@@ -17,6 +17,7 @@ kbh_ics_data = (datadir/'kbh_ics.data').read_text()
 odense_ics_data = (datadir/'odense_ics.data').read_text()
 aalborg_data = json.loads((datadir/'Aalborg.data').read_text())
 aarhus_data = json.loads((datadir/'Aarhus.data').read_text())
+koege_data = json.loads((datadir/'Koege.data').read_text())
 FREEZE_TIME = "2025-04-25"
 compare_file = (datadir/'compare_data.p')
 
@@ -30,6 +31,26 @@ def update_and_compare(name, actual_data, update=False):
         compare_data[name] = actual_data
         pickle.dump(compare_data, compare_file.open('wb'))
     assert actual_data == compare_data[name]
+
+
+@pytest.mark.asyncio
+@freeze_time("2025-05-04")
+async def test_Koege(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Køge', session=session)
+
+            address = await gc.get_address_id('4600', 'Torvet', '1')
+            add = {'address_id': '27768', 'kommunenavn': 'Køge', 'vejnavn': 'Torvet', 'husnr': '1'}
+            # print(address.__dict__)
+            assert address.__dict__ == add
+
+            async def get_data(*args, **kwargs):
+                return koege_data
+            monkeypatch.setattr(gc._api, "async_api_request", get_data)
+
+            pickups = await gc.get_pickup_data(address.address_id)
+            update_and_compare('Koege', pickups, False)
 
 
 @pytest.mark.asyncio

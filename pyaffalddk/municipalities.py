@@ -1,4 +1,4 @@
-0101: København
+data = '''0101: København
 0147: Frederiksberg
 0151: Ballerup
 0153: Brøndby
@@ -96,4 +96,6 @@
 0846: Mariagerfjord
 0849: Jammerbugt
 0851: Aalborg
-0860: Hjørring
+0860: Hjørring'''
+
+MUNICIPALITIES_IDS = {line.split(':')[1].strip().lower(): int(line.split(':')[0]) for line in data.splitlines()}

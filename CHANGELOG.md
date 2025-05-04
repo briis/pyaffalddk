@@ -1,5 +1,10 @@
 # Changelog for pyaffalddk
 
+## [2.3.1] - `2025-05-04`
+
+### Added
+* Small change to get municipality ids in the pip package
+
 ## [2.3.0] - `2025-05-04`
 
 ### Added

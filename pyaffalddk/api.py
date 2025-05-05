@@ -29,7 +29,6 @@ from .data import PickupEvents, PickupType, AffaldDKAddressInfo
 
 
 _LOGGER = logging.getLogger(__name__)
-utc_offset = dt.datetime.now().astimezone().utcoffset()
 
 
 class AffaldDKNotSupportedError(Exception):
@@ -57,7 +56,13 @@ class AffaldDKAPIBase:
         if self.session is None:
             self.session = aiohttp.ClientSession()
 
-    async def async_api_request(self, url: str, body=None, as_json=True, new_session=False) -> dict[str, Any]:
+    async def async_get_request(self, url, headers=None, para=None, as_json=True, new_session=False):
+        return await self.async_api_request('GET', url, headers, para, as_json, new_session)
+
+    async def async_post_request(self, url, headers={"Content-Type": "application/json"}, para=None, as_json=True, new_session=False):
+        return await self.async_api_request('POST', url, headers, para, as_json, new_session)
+
+    async def async_api_request(self, method, url, headers, para=None, as_json=True, new_session=False) -> dict[str, Any]:
         """Make an API request."""
 
         if new_session:
@@ -65,13 +70,20 @@ class AffaldDKAPIBase:
         else:
             session = self.session
 
-        method = 'GET'
-        headers = None
         data = None
-        if body:
-            method = 'POST'
-            headers = {"Content-Type": "application/json"}
-        async with session.request(method, url, headers=headers, json=body) as response:
+        # method = 'GET'
+        # headers = None
+        # if body:
+        #     method = 'POST'
+        #     headers = {"Content-Type": "application/json"}
+        if method == 'POST':
+            json_input = para
+            data_input = None
+        else:
+            json_input = None
+            data_input = para
+
+        async with session.request(method, url, headers=headers, json=json_input, data=data_input) as response:
             if response.status != 200:
                 if new_session:
                     await session.close()
@@ -160,10 +172,64 @@ class PerfectWasteAPI(AffaldDKAPIBase):
             "municipality": municipality,
             "page": 1, "onlyManual": False
             }}
-        data = await self.async_api_request(self.url_search, body)
+        data = await self.async_post_request(self.url_search, para=body)
         if len(data['result']) == 1:
             return data['result'][0]['addressID']
         return None
+
+
+class RenowebghAPI(AffaldDKAPIBase):
+    # Renoweb servicegh API
+    def __init__(self, municipality_id, session=None):
+        super().__init__(session)
+        self.url_data = "https://servicesgh.renoweb.dk/v1_13/"
+        self.apikey = '479D40F4-B3E1-4038-9130-76453188C74C'
+        self.headers = {'Accept-Encoding': 'gzip'}
+        self.municipality_id = municipality_id
+        self.info = {}
+
+    async def get_road(self, zipcode, street):
+        url = self.url_data + 'GetJSONRoad.aspx'
+        data = {
+            'apikey': self.apikey, 'municipalitycode': self.municipality_id,
+            'roadname': street
+        }
+        js = await self.async_get_request(url, para=data, headers=self.headers)
+        for item in js['list']:
+            if str(zipcode) in item['name']:
+                return item['id']
+        return None
+
+    async def get_address(self, road_id, house_number):
+        url = self.url_data + 'GetJSONAdress.aspx'
+        data = {
+            'apikey': self.apikey, 'municipalitycode': self.municipality_id,
+            'roadid': road_id, 'streetBuildingIdentifier': house_number,
+            }
+        js = await self.async_get_request(url, para=data, headers=self.headers)
+        for item in js['list']:
+            if str(house_number) == str(item['streetBuildingIdentifier']):
+                return item
+        return None
+
+    async def get_address_id(self, zipcode, street, house_number):
+        road_id = await self.get_road(zipcode, street)
+        if road_id:
+            self.info = await self.get_address(road_id, house_number)
+            if self.info:
+                return self.info['id']
+        return None
+
+    async def get_garbage_data(self, address_id, fullinfo=0, shared=0):
+        url = self.url_data + 'GetJSONContainerList.aspx'
+        data = {
+            'apikey': self.apikey, 'municipalitycode': self.municipality_id,
+            'adressId': address_id, 'fullinfo': fullinfo, 'supportsSharedEquipment': shared,
+            }
+        js = await self.async_get_request(url, para=data, headers=self.headers)
+        if js:
+            return js['list']
+        return []
 
 
 class AarhusAffaldAPI(AffaldDKAPIBase):
@@ -176,7 +242,7 @@ class AarhusAffaldAPI(AffaldDKAPIBase):
     async def get_address_id(self, zipcode, street, house_number):
         url = f"{self.url_search}{street.capitalize()}*"
         _LOGGER.debug("URL: %s", url)
-        data: dict[str, Any] = await self.async_api_request(url)
+        data: dict[str, Any] = await self.async_get_request(url)
         _result_count = len(data)
         if _result_count > 1:
             for row in data:
@@ -198,12 +264,12 @@ class OdenseAffaldAPI(AffaldDKAPIBase):
     async def async_get_ical_data(self, address_id) -> dict[str, Any]:
         """Get data from iCal API."""
         url = f"{self.url_data}{address_id}"
-        data = await self.async_api_request(url, as_json=False)
+        data = await self.async_get_request(url, as_json=False)
         return data
 
     async def get_address_id(self, zipcode, street, house_number):
         url = f"{self.url_search}{street}"
-        data = await self.async_api_request(url)
+        data = await self.async_get_request(url)
         for row in data:
             if (
                 zipcode in row["PostCode"]
@@ -229,7 +295,7 @@ class AffaldDKAPI(AffaldDKAPIBase):
             "addresswithmateriel": 7,
         }
         # _LOGGER.debug("Municipality URL: %s %s", url, body)
-        data = await self.async_api_request(url, body)
+        data = await self.async_post_request(url, para=body)
         result = json.loads(data["d"])
         # _LOGGER.debug("Address Data: %s", result)
         if "list" not in result:
@@ -270,6 +336,8 @@ class GarbageCollection:
         self._data = None
         self._municipality_url = None
         self._address_id = None
+        self.utc_offset = dt.datetime.now().astimezone().utcoffset()
+
         for key, value in MUNICIPALITIES_LIST.items():
             if key.lower() == self._municipality.lower():
                 self._api_data = value[1]
@@ -288,6 +356,9 @@ class GarbageCollection:
                 elif self._api_data == '5':
                     self._api = PerfectWasteAPI(session=session)
                     self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
+                elif self._api_data == '6':
+                    self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
+                    self._api = RenowebghAPI(self._municipality_url, session=session)
         if session:
             self._api.session = session
 
@@ -300,13 +371,13 @@ class GarbageCollection:
                     "searchterm": f"{self._street} {self._house_number}",
                     "addresswithmateriel": 1,
                 }
-                await self._api.async_api_request(url, body)
+                await self._api.async_post_request(url, para=body)
             elif self._api_data == "2":
                 url = f"{self._api.url_search}{self._street}"
-                await self._api.async_api_request(url)
+                await self._api.async_get_request(url)
             elif self._api_data == "3":
                 url = f"{self._api.url_search}{self._street}*"
-                await self._api.async_api_request(url)
+                await self._api.async_get_request(url)
             elif self._api_data == "4":
                 await self._api.token
 
@@ -350,7 +421,7 @@ class GarbageCollection:
                 # _LOGGER.debug("URL: %s", url)
                 body = {"adrid": f"{address_id}", "common": "false"}
                 # _LOGGER.debug("Body: %s", body)
-                data = await self._api.async_api_request(url, body)
+                data = await self._api.async_post_request(url, para=body)
                 garbage_data = json.loads(data["d"])["list"]
                 # _LOGGER.debug("Garbage Data: %s", garbage_data)
 
@@ -526,7 +597,7 @@ class GarbageCollection:
 
             elif self._api_data == "3":
                 url = f"{self._api.url_data}{address_id}"
-                data = await self._api.async_api_request(url)
+                data = await self._api.async_get_request(url)
                 garbage_data = data[0]["plannedLoads"]
                 for row in garbage_data:
                     _pickup_date = iso_string_to_date(row["date"])
@@ -581,7 +652,7 @@ class GarbageCollection:
                         _garbage_types = split_ical_garbage_types(
                             event.summary)
                         for garbage_type in _garbage_types:
-                            _pickup_date = (event.start_datetime + utc_offset).date()
+                            _pickup_date = (event.start_datetime + self.utc_offset).date()
                             # _LOGGER.debug(
                             #     "Start Date: %s - End Date: %s", _start_date, _pickup_date)
                             if _pickup_date < dt.date.today():
@@ -635,7 +706,7 @@ class GarbageCollection:
                     "addressID": address_id,
                     "municipality": self._municipality_url
                     }}
-                data = await self._api.async_api_request(self._api.url_data, body=body)
+                data = await self._api.async_post_request(self._api.url_data, para=body)
                 garbage_data = data["result"]
                 for row in garbage_data:
                     _pickup_date = iso_string_to_date(row["date"])
@@ -674,6 +745,55 @@ class GarbageCollection:
                             if _pickup_date == _next_pickup:
                                 _next_name.append(NAME_LIST.get(key))
                                 _next_description.append(fraction_name)
+
+                if _next_name:
+                    _next_pickup_event = {
+                        "next_pickup": PickupType(
+                            date=_next_pickup,
+                            group="genbrug",
+                            friendly_name=list_to_string(_next_name),
+                            icon=ICON_LIST.get("genbrug"),
+                            entity_picture="genbrug.svg",
+                            description=list_to_string(_next_description),
+                        )
+                    }
+                    pickup_events.update(_next_pickup_event)
+
+            elif self._api_data == "6":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    if not item['nextpickupdatetimestamp']:
+                        continue
+                    _pickup_date = dt.datetime.fromtimestamp(int(item["nextpickupdatetimestamp"])).date()
+                    if _pickup_date < dt.date.today():
+                        continue
+                    key = get_garbage_type_from_material(
+                        item['name'].replace('henteordning', '').strip(), self._municipality, address_id
+                    )
+
+                    _pickup_event = {
+                        key: PickupType(
+                            date=_pickup_date,
+                            group=key,
+                            friendly_name=NAME_LIST.get(key),
+                            icon=ICON_LIST.get(key),
+                            entity_picture=f"{key}.svg",
+                            description=item['name'],
+                        )
+                    }
+                    if not key_exists_in_pickup_events(pickup_events, key):
+                        pickup_events.update(_pickup_event)
+
+                    if _pickup_date is not None:
+                        if _pickup_date < dt.date.today():
+                            continue
+                        if _pickup_date < _next_pickup:
+                            _next_pickup = _pickup_date
+                            _next_name = []
+                            _next_description = []
+                        if _pickup_date == _next_pickup:
+                            _next_name.append(NAME_LIST.get(key))
+                            _next_description.append(item['name'])
 
                 if _next_name:
                     _next_pickup_event = {

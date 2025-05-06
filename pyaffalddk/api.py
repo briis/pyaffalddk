@@ -72,11 +72,6 @@ class AffaldDKAPIBase:
             session = self.session
 
         data = None
-        # method = 'GET'
-        # headers = None
-        # if body:
-        #     method = 'POST'
-        #     headers = {"Content-Type": "application/json"}
         if method == 'POST':
             json_input = para
             data_input = None
@@ -769,7 +764,7 @@ class GarbageCollection:
                     if _pickup_date < dt.date.today():
                         continue
                     key = get_garbage_type_from_material(
-                        item['name'].replace('henteordning', '').strip(), self._municipality, address_id
+                        item['name'], self._municipality, address_id
                     )
 
                     _pickup_event = {
@@ -848,12 +843,16 @@ def get_garbage_type_from_material(
 ) -> str:
     """Get the garbage type from the materialnavn."""
     # _LOGGER.debug("Material: %s", item)
+    fixed_item = item.replace('140L', '').replace('190L', '').replace('240L', '')
+    fixed_item = fixed_item.replace('14. dags tømning', '').replace('henteordning', '')
+    fixed_item = fixed_item.strip()
+
+    if item in NON_MATERIAL_LIST:
+        return 'genbrug'
     for key, value in MATERIAL_LIST.items():
-        if item in NON_MATERIAL_LIST:
-            continue
-        if item.lower() in str(value).lower():
+        if fixed_item.lower() in str(value).lower():
             for entry in value:
-                if item.lower() == entry.lower():
+                if fixed_item.lower() == entry.lower():
                     return key
 
     _LOGGER.warning(

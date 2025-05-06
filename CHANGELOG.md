@@ -1,5 +1,10 @@
 # Changelog for pyaffalddk
 
+## [2.4.0] - `2025-05-06`
+
+### Added
+* Adding interface for the affaldsportalen / renoweb.servicegh
+
 ## [2.3.1] - `2025-05-04`
 
 ### Added

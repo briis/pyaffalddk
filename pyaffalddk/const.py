@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 
+GH_API = b'NDc5RDQwRjQtQjNFMS00MDM4LTkxMzAtNzY0NTMxODhDNzRD'
+
+
 NON_SUPPORTED_ITEMS = [
     "Asbest",
     "Beholderservice",

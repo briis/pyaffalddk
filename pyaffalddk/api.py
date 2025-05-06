@@ -10,10 +10,11 @@ import logging
 import re
 from urllib.parse import urlparse, parse_qsl
 from typing import Any
-
+import base64
 import aiohttp
 
 from .const import (
+    GH_API,
     ICON_LIST,
     MATERIAL_LIST,
     MUNICIPALITIES_LIST,
@@ -183,7 +184,7 @@ class RenowebghAPI(AffaldDKAPIBase):
     def __init__(self, municipality_id, session=None):
         super().__init__(session)
         self.url_data = "https://servicesgh.renoweb.dk/v1_13/"
-        self.apikey = '479D40F4-B3E1-4038-9130-76453188C74C'
+        self.uuid = base64.b64decode(GH_API).decode('utf-8')
         self.headers = {'Accept-Encoding': 'gzip'}
         self.municipality_id = municipality_id
         self.info = {}
@@ -191,7 +192,7 @@ class RenowebghAPI(AffaldDKAPIBase):
     async def get_road(self, zipcode, street):
         url = self.url_data + 'GetJSONRoad.aspx'
         data = {
-            'apikey': self.apikey, 'municipalitycode': self.municipality_id,
+            'apikey': self.uuid, 'municipalitycode': self.municipality_id,
             'roadname': street
         }
         js = await self.async_get_request(url, para=data, headers=self.headers)
@@ -203,7 +204,7 @@ class RenowebghAPI(AffaldDKAPIBase):
     async def get_address(self, road_id, house_number):
         url = self.url_data + 'GetJSONAdress.aspx'
         data = {
-            'apikey': self.apikey, 'municipalitycode': self.municipality_id,
+            'apikey': self.uuid, 'municipalitycode': self.municipality_id,
             'roadid': road_id, 'streetBuildingIdentifier': house_number,
             }
         js = await self.async_get_request(url, para=data, headers=self.headers)
@@ -223,7 +224,7 @@ class RenowebghAPI(AffaldDKAPIBase):
     async def get_garbage_data(self, address_id, fullinfo=0, shared=0):
         url = self.url_data + 'GetJSONContainerList.aspx'
         data = {
-            'apikey': self.apikey, 'municipalitycode': self.municipality_id,
+            'apikey': self.uuid, 'municipalitycode': self.municipality_id,
             'adressId': address_id, 'fullinfo': fullinfo, 'supportsSharedEquipment': shared,
             }
         js = await self.async_get_request(url, para=data, headers=self.headers)

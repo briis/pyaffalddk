@@ -161,6 +161,7 @@ SUPPORTED_ITEMS = {
         "Plast & mad- og drikkekartoner",
         "Plast/ Mad- og drikkekartoner",
         "Plast og MDK",
+        "Genbrug - blåt låg",
     ],
     "pappapirglasmetal": [
         "Pap, papir, tekstil & metal og glas",
@@ -168,6 +169,7 @@ SUPPORTED_ITEMS = {
         "Ressourcebeholder (pap/papir og glas/metal)",
         "Papir/pap og glas/metal",
         "Plast og drikkekarton - Glas og metal",
+        "Genbrug - grønt låg",
     ],
     "plastmetalmadmdk": [
         "Plast/Metal/Mad- & drikkekartoner",
@@ -494,7 +496,7 @@ MUNICIPALITIES_LIST = {
     "Aabenraa": ["aabenraa", "6"],
     "Aalborg": ["aalborg", "6"],
     "Aarhus": ["aarhus", "3"],
-    "Albertslund": ["albertslund", "5"],
+    "Albertslund": ["albertslund", "6"],
     "Allerød": ["allerod", "6"],
     "Ballerup": ["ballerup", "5"],
     "Billund": ["billund", "6"],

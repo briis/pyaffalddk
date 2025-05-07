@@ -159,8 +159,9 @@ class PerfectWasteAPI(AffaldDKAPIBase):
     # Perfect Waste API
     def __init__(self, session=None):
         super().__init__(session)
-        self.url_data = "https://europe-west3-perfect-waste.cloudfunctions.net/getAddressCollections"
-        self.url_search = "https://europe-west3-perfect-waste.cloudfunctions.net/searchExternalAddresses"
+        self.baseurl = "https://europe-west3-perfect-waste.cloudfunctions.net"
+        self.url_data = self.baseurl + "/getAddressCollections"
+        self.url_search = self.baseurl + "/searchExternalAddresses"
 
     async def get_address_id(self, municipality, zipcode, street, house_number):
         body = {'data': {
@@ -170,9 +171,17 @@ class PerfectWasteAPI(AffaldDKAPIBase):
             }}
         data = await self.async_post_request(self.url_search, para=body)
         if len(data['result']) == 1:
-            return data['result'][0]['addressID']
+            address_id = data['result'][0]['addressID']
+            await self.save_to_db(municipality, address_id)
+            return address_id
         return None
 
+    async def save_to_db(self, municipality, address_id):
+        url = self.baseurl + '/fetchAddressAndSaveToDb'
+        para = {"data": {
+            "addressID": address_id, "municipality": municipality,
+            "caretakerCode": None, "isCaretaker": None }}
+        data = await self.async_post_request(url, para=para)
 
 class RenowebghAPI(AffaldDKAPIBase):
     # Renoweb servicegh API
@@ -715,7 +724,7 @@ class GarbageCollection:
                             continue
                         if key == fraction_name:
                             _LOGGER.warning(
-                                "%s is not defined in the system. Please notify the developer.", fraction_name)
+                                f'"{fraction_name}" is not defined in the system. Please notify the developer.')
                             continue
 
                         _pickup_event = {
@@ -830,11 +839,10 @@ def iso_string_to_date(datetext: str) -> dt.date:
 def get_garbage_type(item: str) -> str:
     """Get the garbage type."""
     # _LOGGER.debug("Affalds type: %s", item)
-    for key, value in SUPPORTED_ITEMS.items():
-        if item.lower() in str(value).lower():
-            for entry in value:
-                if item.lower() == entry.lower():
-                    return key
+    for key, values in SUPPORTED_ITEMS.items():
+        for entry in values:
+            if item.lower() == entry.lower():
+                return key
     return item
 
 
@@ -843,8 +851,8 @@ def get_garbage_type_from_material(
 ) -> str:
     """Get the garbage type from the materialnavn."""
     # _LOGGER.debug("Material: %s", item)
-    fixed_item = item.replace('140L', '').replace('190L', '').replace('240L', '')
-    fixed_item = fixed_item.replace('14. dags tømning', '').replace('henteordning', '')
+    fixed_item = item.replace('140L', '').replace('190L', '').replace('240L', '').replace('240 l', '')
+    fixed_item = fixed_item.replace('14. dags tømning', '').replace('henteordning', '').replace('2 delt', '').replace('14-dags', '').replace('4-ugers', '')
     fixed_item = fixed_item.strip()
 
     if item in NON_MATERIAL_LIST:

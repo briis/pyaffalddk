@@ -167,6 +167,7 @@ SUPPORTED_ITEMS = {
         "4delt beholder",
         "Ressourcebeholder (pap/papir og glas/metal)",
         "Papir/pap og glas/metal",
+        "Plast og drikkekarton - Glas og metal",
     ],
     "plastmetalmadmdk": [
         "Plast/Metal/Mad- & drikkekartoner",
@@ -212,7 +213,8 @@ MATERIAL_LIST = {
     "restaffaldmadaffald": [
         "Mad- og restaffald",
         "*190 l rød, 14 dags tømning (1 stk.)",
-        "240 liter mad- og restaffald - 2 rum"
+        "240 liter mad- og restaffald - 2 rum",
+        "mad/restaffald",
     ],
     "batterier": [
         "Batterier i pose på låg (1 stk.)",
@@ -390,6 +392,7 @@ MATERIAL_LIST = {
         "Pap og papir/metal, glas og hård plast - 240 L (1 stk.)",
         "240 l genbrug låg i låg (1 stk.)",
         "Pap og papir/metal, glas og hård plast - 240 L (EX) (1 stk.)",
+        "plast/metal/drikkekartoner og papir/pap",
     ],
     "madaffald": [
         "140 L madaffald (1 stk.)",

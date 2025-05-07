@@ -2,6 +2,7 @@ import pytest
 from freezegun import freeze_time
 from aiohttp import ClientSession
 from pyaffalddk import GarbageCollection
+from pyaffalddk.api import AffaldDKAPI
 from pathlib import Path
 from datetime import datetime
 import pickle
@@ -16,6 +17,7 @@ datadir = Path(__file__).parent/'data'
 kbh_ics_data = (datadir/'kbh_ics.data').read_text()
 odense_ics_data = (datadir/'odense_ics.data').read_text()
 aalborg_data = json.loads((datadir/'Aalborg.data').read_text())
+aalborg_data_gh = json.loads((datadir/'Aalborg_gh.data').read_text())
 aarhus_data = json.loads((datadir/'Aarhus.data').read_text())
 koege_data = json.loads((datadir/'Koege.data').read_text())
 FREEZE_TIME = "2025-04-25"
@@ -25,11 +27,14 @@ compare_file = (datadir/'compare_data.p')
 utc_offset = datetime.now().astimezone().utcoffset()
 
 
-def update_and_compare(name, actual_data, update=False):
+def update_and_compare(name, actual_data, update=False, debug=False):
     compare_data = pickle.load(compare_file.open('rb'))
     if update:
         compare_data[name] = actual_data
         pickle.dump(compare_data, compare_file.open('wb'))
+    if debug and actual_data != compare_data[name]:
+        print(actual_data.keys())
+        print(compare_data[name].keys())
     assert actual_data == compare_data[name]
 
 
@@ -59,6 +64,9 @@ async def test_Aalborg(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Aalborg', session=session)
+            gc._api = AffaldDKAPI(session=session)
+            gc._municipality_url = 'aalborg'
+            gc._api_data = '1'
 
             address = await gc.get_address_id('9000', 'Boulevarden', '13')
             add = {'address_id': '139322', 'kommunenavn': 'Aalborg', 'vejnavn': 'Boulevarden', 'husnr': '13'}
@@ -71,6 +79,26 @@ async def test_Aalborg(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Aalborg', pickups, UPDATE)
+
+
+@pytest.mark.asyncio
+@freeze_time("2025-05-04")
+async def test_Aalborg_gh(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Aalborg', session=session)
+
+            address = await gc.get_address_id('9000', 'Boulevarden', '13')
+            add = {'address_id': 139322, 'kommunenavn': 'Aalborg', 'vejnavn': 'Boulevarden', 'husnr': '13'}
+            # print(address.__dict__)
+            assert address.__dict__ == add
+
+            async def get_data(*args, **kwargs):
+                return aalborg_data_gh
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+
+            pickups = await gc.get_pickup_data(address.address_id)
+            update_and_compare('Aalborg_gh', pickups, UPDATE)
 
 
 @pytest.mark.asyncio

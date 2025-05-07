@@ -27,11 +27,14 @@ compare_file = (datadir/'compare_data.p')
 utc_offset = datetime.now().astimezone().utcoffset()
 
 
-def update_and_compare(name, actual_data, update=False):
+def update_and_compare(name, actual_data, update=False, debug=False):
     compare_data = pickle.load(compare_file.open('rb'))
     if update:
         compare_data[name] = actual_data
         pickle.dump(compare_data, compare_file.open('wb'))
+    if debug and actual_data != compare_data[name]:
+        print(actual_data.keys())
+        print(compare_data[name].keys())
     assert actual_data == compare_data[name]
 
 

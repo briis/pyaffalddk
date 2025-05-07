@@ -851,10 +851,9 @@ def get_garbage_type_from_material(
 ) -> str:
     """Get the garbage type from the materialnavn."""
     # _LOGGER.debug("Material: %s", item)
-    fixed_item = item.replace('140L', '').replace('190L', '').replace('240L', '').replace('240 l', '')
+    fixed_item = item.replace('140L ', '').replace('190L ', '').replace('240L ', '').replace('240 l ', '')
     fixed_item = fixed_item.replace('14. dags tømning', '').replace('henteordning', '').replace('2 delt', '').replace('14-dags', '').replace('4-ugers', '')
     fixed_item = fixed_item.strip()
-
     if item in NON_MATERIAL_LIST:
         return 'genbrug'
     for key, value in MATERIAL_LIST.items():

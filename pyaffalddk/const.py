@@ -92,6 +92,7 @@ SUPPORTED_ITEMS = {
         "Genanvendeligt",
         "Genbrug 240 L",
         "Genbrugshal (1 stk.)",
+        "Genanvendelse",
     ],
     "jern": [
         "Jern",

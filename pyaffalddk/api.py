@@ -181,7 +181,7 @@ class PerfectWasteAPI(AffaldDKAPIBase):
         para = {"data": {
             "addressID": address_id, "municipality": municipality,
             "caretakerCode": None, "isCaretaker": None }}
-        data = await self.async_post_request(url, para=para)
+        await self.async_post_request(url, para=para)
 
 class RenowebghAPI(AffaldDKAPIBase):
     # Renoweb servicegh API

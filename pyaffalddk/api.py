@@ -17,15 +17,12 @@ from .const import (
     GH_API,
     ICON_LIST,
     MATERIAL_LIST,
-    MUNICIPALITIES_LIST,
     NAME_LIST,
     NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
-    ODD_EVEN_ARRAY,
     SUPPORTED_ITEMS,
-    WEEKDAYS,
 )
-from .municipalities import MUNICIPALITIES_IDS
+from .municipalities import MUNICIPALITIES_IDS, MUNICIPALITIES_LIST
 from .data import PickupEvents, PickupType, AffaldDKAddressInfo
 
 
@@ -692,18 +689,6 @@ class GarbageCollection:
             return pickup_events
 
 
-def to_date(datetext: str) -> dt.date:
-    """Convert a date string to a datetime object."""
-    if datetext == "Ingen tømningsdato fundet!":
-        return None
-
-    index = datetext.rfind(" ")
-    if index == -1:
-        return None
-    _date = dt.datetime.strptime(f"{datetext[index+1:]}", "%d-%m-%Y")
-    return _date.date()
-
-
 def iso_string_to_date(datetext: str) -> dt.date:
     """Convert a date string to a datetime object."""
     if datetext == "Ingen tømningsdato fundet!":
@@ -747,77 +732,9 @@ def get_garbage_type_from_material(
     return "genbrug"
 
 
-def get_next_weekday(weekday: str) -> dt.date:
-
-    weekdays = WEEKDAYS
-    current_weekday = dt.datetime.now().weekday()
-    target_weekday = weekdays.index(weekday.capitalize())
-    days_ahead = (target_weekday - current_weekday) % 7
-    next_date: dt.date = dt.datetime.now() + dt.timedelta(days=days_ahead)
-    return next_date.date()
-
-
-def get_next_weekday_odd_even(weekday: str, odd_even: str) -> dt.date:
-    """Get next date for a weekday considering odd/even weeks.
-
-    Args:
-        weekday: String with weekday name
-        odd_even: String with 'ulige' or 'lige' for odd/even weeks
-
-    Returns:
-        dt.date: Next date matching weekday and odd/even week criteria
-    """
-    weekdays = WEEKDAYS
-    current_date = dt.datetime.now()
-    target_weekday = weekdays.index(weekday.capitalize())
-
-    # Find next occurrence of weekday
-    days_ahead = (target_weekday - current_date.weekday()) % 7
-    next_date = current_date + dt.timedelta(days=days_ahead)
-    if days_ahead == 0:  # If today is the target weekday, move to next week
-        next_date += dt.timedelta(days=7)
-
-    # Check if week number matches odd/even criteria using ISO week numbers
-    week_number = next_date.isocalendar()[1]
-    _LOGGER.debug("Week Number: %s", week_number)
-    is_odd_week = week_number % 2 == 1
-    needs_odd = odd_even.lower() == 'ulige'
-
-    # If initial date doesn't match odd/even criteria, add a week
-    if is_odd_week != needs_odd:
-        next_date += dt.timedelta(days=7)
-
-    return next_date.date()
-
-
 def list_to_string(list: list[str]) -> str:
     """Convert a list to a string."""
     return " | ".join(list)
-
-
-def find_weekday_in_string(text: str) -> str:
-    """Loop through each word in a text string and compare with another word."""
-    words = text.split()
-    for w in words:
-        if w.capitalize() in WEEKDAYS:
-            return w.capitalize()
-    return "None"
-
-
-def find_odd_even_in_string(text: str) -> str:
-    """Loop through each word in a text string and compare with another word."""
-    words = text.split()
-    for w in words:
-        if w.lower() in ODD_EVEN_ARRAY:
-            return w.lower()
-    return "None"
-
-
-def get_next_year_end() -> dt.date:
-    """Return December 31 of the next year."""
-    today = dt.date.today()
-    next_year = today.year + 1
-    return dt.date(next_year, 12, 31)
 
 
 def split_ical_garbage_types(text: str) -> list[str]:

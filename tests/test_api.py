@@ -1,7 +1,7 @@
 import pytest
 from freezegun import freeze_time
 from aiohttp import ClientSession
-from pyaffalddk import GarbageCollection
+from pyaffalddk import GarbageCollection, NAME_LIST
 from pathlib import Path
 import pickle
 import json
@@ -133,6 +133,33 @@ async def test_Kbh(capsys, monkeypatch):
             assert pickups['next_pickup'].description == 'Rest/Madaffald'
             assert pickups['next_pickup'].date.strftime('%d/%m/%y') == '05/05/25'
             assert list(pickups.keys()) == ['restaffaldmadaffald', 'farligtaffald', 'next_pickup']
+
+
+async def test_smoketest(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            smokedata = pickle.load((datadir / 'smoketest_garbage_data.p').open('rb'))
+            smokecompare_file = datadir / 'smoketest_fractions.json'
+            with smokecompare_file.open('r') as fh:
+                smokecompare = json.load(fh)
+
+            for name, val in smokedata.items():
+                city = val['city']
+                gc = GarbageCollection(city, session=session)
+
+                async def get_data(*args, **kwargs):
+                    return val['data']
+                monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+                pickups = await gc.get_pickup_data(1111)
+                keys = list(pickups.keys())
+                # print(name, city, keys)
+                if name not in smokecompare:
+                    smokecompare[name] = keys
+                    with smokecompare_file.open('w') as fh:
+                        json.dump(smokecompare, fh, indent=2)
+
+                assert smokecompare[name] == keys
+                assert set(keys[:-1]).issubset(NAME_LIST)
 
 
 def test_ics(capsys):

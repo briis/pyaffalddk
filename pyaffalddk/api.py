@@ -155,43 +155,44 @@ class NemAffaldAPI(AffaldDKAPIBase):
         return ics_data
 
     async def get_garbage_data(self, address_id):
-        return await self._api.async_get_ical_data(address_id)
+        return await self.async_get_ical_data(address_id)
 
 
 class PerfectWasteAPI(AffaldDKAPIBase):
     # Perfect Waste API
-    def __init__(self, session=None):
+    def __init__(self, municipality_id, session=None):
         super().__init__(session)
         self.baseurl = "https://europe-west3-perfect-waste.cloudfunctions.net"
         self.url_data = self.baseurl + "/getAddressCollections"
         self.url_search = self.baseurl + "/searchExternalAddresses"
+        self.municipality_id = municipality_id
 
-    async def get_address_id(self, municipality, zipcode, street, house_number):
+    async def get_address_id(self, zipcode, street, house_number):
         body = {'data': {
             "query": f"{street} {house_number}, {zipcode}",
-            "municipality": municipality,
+            "municipality": self.municipality_id,
             "page": 1, "onlyManual": False
             }}
         data = await self.async_post_request(self.url_search, para=body)
         if len(data['result']) == 1:
             address_id = data['result'][0]['addressID']
-            await self.save_to_db(municipality, address_id)
+            await self.save_to_db(address_id)
             return address_id
         return None
 
-    async def save_to_db(self, municipality, address_id):
+    async def save_to_db(self, address_id):
         url = self.baseurl + '/fetchAddressAndSaveToDb'
         para = {"data": {
-            "addressID": address_id, "municipality": municipality,
+            "addressID": address_id, "municipality": self.municipality_id,
             "caretakerCode": None, "isCaretaker": None}}
         await self.async_post_request(url, para=para)
 
     async def get_garbage_data(self, address_id):
         body = {"data": {
             "addressID": address_id,
-            "municipality": self._municipality_url
+            "municipality": self.municipality_id
             }}
-        data = await self._api.async_post_request(self._api.url_data, para=body)
+        data = await self.async_post_request(self.url_data, para=body)
         return data["result"]
 
 
@@ -264,15 +265,15 @@ class AarhusAffaldAPI(AffaldDKAPIBase):
         if _result_count > 1:
             for row in data:
                 if (
-                    zipcode in row["adgangsadresse"]["postnummer"]["nr"]
-                    and house_number == row["adgangsadresse"]["husnr"]
+                    str(zipcode) in row["adgangsadresse"]["postnummer"]["nr"]
+                    and str(house_number) == row["adgangsadresse"]["husnr"]
                 ):
                     return row["kvhx"]
         return None
 
     async def get_garbage_data(self, address_id):
-        url = f"{self._api.url_data}{address_id}"
-        data = await self._api.async_get_request(url)
+        url = f"{self.url_data}{address_id}"
+        data = await self.async_get_request(url)
         return data[0]["plannedLoads"]
 
 
@@ -301,7 +302,7 @@ class OdenseAffaldAPI(AffaldDKAPIBase):
         return None
 
     async def get_garbage_data(self, address_id):
-        return await self._api.async_get_ical_data(address_id)
+        return await self.async_get_ical_data(address_id)
 
 
 class AffaldDKAPI(AffaldDKAPIBase):
@@ -376,8 +377,8 @@ class GarbageCollection:
                     self._api = NemAffaldAPI(value[0], session=session)
                     self._municipality_url = self._api.base_url
                 elif self._api_data == '5':
-                    self._api = PerfectWasteAPI(session=session)
                     self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
+                    self._api = PerfectWasteAPI(self._municipality_url, session=session)
                 elif self._api_data == '6':
                     self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
                     self._api = RenowebghAPI(self._municipality_url, session=session)
@@ -402,10 +403,7 @@ class GarbageCollection:
         """Get the address id."""
 
         if self._municipality_url is not None:
-            if self._api_data in ['5']:
-                self._address_id = await self._api.get_address_id(self._municipality_url, zipcode, street, house_number)
-            else:
-                self._address_id = await self._api.get_address_id(zipcode, street, house_number)
+            self._address_id = await self._api.get_address_id(zipcode, street, house_number)
 
             if self._address_id is None:
                 raise AffaldDKNotValidAddressError("Address not found")

@@ -1,0 +1,61 @@
+{
+  "smoke_0": [
+    "haveaffald",
+    "genbrug",
+    "restaffald",
+    "next_pickup"
+  ],
+  "smoke_1": [
+    "restaffald",
+    "madaffald",
+    "papir",
+    "pap",
+    "genbrug",
+    "plast",
+    "plastmadkarton",
+    "glas",
+    "jern",
+    "next_pickup"
+  ],
+  "smoke_2": [
+    "haveaffald",
+    "genbrug",
+    "restaffald",
+    "next_pickup"
+  ],
+  "smoke_3": [
+    "restaffaldmadaffald",
+    "farligtaffald",
+    "next_pickup"
+  ],
+  "smoke_4": [
+    "restaffaldmadaffald",
+    "metalglas",
+    "pappi",
+    "tekstil",
+    "farligtaffald",
+    "next_pickup"
+  ],
+  "smoke_5": [
+    "pappapirglasmetal",
+    "restaffaldmadaffald",
+    "pappapir",
+    "next_pickup"
+  ],
+  "smoke_6": [
+    "papirmetal",
+    "restaffaldmadaffald",
+    "haveaffald",
+    "pap",
+    "plastmadkarton",
+    "farligtaffaldmiljoboks",
+    "storskrald",
+    "next_pickup"
+  ],
+  "smoke_7": [
+    "plastmadkarton",
+    "restaffaldmadaffald",
+    "pappapirglasmetal",
+    "next_pickup"
+  ]
+}

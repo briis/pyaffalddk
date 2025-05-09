@@ -2,9 +2,7 @@ import pytest
 from freezegun import freeze_time
 from aiohttp import ClientSession
 from pyaffalddk import GarbageCollection
-from pyaffalddk.api import AffaldDKAPI
 from pathlib import Path
-from datetime import datetime
 import pickle
 import json
 from ical.calendar_stream import IcsCalendarStream

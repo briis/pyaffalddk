@@ -16,15 +16,11 @@ UPDATE = False
 datadir = Path(__file__).parent/'data'
 kbh_ics_data = (datadir/'kbh_ics.data').read_text()
 odense_ics_data = (datadir/'odense_ics.data').read_text()
-aalborg_data = json.loads((datadir/'Aalborg.data').read_text())
 aalborg_data_gh = json.loads((datadir/'Aalborg_gh.data').read_text())
 aarhus_data = json.loads((datadir/'Aarhus.data').read_text())
 koege_data = json.loads((datadir/'Koege.data').read_text())
 FREEZE_TIME = "2025-04-25"
 compare_file = (datadir/'compare_data.p')
-
-
-utc_offset = datetime.now().astimezone().utcoffset()
 
 
 def update_and_compare(name, actual_data, update=False, debug=False):
@@ -51,34 +47,11 @@ async def test_Koege(capsys, monkeypatch):
             assert address.__dict__ == add
 
             async def get_data(*args, **kwargs):
-                return koege_data
-            monkeypatch.setattr(gc._api, "async_api_request", get_data)
+                return koege_data["result"]
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Koege', pickups, False)
-
-
-@pytest.mark.asyncio
-@freeze_time(FREEZE_TIME)
-async def test_Aalborg(capsys, monkeypatch):
-    with capsys.disabled():
-        async with ClientSession() as session:
-            gc = GarbageCollection('Aalborg', session=session)
-            gc._api = AffaldDKAPI(session=session)
-            gc._municipality_url = 'aalborg'
-            gc._api_data = '1'
-
-            address = await gc.get_address_id('9000', 'Boulevarden', '13')
-            add = {'address_id': '139322', 'kommunenavn': 'Aalborg', 'vejnavn': 'Boulevarden', 'husnr': '13'}
-            # print(address.__dict__)
-            assert address.__dict__ == add
-
-            async def get_data(*args, **kwargs):
-                return aalborg_data
-            monkeypatch.setattr(gc._api, "async_api_request", get_data)
-
-            pickups = await gc.get_pickup_data(address.address_id)
-            update_and_compare('Aalborg', pickups, UPDATE)
 
 
 @pytest.mark.asyncio
@@ -115,7 +88,7 @@ async def test_Odense(capsys, monkeypatch):
 
             async def get_data(*args, **kwargs):
                 return odense_ics_data
-            monkeypatch.setattr(gc._api, "async_get_ical_data", get_data)
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Odense', pickups, UPDATE)
@@ -134,8 +107,8 @@ async def test_Aarhus(capsys, monkeypatch):
             assert address.__dict__ == add
 
             async def get_data(*args, **kwargs):
-                return aarhus_data
-            monkeypatch.setattr(gc._api, "async_api_request", get_data)
+                return aarhus_data[0]["plannedLoads"]
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Aarhus', pickups, UPDATE)
@@ -155,7 +128,7 @@ async def test_Kbh(capsys, monkeypatch):
 
             async def get_data(*args, **kwargs):
                 return kbh_ics_data
-            monkeypatch.setattr(gc._api, "async_get_ical_data", get_data)
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Kbh', pickups, UPDATE)

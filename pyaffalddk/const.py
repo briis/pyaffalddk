@@ -1,5 +1,4 @@
 """Constants for the pyaffalddk integration."""
-from __future__ import annotations
 
 
 GH_API = b'NDc5RDQwRjQtQjNFMS00MDM4LTkxMzAtNzY0NTMxODhDNzRD'
@@ -246,6 +245,7 @@ MATERIAL_LIST = {
         "",
     ],
     "farligtaffaldmiljoboks": [
+        "Farligt Affald",
         "*Miljøkasse (1 stk.)",
         "Miljøboks",
         "Miljøkasse (1 stk.)",
@@ -260,6 +260,7 @@ MATERIAL_LIST = {
         "Genanvendeligt",
         "Genbrug",
         "Genbrug 240 L",
+        "genbrug låg i låg",
         "Genbrugshal (1 stk.)",
         "Genbrugsøer",
         "Tekstiler",
@@ -302,6 +303,7 @@ MATERIAL_LIST = {
         "240 l glas/metal - 4 tømninger (1 stk.)",
         "240 liter - Metal/Glas - tømmes hver 8. uge (1 stk.)",
         "Glas & Metal",
+        "Glas/metal",
         "Glas/metal (1 stk.)",
         "Glas/metal, afstand over 5 meter (1 stk.)",
         "Metal/Glas 240 l - 2-kammer (1 stk.)",
@@ -337,6 +339,7 @@ MATERIAL_LIST = {
     "papirglasmetalplast": [
         '240 l genbrug låg i låg (1 stk.)',
         '4-kammer (370 l) (1 stk.)',
+        '4-kammer',
         'Pap og papir/metal, glas og hård plast - 240 L (1 stk.)',
         'Pap og papir/metal, glas og hård plast - 240 L (EX) (1 stk.)',
         'plast/metal/drikkekartoner og papir/pap'
@@ -355,7 +358,8 @@ MATERIAL_LIST = {
         '240 liter glas/metal og pap/papir - 2 rum',
         '240L metal, glas, plast/papir gl. (1 stk.)',
         '4-kammer (240 l) (1 stk.)',
-        'Glas & metal og papir & småt pap'
+        'Glas & metal og papir & småt pap',
+        'glas/metal og pap/papir',
     ],
     "pappi": [
         '240 L - Plast og Papir (1 stk.)',
@@ -369,9 +373,11 @@ MATERIAL_LIST = {
         '370 l Plast+MDK/Papir - Egenløsning (Privat) (1 stk.)',
         'PP/MDK-plast 240 l (hver 2. uge) (1 stk.)',
         'Papir & småt pap',
+        'papir/plast og kartoner',
         'Papir/Plast og MDK 240 l - 2-kammer (1 stk.)',
         'Plast/papir (1 stk.)',
-        'Plast/papir, afstand over 5 meter (1 stk.)'
+        'Plast/papir, afstand over 5 meter (1 stk.)',
+        'Plast+MDK/Papir',
     ],
     "plast": [
         "Plast",
@@ -411,8 +417,11 @@ MATERIAL_LIST = {
     "restaffaldmadaffald": [
         "*190 l rød, 14 dags tømning (1 stk.)",
         "240 liter mad- og restaffald - 2 rum",
+        "(M/R)",
         "Mad- og restaffald",
+        "mad/rest",
         "mad/restaffald",
+        "Rest/Mad",
     ],
     "storskrald": [
         "Elektronik, stort metal, keramik og porcelæn (1 stk.)",

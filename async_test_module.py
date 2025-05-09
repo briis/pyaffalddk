@@ -1,14 +1,15 @@
+#!/usr/bin/env python3
 # ruff: noqa: F401
 """This module is only used to run some realtime data tests using the async functions, while developing the module."""
 
-from __future__ import annotations
-
+import argparse
 import asyncio
-import aiohttp
+from aiohttp import ClientSession
 import datetime as dt
 import logging
 import time
 import sys
+import pickle
 
 from pyaffalddk import (
     GarbageCollection,
@@ -24,80 +25,100 @@ _LOGGER = logging.getLogger(__name__)
 
 async def main() -> None:
     """Async test module."""
+    parser = argparse.ArgumentParser(description="Async test module")
+
+    parser.add_argument("municipality", help="The name of the municipality")
+    parser.add_argument("--municipalities", action="store_true", help="list municipalities")
+    parser.add_argument("-a", "--address_id", type=str, help="address id")
+    parser.add_argument("-s", "--street", type=str, help="street name")
+    parser.add_argument("-n", "--number", type=str, help="street number")
+    parser.add_argument("-z", "--zipcode", type=str, help="zipcode")
+    parser.add_argument("--smoketest", type=str, help="add to smoketest data with this name")
+    parser.add_argument("--pickup", action="store_true", help="show pickups")
+
+    args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG)
     logging.getLogger("ical").setLevel(logging.WARNING)
     start = time.time()
 
-    session = aiohttp.ClientSession()
-    garbage = GarbageCollection(municipality=sys.argv[2], session=session)
+    async with ClientSession() as session:
+        if args.municipalities:
+            for row in MUNICIPALITIES_ARRAY:
+                print(row.capitalize())
+            sys.exit(0)
 
-    if sys.argv[1] == "address_id":
-        try:
-            address_data: AffaldDKAddressInfo = await garbage.get_address_id(
-                zipcode=sys.argv[3], street=sys.argv[4], house_number=sys.argv[5]
-            )
-            print("")
-            print("========================================================")
-            print("Address ID: ", address_data.address_id)
-            print("Kommune: ", address_data.kommunenavn)
-            print("Vejnavn: ", address_data.vejnavn)
-            print("Hus nr.: ", address_data.husnr)
+        gc = GarbageCollection(municipality=args.municipality, session=session)
+        if args.street or args.address_id:
+            if args.street:
+                try:
+                    address = await gc.get_address_id(
+                        zipcode=args.zipcode, street=args.street, house_number=args.number
+                    )
+                    address_id = address.address_id
+                    print("")
+                    print("========================================================")
+                    print("Address ID: ", address.address_id)
+                    print("Kommune: ", address.kommunenavn)
+                    print("Vejnavn: ", address.vejnavn)
+                    print("Hus nr.: ", address.husnr)
 
-        except Exception as err:
-            print(err)
+                except Exception as err:
+                    print(err)
+            else:
+                address_id = args.address_id
 
-    elif sys.argv[1] == "municipalities":
-        for row in MUNICIPALITIES_ARRAY:
-            print(row.capitalize())
+            if args.pickup:
+                try:
+                    data = await gc.get_pickup_data(address_id)
+                    if data:
+                        print("")
+                        print("========================================================")
+                        for item in NAME_ARRAY:
+                            if data.get(item) is None:
+                                continue
+                            print(f"{data[item].friendly_name}:")
+                            print("  Nøgle: ", item)
+                            print("  Gruppe: ", data[item].group)
+                            print("  Navn: ", data[item].friendly_name)
+                            try:
+                                print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
+                            except:  # noqa: E722
+                                print("  Dato: ", data[item].date)
+                            print("  Beskrivelse: ", data[item].description)
+                            print("  Icon: ", data[item].icon)
+                            print("  Picture: ", data[item].entity_picture)
+                            print("  Sidst Opdateret: ", dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
+                            print("  ======================================================")
 
-    elif sys.argv[1] == "categories":
-        _sorted_names = sorted(NAME_ARRAY)
-        for row in _sorted_names:
-            print(row)
-
-    elif sys.argv[1] == "pickup_data":
-        try:
-            data: PickupEvents = await garbage.get_pickup_data(address_id=sys.argv[3])
-            if data is not None:
-                print("")
-                print("========================================================")
-                for item in NAME_ARRAY:
-                    if data.get(item) is None:
-                        continue
-                    print(f"{data[item].friendly_name}:")
-                    print("  Nøgle: ", item)
-                    print("  Gruppe: ", data[item].group)
-                    print("  Navn: ", data[item].friendly_name)
-                    try:
+                        item = "next_pickup"
+                        print("Mext Pickup:")
+                        print("  Gruppe: ", data[item].group)
+                        print("  Navn: ", data[item].friendly_name)
                         print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
-                    except:  # noqa: E722
-                        print("  Dato: ", data[item].date)
-                    print("  Beskrivelse: ", data[item].description)
-                    print("  Icon: ", data[item].icon)
-                    print("  Picture: ", data[item].entity_picture)
-                    print("  Sidst Opdateret: ", dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
-                    print("  ======================================================")
+                        print("  Beskrivelse: ", data[item].description)
+                        print("  Icon: ", data[item].icon)
+                        print("  Picture: ", data[item].entity_picture)
+                        print("  Sidst Opdateret: ", dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
+                        print("  ======================================================")
 
-                item = "next_pickup"
-                print("Mext Pickup:")
-                print("  Gruppe: ", data[item].group)
-                print("  Navn: ", data[item].friendly_name)
-                print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
-                print("  Beskrivelse: ", data[item].description)
-                print("  Icon: ", data[item].icon)
-                print("  Picture: ", data[item].entity_picture)
-                print("  Sidst Opdateret: ", dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
-                print("  ======================================================")
+                except AffaldDKNoConnection as err:
+                    print(err)
 
-        except AffaldDKNoConnection as err:
-            print(err)
+            if args.smoketest:
+                with open('tests/data/smoketest_garbage_data.p', 'rb') as fh:
+                    smokedata = pickle.load(fh)
 
-    if session is not None:
-        await session.close()
+                data = await gc._api.get_garbage_data(address_id)
+                if data:
+                    if args.smoketest in smokedata:
+                        raise RuntimeError(f'the name "{args.smoketest}"is already in the smoketest set')
+                    smokedata[args.smoketest] = {'city': args.municipality, 'data':data}
+                    print(f'Added "{args.smoketest}" to the smoketest set...')
+                    with open('tests/data/smoketest_garbage_data.p', 'wb') as fh:
+                        smokedata = pickle.dump(smokedata, fh)
 
     end = time.time()
-
     _LOGGER.info("Execution time: %s seconds", end - start)
 
 

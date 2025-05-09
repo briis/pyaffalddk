@@ -57,5 +57,53 @@
     "restaffaldmadaffald",
     "pappapirglasmetal",
     "next_pickup"
+  ],
+  "mariager_1": [
+    "genbrug",
+    "restaffaldmadaffald",
+    "next_pickup"
+  ],
+  "Aalborg_1": [
+    "genbrug",
+    "restaffald",
+    "next_pickup"
+  ],
+  "egedal_1": [
+    "haveaffald",
+    "farligtaffaldmiljoboks",
+    "restaffaldmadaffald",
+    "restaffald",
+    "storskrald",
+    "pappi",
+    "pap",
+    "metalglas",
+    "next_pickup"
+  ],
+  "svendborg_1": [
+    "genbrug",
+    "restaffaldmadaffald",
+    "pappapirglasmetal",
+    "haveaffald",
+    "farligtaffaldmiljoboks",
+    "plast",
+    "next_pickup"
+  ],
+  "glostrup_1": [
+    "storskrald",
+    "haveaffald",
+    "metalglas",
+    "pap",
+    "restaffaldmadaffald",
+    "pappi",
+    "next_pickup"
+  ],
+  "lyngby_1": [
+    "storskrald",
+    "papirglasmetalplast",
+    "restaffaldmadaffald",
+    "haveaffald",
+    "pap",
+    "farligtaffaldmiljoboks",
+    "next_pickup"
   ]
 }

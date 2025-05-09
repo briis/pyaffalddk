@@ -37,7 +37,7 @@ def update_and_compare(name, actual_data, update=False, debug=False):
 async def test_Koege(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
-            gc = GarbageCollection('Køge', session=session)
+            gc = GarbageCollection('Køge', session=session, fail=True)
 
             address = await gc.get_address_id('4600', 'Torvet', '1')
             add = {'address_id': '27768', 'kommunenavn': 'Køge', 'vejnavn': 'Torvet', 'husnr': '1'}
@@ -57,7 +57,7 @@ async def test_Koege(capsys, monkeypatch):
 async def test_Aalborg_gh(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
-            gc = GarbageCollection('Aalborg', session=session)
+            gc = GarbageCollection('Aalborg', session=session, fail=True)
 
             address = await gc.get_address_id('9000', 'Boulevarden', '13')
             add = {'address_id': 139322, 'kommunenavn': 'Aalborg', 'vejnavn': 'Boulevarden', 'husnr': '13'}
@@ -77,7 +77,7 @@ async def test_Aalborg_gh(capsys, monkeypatch):
 async def test_Odense(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
-            gc = GarbageCollection('Odense', session=session)
+            gc = GarbageCollection('Odense', session=session, fail=True)
 
             address = await gc.get_address_id('5000', 'Flakhaven', '2')
             # print(address.__dict__)
@@ -97,7 +97,7 @@ async def test_Odense(capsys, monkeypatch):
 async def test_Aarhus(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
-            gc = GarbageCollection('Aarhus', session=session)
+            gc = GarbageCollection('Aarhus', session=session, fail=True)
 
             address = await gc.get_address_id('8000', 'Rådhuspladsen', '2')
             # print(address.__dict__)
@@ -117,7 +117,7 @@ async def test_Aarhus(capsys, monkeypatch):
 async def test_Kbh(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
-            gc = GarbageCollection('København', session=session)
+            gc = GarbageCollection('København', session=session, fail=True)
 
             address = await gc.get_address_id('1550', 'Rådhuspladsen', '1')
             # print(address.__dict__)
@@ -135,7 +135,7 @@ async def test_Kbh(capsys, monkeypatch):
             assert list(pickups.keys()) == ['restaffaldmadaffald', 'farligtaffald', 'next_pickup']
 
 
-async def test_smoketest(capsys, monkeypatch):
+async def test_smoketest(capsys, monkeypatch, update=False):
     with capsys.disabled():
         async with ClientSession() as session:
             smokedata = pickle.load((datadir / 'smoketest_garbage_data.p').open('rb'))
@@ -145,21 +145,25 @@ async def test_smoketest(capsys, monkeypatch):
 
             for name, val in smokedata.items():
                 city = val['city']
-                gc = GarbageCollection(city, session=session)
+                gc = GarbageCollection(city, session=session, fail=True)
 
                 async def get_data(*args, **kwargs):
                     return val['data']
                 monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
                 pickups = await gc.get_pickup_data(1111)
                 keys = list(pickups.keys())
-                # print(name, city, keys)
-                if name not in smokecompare:
+#                print(name, city)
+#                print(keys[:-1])
+
+                assert set(keys[:-1]).issubset(NAME_LIST)
+
+                if name not in smokecompare or update:
                     smokecompare[name] = keys
+                    print(f'adding "{name}" to the smoketest compare data')
                     with smokecompare_file.open('w') as fh:
                         json.dump(smokecompare, fh, indent=2)
 
                 assert smokecompare[name] == keys
-                assert set(keys[:-1]).issubset(NAME_LIST)
 
 
 def test_ics(capsys):

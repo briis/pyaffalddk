@@ -1,7 +1,5 @@
 """This module contains the code to get garbage data from AffaldDK."""
 
-from __future__ import annotations
-
 import datetime as dt
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
@@ -349,6 +347,7 @@ class GarbageCollection:
         self,
         municipality: str,
         session: aiohttp.ClientSession = None,
+        fail: bool = False,
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
@@ -359,6 +358,7 @@ class GarbageCollection:
         self._data = None
         self._municipality_url = None
         self._address_id = None
+        self.fail = fail
         self.utc_offset = dt.datetime.now().astimezone().utcoffset()
 
         for key, value in MUNICIPALITIES_LIST.items():
@@ -379,6 +379,9 @@ class GarbageCollection:
                 elif self._api_data == '6':
                     self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
                     self._api = RenowebghAPI(self._municipality_url, session=session)
+
+        if not hasattr(self, '_api'):
+            raise RuntimeError(f'Unknow municipality: "{municipality}"')
         if session:
             self._api.session = session
 
@@ -439,7 +442,7 @@ class GarbageCollection:
                                 continue
 
                             key = get_garbage_type_from_material(
-                                garbage_type, self._municipality, address_id
+                                garbage_type, self._municipality, address_id, self.fail
                             )
                             _pickup_event = {
                                 key: PickupType(
@@ -488,7 +491,7 @@ class GarbageCollection:
                         continue
                     for item in row["fractions"]:
                         key = get_garbage_type_from_material(
-                            item, self._municipality, address_id
+                            item, self._municipality, address_id, self.fail
                         )
                         _pickup_event = {
                             key: PickupType(
@@ -543,8 +546,7 @@ class GarbageCollection:
 
                             key = get_garbage_type(garbage_type)
                             if key == garbage_type:
-                                _LOGGER.warning(
-                                    "%s is not defined in the system. Please notify the developer.", garbage_type)
+                                warn_or_fail(garbage_type, self._municipality, address_id, self.fail)
                                 continue
                             _pickup_event = {
                                 key: PickupType(
@@ -596,8 +598,7 @@ class GarbageCollection:
                         if fraction_name in NON_SUPPORTED_ITEMS:
                             continue
                         if key == fraction_name:
-                            _LOGGER.warning(
-                                f'"{fraction_name}" is not defined in the system. Please notify the developer.')
+                            warn_or_fail(fraction_name, self._municipality, address_id, self.fail)
                             continue
 
                         _pickup_event = {
@@ -646,7 +647,7 @@ class GarbageCollection:
                     if _pickup_date < dt.date.today():
                         continue
                     key = get_garbage_type_from_material(
-                        item['name'], self._municipality, address_id
+                        item['name'], self._municipality, address_id, self.fail
                     )
 
                     _pickup_event = {
@@ -707,14 +708,24 @@ def get_garbage_type(item: str) -> str:
     return item
 
 
-def get_garbage_type_from_material(
-    item: str, municipality: str, address_id: str
-) -> str:
+def get_garbage_type_from_material(item, municipality, address_id, fail=False):
     """Get the garbage type from the materialnavn."""
     # _LOGGER.debug("Material: %s", item)
-    fixed_item = item.replace('140L ', '').replace('190L ', '').replace('240L ', '').replace('240 l ', '')
-    fixed_item = fixed_item.replace('14. dags tømning', '').replace('henteordning', '').replace('2 delt', '').replace('14-dags', '').replace('4-ugers', '')
+    fixed_item = item.split(' - ')[0].lower()
+    if ':' in fixed_item:
+        fixed_item = fixed_item.split(':')[1]
+
+    for strip in [
+        '140l ', '190l ', '190 l ', '240l ', '240 l ', '240 l.', '(240 l)', '370 l ', '370 liter ',
+        '14. dags tømning', '14 dages tømning', '14-dags', '4-ugers', '2 delt', '14. dage skel',
+        'sommerhustømning', 'henteordning', 'beholder til',
+        'distrikt 2 (privat)', 'egenløsning (privat)'
+    ]:
+        fixed_item = fixed_item.replace(strip, '')
     fixed_item = fixed_item.strip()
+    if 'haveaffald' in fixed_item:
+        return 'haveaffald'  # Lyngby gives "Haveaffald 1. mar-30. nov"
+
     if item in NON_MATERIAL_LIST:
         return 'genbrug'
     for key, value in MATERIAL_LIST.items():
@@ -722,14 +733,18 @@ def get_garbage_type_from_material(
             for entry in value:
                 if fixed_item.lower() == entry.lower():
                     return key
-
-    _LOGGER.warning(
-        "Material type [%s] is not defined in the system for Genbrug. Please notify the developer. Municipality: %s, Address ID: %s",
-        item,
-        municipality,
-        address_id,
-    )
+    print(fixed_item)
+    warn_or_fail(item, municipality, address_id, source='Material', fail=fail)
     return "genbrug"
+
+
+def warn_or_fail(name, municipality, address_id, source='Garbage', fail=False):
+    msg = f'{source} type [{name}] is not defined in the system for Genbrug. '
+    msg += f'Please notify the developer. Municipality: {municipality}, Address ID: {address_id}'
+
+    if fail:
+        raise RuntimeError(msg)
+    _LOGGER.warning(msg)
 
 
 def list_to_string(list: list[str]) -> str:

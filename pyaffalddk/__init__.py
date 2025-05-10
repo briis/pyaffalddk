@@ -12,11 +12,14 @@ from pyaffalddk.data import PickupEvents, PickupType, AffaldDKAddressInfo
 
 from pyaffalddk.municipalities import (
     MUNICIPALITIES_ARRAY,
+    MUNICIPALITIES_LIST,
 )
 from pyaffalddk.const import (
     ICON_LIST,
     NAME_ARRAY,
     NAME_LIST,
+    WEEKDAYS,
+    WEEKDAYS_SHORT,
 )
 
 __title__ = "pyaffalddk"

@@ -237,6 +237,7 @@ MATERIAL_LIST = {
     "dagrenovation": [
         "*140 l grøn (1 stk.)",
         "240 l. container 1 x ugentligt (12 stk.)",
+        "Dag",
     ],
     "elektronik": [
         "Småt elektronik i pose på låg (1 stk.)",
@@ -248,6 +249,7 @@ MATERIAL_LIST = {
         "Farligt Affald",
         "*Miljøkasse (1 stk.)",
         "Miljøboks",
+        "Miljøkasse",
         "Miljøkasse (1 stk.)",
         "Miljøskab (1 stk.)",
         "Rød kasse",
@@ -257,11 +259,14 @@ MATERIAL_LIST = {
         "",
     ],
     "genbrug": [
+        "Gen",
+        "Gen-Skel 0-2 meter (1 stk.)",
         "Genanvendeligt",
         "Genbrug",
         "Genbrug 240 L",
         "genbrug låg i låg",
         "Genbrugshal (1 stk.)",
+        "genbrugsspand",
         "Genbrugsøer",
         "Tekstiler",
     ],
@@ -276,7 +281,7 @@ MATERIAL_LIST = {
         "",
     ],
     "haveaffald": [
-        "Gen-Skel 0-2 meter (1 stk.)",
+        "Have",
         "Haveaffald",
         "Haveaffald henteordning (1 stk.)",
     ],
@@ -331,6 +336,7 @@ MATERIAL_LIST = {
     ],
     "papirglas": [
         "Papir/glas - 240 l. fortovsindsamling (1 stk.)",
+        "Papir og pap/Glas",
     ],
     "papirglasdaaser": [
         "*240 L 2-delt Papir/glas-dåser en-familie (1 stk.)",
@@ -350,6 +356,8 @@ MATERIAL_LIST = {
     "pappapir": [
         "240L papir, pap (1 stk.)",
         "Genbrugsbeholder PP-240L/6uge (1 stk.)",
+        "Papir/Papspand",
+        "papir, pap",
     ],
     "pappapirglasmetal": [
         '240 L 2-delt Papir/glas-dåser en-familie (1 stk.)',
@@ -397,6 +405,7 @@ MATERIAL_LIST = {
     ],
     "plastmetal": [
         "Plast, småt metal & MDK - 240 l. (1 stk.)",
+        "Plast/Metal",
     ],
     "plastmetalmadmdk": [
         "",
@@ -409,6 +418,7 @@ MATERIAL_LIST = {
         "240L plast, MDK/metal, glas gl. (1 stk.)",
         "Genbrugsbeholder, 190 ltr (1 stk.)",
         "Genbrugsspand, 240L (2-delt) (1 stk.)",
+        "plast, MDK/metal, glas",
     ],
     "restaffald": [
         "9505: 770 L restaffald uge (2 stk.)",
@@ -417,11 +427,14 @@ MATERIAL_LIST = {
     "restaffaldmadaffald": [
         "*190 l rød, 14 dags tømning (1 stk.)",
         "240 liter mad- og restaffald - 2 rum",
+        "energi",
         "(M/R)",
         "Mad- og restaffald",
         "mad/rest",
         "mad/restaffald",
         "Rest/Mad",
+        "rest/madaffald",
+        "Restaffald/Madaffald",
     ],
     "storskrald": [
         "Elektronik, stort metal, keramik og porcelæn (1 stk.)",

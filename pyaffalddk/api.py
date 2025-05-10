@@ -716,13 +716,16 @@ def get_garbage_type_from_material(item, municipality, address_id, fail=False):
         fixed_item = fixed_item.split(':')[1]
 
     for strip in [
-        '140l ', '190l ', '190 l ', '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', '370 l ', '370 liter ',
-        '14. dags tømning', '14 dages tømning', '14-dags', '4-ugers', '2 delt', '14. dage skel',
-        'sommerhustømning', 'henteordning', 'beholder til',
-        'distrikt 2 (privat)', 'egenløsning (privat)'
+        '140l ', '140 l ', '190l ', '190 l ',
+        '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', ', 240l',
+        '370 l ', '370 liter ',
+        '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel',
+        'todelt 4 ugers tømning (med takst)', 'todelt 14 dages tøm (med takst)', '4-ugers', '2 delt', '(2-delt)',
+        'sommerhustømning', 'henteordning', 'beholder til', '1-kammer ', '2-kammer ',
+        'distrikt 2 (privat)', 'egenløsning (privat)', 'distrikt 2', ' gl.', '-skel 0-2 meter',
     ]:
         fixed_item = fixed_item.replace(strip, '')
-    fixed_item = fixed_item.strip()
+    fixed_item = fixed_item.strip().rstrip(',').lstrip(', ')
     if 'haveaffald' in fixed_item:
         return 'haveaffald'  # Lyngby gives "Haveaffald 1. mar-30. nov"
 

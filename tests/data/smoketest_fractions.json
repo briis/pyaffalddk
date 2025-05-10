@@ -110,5 +110,40 @@
     "genbrug",
     "restaffaldmadaffald",
     "next_pickup"
+  ],
+  "esbjerg_1": [
+    "haveaffald",
+    "farligtaffaldmiljoboks",
+    "restaffaldmadaffald",
+    "genbrug",
+    "pappapir",
+    "next_pickup"
+  ],
+  "randers_1": [
+    "restaffaldmadaffald",
+    "storskrald",
+    "pappapir",
+    "plastmdkglasmetal",
+    "next_pickup"
+  ],
+  "s\u00f8nderborg_1": [
+    "papirglas",
+    "plastmetal",
+    "restaffaldmadaffald",
+    "next_pickup"
+  ],
+  "kerteminde_1": [
+    "dagrenovation",
+    "genbrug",
+    "haveaffald",
+    "plast",
+    "restaffaldmadaffald",
+    "next_pickup"
+  ],
+  "n\u00e6stved_1": [
+    "restaffaldmadaffald",
+    "storskrald",
+    "metalglas",
+    "next_pickup"
   ]
 }

@@ -4,7 +4,10 @@
 
 ### Added
 
-* Added smoketests for getting fraction names
+* Added smoketests for getting fraction names and to make sure we don't break old fixes
+* Updated local cli tool for easy adding new data to the smoketest
+* Make sure to always log a warning or raise a RuntimeError when failing to find fraction name
+* Cleanup of code
 * Added and/or changed Fractions for the following Municipalities_
   * Mariagerfjord
   * Aalborg
@@ -18,6 +21,8 @@
   * Kerteminde
   * Næstved
   * Jammerbugt
+  * Rudersdal
+  * Rødovre
 
 ### Changes
 

@@ -409,10 +409,10 @@ class GarbageCollection:
                 raise AffaldDKNotValidAddressError("Address not found")
 
             address_data = AffaldDKAddressInfo(
-                self._address_id,
+                str(self._address_id),
                 self._municipality.capitalize(),
                 street.capitalize(),
-                house_number,
+                str(house_number),
             )
             return address_data
         else:

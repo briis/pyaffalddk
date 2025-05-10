@@ -40,7 +40,9 @@ async def test_Koege(capsys, monkeypatch):
             gc = GarbageCollection('Køge', session=session, fail=True)
 
             address = await gc.get_address_id('4600', 'Torvet', '1')
-            add = {'address_id': '27768', 'kommunenavn': 'Køge', 'vejnavn': 'Torvet', 'husnr': '1'}
+            add = {
+                'uid': 'Køge_27768', 'address_id': '27768',
+                'kommunenavn': 'Køge', 'vejnavn': 'Torvet', 'husnr': '1'}
             # print(address.__dict__)
             assert address.__dict__ == add
 
@@ -60,7 +62,9 @@ async def test_Aalborg_gh(capsys, monkeypatch):
             gc = GarbageCollection('Aalborg', session=session, fail=True)
 
             address = await gc.get_address_id('9000', 'Boulevarden', '13')
-            add = {'address_id': 139322, 'kommunenavn': 'Aalborg', 'vejnavn': 'Boulevarden', 'husnr': '13'}
+            add = {
+                'uid': 'Aalborg_139322', 'address_id': '139322',
+                'kommunenavn': 'Aalborg', 'vejnavn': 'Boulevarden', 'husnr': '13'}
             # print(address.__dict__)
             assert address.__dict__ == add
 
@@ -81,7 +85,9 @@ async def test_Odense(capsys, monkeypatch):
 
             address = await gc.get_address_id('5000', 'Flakhaven', '2')
             # print(address.__dict__)
-            add = {'address_id': '112970', 'kommunenavn': 'Odense', 'vejnavn': 'Flakhaven', 'husnr': '2'}
+            add = {
+                'uid': 'Odense_112970', 'address_id': '112970',
+                'kommunenavn': 'Odense', 'vejnavn': 'Flakhaven', 'husnr': '2'}
             assert address.__dict__ == add
 
             async def get_data(*args, **kwargs):
@@ -101,7 +107,9 @@ async def test_Aarhus(capsys, monkeypatch):
 
             address = await gc.get_address_id('8000', 'Rådhuspladsen', '2')
             # print(address.__dict__)
-            add = {'address_id': '07517005___2_______', 'kommunenavn': 'Aarhus', 'vejnavn': 'Rådhuspladsen', 'husnr': '2'}
+            add = {
+                'uid': 'Aarhus_07517005___2_______', 'address_id': '07517005___2_______',
+                'kommunenavn': 'Aarhus', 'vejnavn': 'Rådhuspladsen', 'husnr': '2'}
             assert address.__dict__ == add
 
             async def get_data(*args, **kwargs):
@@ -121,7 +129,10 @@ async def test_Kbh(capsys, monkeypatch):
 
             address = await gc.get_address_id('1550', 'Rådhuspladsen', '1')
             # print(address.__dict__)
-            add = {'address_id': 'a4e9a503-c27f-ef11-9169-005056823710', 'kommunenavn': 'København', 'vejnavn': 'Rådhuspladsen', 'husnr': '1'}
+            add = {
+                'uid': 'København_a4e9a503-c27f-ef11-9169-005056823710',
+                'address_id': 'a4e9a503-c27f-ef11-9169-005056823710',
+                'kommunenavn': 'København', 'vejnavn': 'Rådhuspladsen', 'husnr': '1'}
             assert address.__dict__ == add
 
             async def get_data(*args, **kwargs):
@@ -135,6 +146,8 @@ async def test_Kbh(capsys, monkeypatch):
             assert list(pickups.keys()) == ['restaffaldmadaffald', 'farligtaffald', 'next_pickup']
 
 
+@pytest.mark.asyncio
+@freeze_time("2025-05-09")
 async def test_smoketest(capsys, monkeypatch, update=False):
     with capsys.disabled():
         async with ClientSession() as session:

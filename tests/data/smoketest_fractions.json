@@ -105,5 +105,10 @@
     "pap",
     "farligtaffaldmiljoboks",
     "next_pickup"
+  ],
+  "jammerbugt_1": [
+    "genbrug",
+    "restaffaldmadaffald",
+    "next_pickup"
   ]
 }

@@ -5,9 +5,6 @@
 ### Added
 
 * Added smoketests for getting fraction names and to make sure we don't break old fixes
-* Updated local cli tool for easy adding new data to the smoketest
-* Make sure to always log a warning or raise a RuntimeError when failing to find fraction name
-* Cleanup of code
 * Added and/or changed Fractions for the following Municipalities_
   * Mariagerfjord
   * Aalborg
@@ -29,6 +26,8 @@
 * Cleanup for get_garbage_data() on all apis
 * Re-sorting all the const lists and consolidating the municpality list to the Munipality File
 * Changed address_id to the new naming uid, to avoid unique_id issues.
+* Updated local cli tool for easy adding new data to the smoketests
+* Make sure to always log a warning or raise a RuntimeError when failing to find fraction name
 
 ## [2.4.0] - `2025-05-06`
 

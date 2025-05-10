@@ -1,7 +1,5 @@
 """This module contains the code to get garbage data from AffaldDK."""
 
-from __future__ import annotations
-
 import datetime as dt
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
@@ -17,15 +15,15 @@ from .const import (
     GH_API,
     ICON_LIST,
     MATERIAL_LIST,
-    MUNICIPALITIES_LIST,
     NAME_LIST,
     NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
-    ODD_EVEN_ARRAY,
+    PAR_EXCEPTIONS,
+    STRIPS,
     SUPPORTED_ITEMS,
     WEEKDAYS,
 )
-from .municipalities import MUNICIPALITIES_IDS
+from .municipalities import MUNICIPALITIES_IDS, MUNICIPALITIES_LIST
 from .data import PickupEvents, PickupType, AffaldDKAddressInfo
 
 
@@ -154,34 +152,47 @@ class NemAffaldAPI(AffaldDKAPIBase):
             ics_data = await response.text()
         return ics_data
 
+    async def get_garbage_data(self, address_id):
+        return await self.async_get_ical_data(address_id)
+
 
 class PerfectWasteAPI(AffaldDKAPIBase):
     # Perfect Waste API
-    def __init__(self, session=None):
+    def __init__(self, municipality_id, session=None):
         super().__init__(session)
         self.baseurl = "https://europe-west3-perfect-waste.cloudfunctions.net"
         self.url_data = self.baseurl + "/getAddressCollections"
         self.url_search = self.baseurl + "/searchExternalAddresses"
+        self.municipality_id = municipality_id
 
-    async def get_address_id(self, municipality, zipcode, street, house_number):
+    async def get_address_id(self, zipcode, street, house_number):
         body = {'data': {
             "query": f"{street} {house_number}, {zipcode}",
-            "municipality": municipality,
+            "municipality": self.municipality_id,
             "page": 1, "onlyManual": False
             }}
         data = await self.async_post_request(self.url_search, para=body)
         if len(data['result']) == 1:
             address_id = data['result'][0]['addressID']
-            await self.save_to_db(municipality, address_id)
+            await self.save_to_db(address_id)
             return address_id
         return None
 
-    async def save_to_db(self, municipality, address_id):
+    async def save_to_db(self, address_id):
         url = self.baseurl + '/fetchAddressAndSaveToDb'
         para = {"data": {
-            "addressID": address_id, "municipality": municipality,
-            "caretakerCode": None, "isCaretaker": None }}
+            "addressID": address_id, "municipality": self.municipality_id,
+            "caretakerCode": None, "isCaretaker": None}}
         await self.async_post_request(url, para=para)
+
+    async def get_garbage_data(self, address_id):
+        body = {"data": {
+            "addressID": address_id,
+            "municipality": self.municipality_id
+            }}
+        data = await self.async_post_request(self.url_data, para=body)
+        return data["result"]
+
 
 class RenowebghAPI(AffaldDKAPIBase):
     # Renoweb servicegh API
@@ -252,11 +263,16 @@ class AarhusAffaldAPI(AffaldDKAPIBase):
         if _result_count > 1:
             for row in data:
                 if (
-                    zipcode in row["adgangsadresse"]["postnummer"]["nr"]
-                    and house_number == row["adgangsadresse"]["husnr"]
+                    str(zipcode) in row["adgangsadresse"]["postnummer"]["nr"]
+                    and str(house_number) == row["adgangsadresse"]["husnr"]
                 ):
                     return row["kvhx"]
         return None
+
+    async def get_garbage_data(self, address_id):
+        url = f"{self.url_data}{address_id}"
+        data = await self.async_get_request(url)
+        return data[0]["plannedLoads"]
 
 
 class OdenseAffaldAPI(AffaldDKAPIBase):
@@ -282,6 +298,9 @@ class OdenseAffaldAPI(AffaldDKAPIBase):
             ):
                 return row["AddressNo"]
         return None
+
+    async def get_garbage_data(self, address_id):
+        return await self.async_get_ical_data(address_id)
 
 
 class AffaldDKAPI(AffaldDKAPIBase):
@@ -331,6 +350,7 @@ class GarbageCollection:
         self,
         municipality: str,
         session: aiohttp.ClientSession = None,
+        fail: bool = False,
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
@@ -341,14 +361,12 @@ class GarbageCollection:
         self._data = None
         self._municipality_url = None
         self._address_id = None
+        self.fail = fail
         self.utc_offset = dt.datetime.now().astimezone().utcoffset()
 
         for key, value in MUNICIPALITIES_LIST.items():
             if key.lower() == self._municipality.lower():
                 self._api_data = value[1]
-                if self._api_data == '1':
-                    self._api = AffaldDKAPI(session=session)
-                    self._municipality_url = value[0]
                 if self._api_data == '2':
                     self._api = OdenseAffaldAPI(session=session)
                     self._municipality_url = value[0]
@@ -359,25 +377,21 @@ class GarbageCollection:
                     self._api = NemAffaldAPI(value[0], session=session)
                     self._municipality_url = self._api.base_url
                 elif self._api_data == '5':
-                    self._api = PerfectWasteAPI(session=session)
                     self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
+                    self._api = PerfectWasteAPI(self._municipality_url, session=session)
                 elif self._api_data == '6':
                     self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
                     self._api = RenowebghAPI(self._municipality_url, session=session)
+
+        if not hasattr(self, '_api'):
+            raise RuntimeError(f'Unknow municipality: "{municipality}"')
         if session:
             self._api.session = session
 
     async def async_init(self) -> None:
         """Initialize the connection."""
         if self._municipality is not None:
-            if self._api_data == "1":
-                url = f"https://{self._municipality_url}{self._api.url_search}"
-                body = {
-                    "searchterm": f"{self._street} {self._house_number}",
-                    "addresswithmateriel": 1,
-                }
-                await self._api.async_post_request(url, para=body)
-            elif self._api_data == "2":
+            if self._api_data == "2":
                 url = f"{self._api.url_search}{self._street}"
                 await self._api.async_get_request(url)
             elif self._api_data == "3":
@@ -392,25 +406,22 @@ class GarbageCollection:
         """Get the address id."""
 
         if self._municipality_url is not None:
-            if self._api_data in ['1', '5']:
-                self._address_id = await self._api.get_address_id(self._municipality_url, zipcode, street, house_number)
-            else:
-                self._address_id = await self._api.get_address_id(zipcode, street, house_number)
+            self._address_id = await self._api.get_address_id(zipcode, street, house_number)
 
             if self._address_id is None:
                 raise AffaldDKNotValidAddressError("Address not found")
 
             address_data = AffaldDKAddressInfo(
-                self._address_id,
+                str(self._address_id),
                 self._municipality.capitalize(),
                 street.capitalize(),
-                house_number,
+                str(house_number),
             )
             return address_data
         else:
             raise AffaldDKNotSupportedError("Cannot find Municipality")
 
-    async def get_pickup_data(self, address_id: str) -> PickupEvents:
+    async def get_pickup_data(self, address_id: str, debug=False) -> PickupEvents:
         """Get the garbage collection data."""
 
         if self._municipality_url is not None:
@@ -421,133 +432,8 @@ class GarbageCollection:
             _next_name = []
             _next_description = []
 
-            if self._api_data == "1":
-                url = f"https://{self._municipality_url}{self._api.url_data}"
-                # _LOGGER.debug("URL: %s", url)
-                body = {"adrid": f"{address_id}", "common": "false"}
-                # _LOGGER.debug("Body: %s", body)
-                data = await self._api.async_post_request(url, para=body)
-                garbage_data = json.loads(data["d"])["list"]
-                # _LOGGER.debug("Garbage Data: %s", garbage_data)
-
-                for row in garbage_data:
-                    if row["ordningnavn"] in NON_SUPPORTED_ITEMS:
-                        continue
-
-                    _pickup_date = None
-                    if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
-                        _pickup_date = to_date(row["toemningsdato"])
-                    elif str(row["toemningsdage"]).capitalize() in WEEKDAYS:
-                        _pickup_date = get_next_weekday(row["toemningsdage"])
-                        _LOGGER.debug("FOUND IN TOEMNINGSDAGE")
-                    elif find_weekday_in_string(row["toemningsdage"]) != "None":
-                        if row["toemningsdato"] not in NON_SUPPORTED_ITEMS:
-                            _weekday = find_weekday_in_string(
-                                row["toemningsdage"])
-                            _pickup_date = get_next_weekday(_weekday)
-                        elif find_odd_even_in_string(row["toemningsdage"]) != "None":
-                            _weekday = find_weekday_in_string(
-                                row["toemningsdage"])
-                            _odd_even = find_odd_even_in_string(
-                                row["toemningsdage"])
-                            _LOGGER.debug("WEEK: %s - %s", _odd_even, _weekday)
-                            _pickup_date = get_next_weekday_odd_even(
-                                _weekday, _odd_even)
-                        else:
-                            _pickup_date = get_next_year_end()
-                    else:
-                        continue
-
-                    if (
-                        any(
-                            group in row["ordningnavn"].lower()
-                            for group in [
-                                "genbrug",
-                                "storskrald",
-                                "papir og glas/dåser",
-                                "miljøkasse/tekstiler",
-                            ]
-                        )
-                        and self._municipality.lower() == "gladsaxe"
-                    ):
-                        key = get_garbage_type_from_material(
-                            row["materielnavn"], self._municipality, address_id
-                        )
-                    elif (
-                        any(
-                            group in row["ordningnavn"].lower()
-                            for group in [
-                                "dagrenovation",
-                            ]
-                        )
-                        and self._municipality.lower() == "gribskov"
-                    ):
-                        key = get_garbage_type_from_material(
-                            row["materielnavn"], self._municipality, address_id
-                        )
-
-                    elif any(
-                        group in row["ordningnavn"].lower()
-                        for group in [
-                            "genbrug",
-                            "papir og glas/dåser",
-                            "miljøkasse/tekstiler",
-                            "standpladser",
-                        ]
-                    ):
-                        key = get_garbage_type_from_material(
-                            row["materielnavn"], self._municipality, address_id
-                        )
-                    else:
-                        key = get_garbage_type(row["ordningnavn"])
-
-                    if key == row["ordningnavn"] and key != "Bestillerordning":
-                        _LOGGER.warning(
-                            "Garbage type [%s] is not defined in the system. Please notify the developer. Municipality: %s, Address ID: %s",
-                            key,
-                            self._municipality,
-                            address_id,
-                        )
-                        continue
-
-                    _pickup_event = {
-                        key: PickupType(
-                            date=_pickup_date,
-                            group=row["ordningnavn"],
-                            friendly_name=NAME_LIST.get(key),
-                            icon=ICON_LIST.get(key),
-                            entity_picture=f"{key}.svg",
-                            description=row["materielnavn"],
-                        )
-                    }
-                    pickup_events.update(_pickup_event)
-
-                    if _pickup_date is not None:
-                        if _pickup_date < dt.date.today():
-                            continue
-                        if _pickup_date < _next_pickup:
-                            _next_pickup = _pickup_date
-                            _next_name = []
-                            _next_description = []
-                        if _pickup_date == _next_pickup:
-                            _next_name.append(NAME_LIST.get(key))
-                            _next_description.append(row["materielnavn"])
-
-                if _next_name:
-                    _next_pickup_event = {
-                        "next_pickup": PickupType(
-                            date=_next_pickup,
-                            group="genbrug",
-                            friendly_name=list_to_string(_next_name),
-                            icon=ICON_LIST.get("genbrug"),
-                            entity_picture="genbrug.svg",
-                            description=list_to_string(_next_description),
-                        )
-                    }
-                    pickup_events.update(_next_pickup_event)
-
-            elif self._api_data == "2":
-                data = await self._api.async_get_ical_data(address_id)
+            if self._api_data == "2":
+                data = await self._api.get_garbage_data(address_id)
                 try:
                     ics = IcsCalendarStream.calendar_from_ics(data)
                     for event in ics.timeline:
@@ -559,7 +445,7 @@ class GarbageCollection:
                                 continue
 
                             key = get_garbage_type_from_material(
-                                garbage_type, self._municipality, address_id
+                                garbage_type, self._municipality, address_id, self.fail
                             )
                             _pickup_event = {
                                 key: PickupType(
@@ -601,16 +487,14 @@ class GarbageCollection:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
             elif self._api_data == "3":
-                url = f"{self._api.url_data}{address_id}"
-                data = await self._api.async_get_request(url)
-                garbage_data = data[0]["plannedLoads"]
+                garbage_data = await self._api.get_garbage_data(address_id)
                 for row in garbage_data:
                     _pickup_date = iso_string_to_date(row["date"])
                     if _pickup_date < dt.date.today():
                         continue
                     for item in row["fractions"]:
                         key = get_garbage_type_from_material(
-                            item, self._municipality, address_id
+                            item, self._municipality, address_id, self.fail
                         )
                         _pickup_event = {
                             key: PickupType(
@@ -650,7 +534,7 @@ class GarbageCollection:
                     pickup_events.update(_next_pickup_event)
 
             elif self._api_data == "4":
-                data = await self._api.async_get_ical_data(address_id)
+                data = await self._api.get_garbage_data(address_id)
                 try:
                     ics = IcsCalendarStream.calendar_from_ics(data)
                     for event in ics.timeline:
@@ -665,8 +549,7 @@ class GarbageCollection:
 
                             key = get_garbage_type(garbage_type)
                             if key == garbage_type:
-                                _LOGGER.warning(
-                                    "%s is not defined in the system. Please notify the developer.", garbage_type)
+                                warn_or_fail(garbage_type, self._municipality, address_id, fail=self.fail)
                                 continue
                             _pickup_event = {
                                 key: PickupType(
@@ -707,12 +590,7 @@ class GarbageCollection:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
             elif self._api_data == "5":
-                body = {"data": {
-                    "addressID": address_id,
-                    "municipality": self._municipality_url
-                    }}
-                data = await self._api.async_post_request(self._api.url_data, para=body)
-                garbage_data = data["result"]
+                garbage_data = await self._api.get_garbage_data(address_id)
                 for row in garbage_data:
                     _pickup_date = iso_string_to_date(row["date"])
                     if _pickup_date < dt.date.today():
@@ -723,8 +601,7 @@ class GarbageCollection:
                         if fraction_name in NON_SUPPORTED_ITEMS:
                             continue
                         if key == fraction_name:
-                            _LOGGER.warning(
-                                f'"{fraction_name}" is not defined in the system. Please notify the developer.')
+                            warn_or_fail(fraction_name, self._municipality, address_id, fail=self.fail)
                             continue
 
                         _pickup_event = {
@@ -773,7 +650,7 @@ class GarbageCollection:
                     if _pickup_date < dt.date.today():
                         continue
                     key = get_garbage_type_from_material(
-                        item['name'], self._municipality, address_id
+                        item['name'], self._municipality, address_id, self.fail
                     )
 
                     _pickup_event = {
@@ -816,18 +693,6 @@ class GarbageCollection:
             return pickup_events
 
 
-def to_date(datetext: str) -> dt.date:
-    """Convert a date string to a datetime object."""
-    if datetext == "Ingen tømningsdato fundet!":
-        return None
-
-    index = datetext.rfind(" ")
-    if index == -1:
-        return None
-    _date = dt.datetime.strptime(f"{datetext[index+1:]}", "%d-%m-%Y")
-    return _date.date()
-
-
 def iso_string_to_date(datetext: str) -> dt.date:
     """Convert a date string to a datetime object."""
     if datetext == "Ingen tømningsdato fundet!":
@@ -846,14 +711,26 @@ def get_garbage_type(item: str) -> str:
     return item
 
 
-def get_garbage_type_from_material(
-    item: str, municipality: str, address_id: str
-) -> str:
+def get_garbage_type_from_material(item, municipality, address_id, fail=False):
     """Get the garbage type from the materialnavn."""
     # _LOGGER.debug("Material: %s", item)
-    fixed_item = item.replace('140L ', '').replace('190L ', '').replace('240L ', '').replace('240 l ', '')
-    fixed_item = fixed_item.replace('14. dags tømning', '').replace('henteordning', '').replace('2 delt', '').replace('14-dags', '').replace('4-ugers', '')
-    fixed_item = fixed_item.strip()
+    fixed_item = item.lower()
+    if ':' in fixed_item:
+        fixed_item = fixed_item.split(':')[1]
+
+    for strip in WEEKDAYS + STRIPS:
+        fixed_item = fixed_item.replace(strip.lower(), '')
+
+    escaped = [re.escape(e.lower()) for e in PAR_EXCEPTIONS]
+    pattern = rf"\s*\((?!{'|'.join(escaped)}\)).*?\)"
+    fixed_item = re.sub(pattern, "", fixed_item)  # strip anything in parenthesis
+
+    fixed_item = fixed_item.strip().rstrip(',').lstrip(', ').rstrip(' - ').lstrip(' - ')
+    fixed_item = fixed_item.split(' - ')[0].strip()
+
+    if 'haveaffald' in fixed_item:
+        return 'haveaffald'  # Lyngby gives "Haveaffald 1. mar-30. nov"
+
     if item in NON_MATERIAL_LIST:
         return 'genbrug'
     for key, value in MATERIAL_LIST.items():
@@ -861,87 +738,23 @@ def get_garbage_type_from_material(
             for entry in value:
                 if fixed_item.lower() == entry.lower():
                     return key
-
-    _LOGGER.warning(
-        "Material type [%s] is not defined in the system for Genbrug. Please notify the developer. Municipality: %s, Address ID: %s",
-        item,
-        municipality,
-        address_id,
-    )
+    print(f'\nmissing: "{fixed_item}"')
+    warn_or_fail(item, municipality, address_id, source='Material', fail=fail)
     return "genbrug"
 
 
-def get_next_weekday(weekday: str) -> dt.date:
+def warn_or_fail(name, municipality, address_id, source='Garbage', fail=False):
+    msg = f'{source} type [{name}] is not defined in the system for Genbrug. '
+    msg += f'Please notify the developer. Municipality: {municipality}, Address ID: {address_id}'
 
-    weekdays = WEEKDAYS
-    current_weekday = dt.datetime.now().weekday()
-    target_weekday = weekdays.index(weekday.capitalize())
-    days_ahead = (target_weekday - current_weekday) % 7
-    next_date: dt.date = dt.datetime.now() + dt.timedelta(days=days_ahead)
-    return next_date.date()
-
-
-def get_next_weekday_odd_even(weekday: str, odd_even: str) -> dt.date:
-    """Get next date for a weekday considering odd/even weeks.
-
-    Args:
-        weekday: String with weekday name
-        odd_even: String with 'ulige' or 'lige' for odd/even weeks
-
-    Returns:
-        dt.date: Next date matching weekday and odd/even week criteria
-    """
-    weekdays = WEEKDAYS
-    current_date = dt.datetime.now()
-    target_weekday = weekdays.index(weekday.capitalize())
-
-    # Find next occurrence of weekday
-    days_ahead = (target_weekday - current_date.weekday()) % 7
-    next_date = current_date + dt.timedelta(days=days_ahead)
-    if days_ahead == 0:  # If today is the target weekday, move to next week
-        next_date += dt.timedelta(days=7)
-
-    # Check if week number matches odd/even criteria using ISO week numbers
-    week_number = next_date.isocalendar()[1]
-    _LOGGER.debug("Week Number: %s", week_number)
-    is_odd_week = week_number % 2 == 1
-    needs_odd = odd_even.lower() == 'ulige'
-
-    # If initial date doesn't match odd/even criteria, add a week
-    if is_odd_week != needs_odd:
-        next_date += dt.timedelta(days=7)
-
-    return next_date.date()
+    if fail:
+        raise RuntimeError(msg)
+    _LOGGER.warning(msg)
 
 
 def list_to_string(list: list[str]) -> str:
     """Convert a list to a string."""
     return " | ".join(list)
-
-
-def find_weekday_in_string(text: str) -> str:
-    """Loop through each word in a text string and compare with another word."""
-    words = text.split()
-    for w in words:
-        if w.capitalize() in WEEKDAYS:
-            return w.capitalize()
-    return "None"
-
-
-def find_odd_even_in_string(text: str) -> str:
-    """Loop through each word in a text string and compare with another word."""
-    words = text.split()
-    for w in words:
-        if w.lower() in ODD_EVEN_ARRAY:
-            return w.lower()
-    return "None"
-
-
-def get_next_year_end() -> dt.date:
-    """Return December 31 of the next year."""
-    today = dt.date.today()
-    next_year = today.year + 1
-    return dt.date(next_year, 12, 31)
 
 
 def split_ical_garbage_types(text: str) -> list[str]:

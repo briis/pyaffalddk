@@ -1,8 +1,6 @@
 # ruff: noqa: F401
 """A Python Wrapper to communicate with AffaldDK API."""
 
-from __future__ import annotations
-
 from pyaffalddk.api import (
     GarbageCollection,
     AffaldDKGarbageTypeNotFound,
@@ -12,9 +10,12 @@ from pyaffalddk.api import (
 )
 from pyaffalddk.data import PickupEvents, PickupType, AffaldDKAddressInfo
 
+from pyaffalddk.municipalities import (
+    MUNICIPALITIES_ARRAY,
+    MUNICIPALITIES_LIST,
+)
 from pyaffalddk.const import (
     ICON_LIST,
-    MUNICIPALITIES_ARRAY,
     NAME_ARRAY,
     NAME_LIST,
     WEEKDAYS,

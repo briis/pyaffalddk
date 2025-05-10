@@ -165,8 +165,6 @@ async def test_smoketest(capsys, monkeypatch, update=False):
                 monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
                 pickups = await gc.get_pickup_data(1111)
                 keys = list(pickups.keys())
-#                print(name, city)
-#                print(keys[:-1])
 
                 assert set(keys[:-1]).issubset(NAME_LIST)
 
@@ -175,7 +173,10 @@ async def test_smoketest(capsys, monkeypatch, update=False):
                     print(f'adding "{name}" to the smoketest compare data')
                     with smokecompare_file.open('w') as fh:
                         json.dump(smokecompare, fh, indent=2)
-
+                if smokecompare[name] != keys:
+                    print(name, city)
+                    print(keys)
+                    print(smokecompare[name])
                 assert smokecompare[name] == keys
 
 

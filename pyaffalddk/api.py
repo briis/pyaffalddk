@@ -18,6 +18,7 @@ from .const import (
     NAME_LIST,
     NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
+    PAR_EXCEPTIONS,
     STRIPS,
     SUPPORTED_ITEMS,
     WEEKDAYS,
@@ -420,7 +421,7 @@ class GarbageCollection:
         else:
             raise AffaldDKNotSupportedError("Cannot find Municipality")
 
-    async def get_pickup_data(self, address_id: str) -> PickupEvents:
+    async def get_pickup_data(self, address_id: str, debug=False) -> PickupEvents:
         """Get the garbage collection data."""
 
         if self._municipality_url is not None:
@@ -713,14 +714,19 @@ def get_garbage_type(item: str) -> str:
 def get_garbage_type_from_material(item, municipality, address_id, fail=False):
     """Get the garbage type from the materialnavn."""
     # _LOGGER.debug("Material: %s", item)
-    fixed_item = item.split(' - ')[0].lower()
+    fixed_item = item.lower()
     if ':' in fixed_item:
         fixed_item = fixed_item.split(':')[1]
 
     for strip in WEEKDAYS + STRIPS:
         fixed_item = fixed_item.replace(strip.lower(), '')
 
-    fixed_item = fixed_item.strip().rstrip(',').lstrip(', ')
+    escaped = [re.escape(e.lower()) for e in PAR_EXCEPTIONS]
+    pattern = rf"\s*\((?!{'|'.join(escaped)}\)).*?\)"
+    fixed_item = re.sub(pattern, "", fixed_item)  # strip anything in parenthesis
+
+    fixed_item = fixed_item.strip().rstrip(',').lstrip(', ').rstrip(' - ').lstrip(' - ')
+    fixed_item = fixed_item.split(' - ')[0].strip()
 
     if 'haveaffald' in fixed_item:
         return 'haveaffald'  # Lyngby gives "Haveaffald 1. mar-30. nov"
@@ -732,7 +738,7 @@ def get_garbage_type_from_material(item, municipality, address_id, fail=False):
             for entry in value:
                 if fixed_item.lower() == entry.lower():
                     return key
-    print(fixed_item)
+    print(f'\nmissing: "{fixed_item}"')
     warn_or_fail(item, municipality, address_id, source='Material', fail=fail)
     return "genbrug"
 

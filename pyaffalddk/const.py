@@ -255,6 +255,7 @@ MATERIAL_LIST = {
         "Miljøskab (1 stk.)",
         "Rød kasse",
         "Rød kasse henteordning (1 stk.)",
+        "Rød miljøboks",
     ],
     "flis": [
         "",
@@ -309,6 +310,7 @@ MATERIAL_LIST = {
         "240 l glas/metal - 4 tømninger (1 stk.)",
         "240 liter - Metal/Glas - tømmes hver 8. uge (1 stk.)",
         "Glas & Metal",
+        "Metal og Glas",
         "Glas/metal",
         "Glas/metal (1 stk.)",
         "Glas/metal, afstand over 5 meter (1 stk.)",
@@ -322,7 +324,7 @@ MATERIAL_LIST = {
         "400 liter - Pap og papir - Tømmes hver 2. uge (1 stk.)",
         "770 L pap (1 stk.)",
         "Beholder til pap (1 stk.)",
-        "Indsamling af pap (løst og beholder) (1 stk.)",
+        "Indsamling af pap",
         "Pap",
         "Pap 240 L (1 stk.)",
         "Pap 240 L (ejer:kommune) (h) (1 stk.)",
@@ -388,6 +390,7 @@ MATERIAL_LIST = {
         'Plast/papir (1 stk.)',
         'Plast/papir, afstand over 5 meter (1 stk.)',
         'Plast+MDK/Papir',
+        "plast og papir",
     ],
     "plast": [
         "Plast",
@@ -410,7 +413,6 @@ MATERIAL_LIST = {
         "Plast/Metal",
     ],
     "plastmetalmadmdk": [
-        "",
     ],
     "plastmetalpapir": [
         "*140 l grøn, 14 dags tømning (1 stk.)",
@@ -544,14 +546,16 @@ NAME_LIST = {
 }
 
 NAME_ARRAY = list(NAME_LIST.keys())
+PAR_EXCEPTIONS = ['M/R']
 STRIPS = [
         '140l ', '140 l ', '190l ', '190 l ',
         '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', ', 240l',
         '370 l ', '370 liter ',
         '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel',
-        'todelt 4 ugers tømning (med takst)', 'todelt 14 dages tøm (med takst)', '4-ugers', '2 delt', '(2-delt)', '(tilmelding)',
-        'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '(villa)',
-        'distrikt 2 (privat)', 'egenløsning (privat)', 'distrikt 2', ' gl.', '(r)', '-skel 0-2 meter',
+        'todelt 4 ugers tømning', 'todelt 14 dages tøm', '4-ugers', '2 delt',
+        'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ',
+        'egenløsning', 'distrikt 2', ' gl.',
+        '-skel 0-2 meter', '- Stand', '- Skel',
 ]
 ODD_EVEN_ARRAY = ["lige", "ulige"]
 WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag",

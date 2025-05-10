@@ -154,5 +154,25 @@
     "pappi",
     "metalglas",
     "next_pickup"
+  ],
+  "r\u00f8dovre_1": [
+    "restaffaldmadaffald",
+    "storskrald",
+    "pappi",
+    "metalglas",
+    "haveaffald",
+    "farligtaffaldmiljoboks",
+    "pap",
+    "next_pickup"
+  ],
+  "r\u00f8dovre_2": [
+    "restaffaldmadaffald",
+    "storskrald",
+    "pappi",
+    "metalglas",
+    "haveaffald",
+    "farligtaffaldmiljoboks",
+    "pap",
+    "next_pickup"
   ]
 }

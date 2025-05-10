@@ -167,17 +167,19 @@ async def test_smoketest(capsys, monkeypatch, update=False):
                 keys = list(pickups.keys())
 
                 assert set(keys[:-1]).issubset(NAME_LIST)
+                assert keys[-1] == 'next_pickup'
 
+                data = {key: pickups[key].description for key in keys[:-1]}
                 if name not in smokecompare or update:
-                    smokecompare[name] = keys
+                    smokecompare[name] = data
                     print(f'adding "{name}" to the smoketest compare data')
-                    with smokecompare_file.open('w') as fh:
-                        json.dump(smokecompare, fh, indent=2)
-                if smokecompare[name] != keys:
+                    with smokecompare_file.open('w', encoding="utf-8") as fh:
+                        json.dump(smokecompare, fh, indent=2, ensure_ascii=False)
+                if smokecompare[name] != data:
                     print(name, city)
-                    print(keys)
+                    print(data)
                     print(smokecompare[name])
-                assert smokecompare[name] == keys
+                assert smokecompare[name] == data
 
 
 def test_ics(capsys):

@@ -151,5 +151,9 @@
     "haveaffald": "240 L - Haveaffald",
     "farligtaffaldmiljoboks": "Rød miljøboks",
     "pap": "Indsamling af pap (løst og beholder)"
+  },
+  "hjørring_1": {
+    "papirglasmetalplast": "240 l plast/metal/drikkekartoner og papir/pap 4-ugers",
+    "restaffaldmadaffald": "240 l mad/restaffald 2 delt 14-dags"
   }
 }

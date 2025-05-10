@@ -145,6 +145,7 @@ SUPPORTED_ITEMS = {
         "Plast og Mad- & drikkekartoner/Papir",
         "Plast, Mad- og drikkekartoner, Småt Pap og Papir",
         "Papir & Pap / Plast & MDK",
+        "Plast & MD-Karton / PP",
     ],
     "plast": [
         "Plast - Obligatorisk min. 1 spand",
@@ -383,6 +384,7 @@ MATERIAL_LIST = {
         'Papir & småt pap',
         'papir/plast og kartoner',
         'Papir/Plast og MDK 240 l - 2-kammer (1 stk.)',
+        'Plast/papir',
         'Plast/papir (1 stk.)',
         'Plast/papir, afstand over 5 meter (1 stk.)',
         'Plast+MDK/Papir',

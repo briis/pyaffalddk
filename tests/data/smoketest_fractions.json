@@ -140,9 +140,18 @@
     "restaffaldmadaffald",
     "next_pickup"
   ],
+  "rudersdal_1": [
+    "pappi",
+    "metalglas",
+    "pap",
+    "restaffaldmadaffald",
+    "storskrald",
+    "next_pickup"
+  ],
   "n\u00e6stved_1": [
     "restaffaldmadaffald",
     "storskrald",
+    "pappi",
     "metalglas",
     "next_pickup"
   ]

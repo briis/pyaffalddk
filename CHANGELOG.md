@@ -1,5 +1,30 @@
 # Changelog for pyaffalddk
 
+## [2.5.0] - `2025-05-10`
+
+### Added
+
+* Added smoketests for getting fraction names
+* Added and/or changed Fractions for the following Municipalities_
+  * Mariagerfjord
+  * Aalborg
+  * Egedal
+  * Svendborg
+  * Glostrup
+  * Lyngby-Taarbaek
+  * Esbjerg
+  * Randers
+  * Sønderborg
+  * Kerteminde
+  * Næstved
+  * Jammerbugt
+
+### Changes
+
+* Cleanup for get_garbage_data() on all apis
+* Re-sorting all the const lists and consolidating the municpality list to the Munipality File
+* Changed address_id to the new naming uid, to avoid unique_id issues.
+
 ## [2.4.0] - `2025-05-06`
 
 ### Added

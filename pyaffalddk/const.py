@@ -343,6 +343,7 @@ MATERIAL_LIST = {
     ],
     "papirglas": [
         "Papir/glas - 240 l. fortovsindsamling (1 stk.)",
+        "Papir og Glas",
         "Papir og pap/Glas",
     ],
     "papirglasdaaser": [
@@ -413,6 +414,7 @@ MATERIAL_LIST = {
         "Plast og mad- & drikkekartoner",
     ],
     "plastmetal": [
+        "Metal og Plast",
         "Plast, småt metal & MDK - 240 l. (1 stk.)",
         "Plast/Metal",
     ],
@@ -443,6 +445,7 @@ MATERIAL_LIST = {
         "Rest/Mad",
         "rest/madaffald",
         "Restaffald/Madaffald",
+        "Rest og Mad",
     ],
     "storskrald": [
         "Elektronik, stort metal, keramik og porcelæn (1 stk.)",
@@ -556,7 +559,7 @@ STRIPS = [
         '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', ', 240l', ' 240 ltr',
         '370 l ', '370 liter ',
         '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel',
-        'todelt 4 ugers tømning', 'todelt 14 dages tøm', '4-ugers', '2 delt',
+        'todelt 4 ugers tømning', 'todelt 14 dages tøm', 'hver 4. uge', '4-ugers', '2 delt',
         'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ',
         'egenløsning', 'distrikt 2', ' gl.',
         '-skel 0-2 meter', '- Stand', '- Skel',

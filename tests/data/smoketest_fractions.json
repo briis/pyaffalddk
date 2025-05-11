@@ -171,5 +171,14 @@
     "restaffald": "Restaffald, 140L (ekstra til 2-delt)",
     "genbrug": "Genbrugsspand, 240L (2-delt)",
     "pappapir": "Papir/Papspand, 240L"
+  },
+  "gentofte_275": {
+    "storskrald": "Storskrald",
+    "haveaffald": "Haveaffald",
+    "papirglas": "240 L Papir og Glas",
+    "plastmetal": "240 L Metal og Plast",
+    "farligtaffaldmiljoboks": "Miljøboks Torsdag hver 4. uge (A)",
+    "restaffaldmadaffald": "240 L Rest og Mad",
+    "pap": "Pap - Storskrald"
   }
 }

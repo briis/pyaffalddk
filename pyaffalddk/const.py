@@ -72,6 +72,7 @@ SUPPORTED_ITEMS = {
         "Glas/Plast og MDK",
     ],
     "haveaffald": [
+        "Haveaff.",
         "Haveaffald, flishugning",
         "Haveaffald",
         "Trærødder og stammer",
@@ -93,6 +94,7 @@ SUPPORTED_ITEMS = {
     ],
     "metalglas": [
         "Glas og metal",
+        "Metal/glas",
         "Metal-Glas",
         "Glas/Metal",
         "Metal og Glas",
@@ -142,6 +144,7 @@ SUPPORTED_ITEMS = {
         "Plast/MD-karton/PP",
         "Plast/Papir",
         "Papir/Plast og kartoner",
+        "Papir- Plast/Mad- og Drikkekartoner",
         "Plast og Mad- & drikkekartoner/Papir",
         "Plast, Mad- og drikkekartoner, Småt Pap og Papir",
         "Papir & Pap / Plast & MDK",

@@ -155,5 +155,13 @@
   "hjørring_1": {
     "papirglasmetalplast": "240 l plast/metal/drikkekartoner og papir/pap 4-ugers",
     "restaffaldmadaffald": "240 l mad/restaffald 2 delt 14-dags"
+  },
+  "høje-taastrup_280": {
+    "restaffaldmadaffald": "Mad/Rest",
+    "haveaffald": "Haveaff.",
+    "pappi": "Papir- Plast/Mad- og Drikkekartoner",
+    "metalglas": "Metal/glas",
+    "storskrald": "Storskrald",
+    "pap": "Pap"
   }
 }

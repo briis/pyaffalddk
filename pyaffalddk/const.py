@@ -289,6 +289,7 @@ MATERIAL_LIST = {
         "Have",
         "Haveaffald",
         "Haveaffald henteordning (1 stk.)",
+        "Havespand",
     ],
     "jern": [
         "240 L metal (1 stk.)",
@@ -552,7 +553,7 @@ NAME_ARRAY = list(NAME_LIST.keys())
 PAR_EXCEPTIONS = ['M/R']
 STRIPS = [
         '140l ', '140 l ', '190l ', '190 l ',
-        '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', ', 240l',
+        '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', ', 240l', ' 240 ltr',
         '370 l ', '370 liter ',
         '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel',
         'todelt 4 ugers tømning', 'todelt 14 dages tøm', '4-ugers', '2 delt',

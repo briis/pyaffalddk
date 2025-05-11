@@ -305,6 +305,7 @@ MATERIAL_LIST = {
         "*190 l rød (1 stk.)",
         "140 L madaffald (1 stk.)",
         "Madaffald",
+        "Mad",
     ],
     "metalglas": [
         "240 L - Metal og Glas (1 stk.)",
@@ -364,6 +365,7 @@ MATERIAL_LIST = {
     "pappapir": [
         "240L papir, pap (1 stk.)",
         "Genbrugsbeholder PP-240L/6uge (1 stk.)",
+        "papir/pap",
         "Papir/Papspand",
         "papir, pap",
     ],
@@ -412,6 +414,7 @@ MATERIAL_LIST = {
         "Genbrug henteordning (1 stk.)",
         "Mad- og drikkekartoner",
         "Plast og mad- & drikkekartoner",
+        "PMD",
     ],
     "plastmetal": [
         "Metal og Plast",
@@ -442,6 +445,7 @@ MATERIAL_LIST = {
         "Mad- og restaffald",
         "mad/rest",
         "mad/restaffald",
+        "rest",
         "Rest/Mad",
         "rest/madaffald",
         "Restaffald/Madaffald",
@@ -561,7 +565,7 @@ STRIPS = [
         '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel',
         'todelt 4 ugers tømning', 'todelt 14 dages tøm', 'hver 4. uge', '4-ugers', '2 delt',
         'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ',
-        'egenløsning', 'distrikt 2', ' gl.',
+        'egenløsning', 'distrikt 2', ' gl.', 'sommer 32',
         '-skel 0-2 meter', '- Stand', '- Skel',
 ]
 ODD_EVEN_ARRAY = ["lige", "ulige"]

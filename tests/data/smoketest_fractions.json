@@ -180,5 +180,11 @@
     "farligtaffaldmiljoboks": "Miljøboks Torsdag hver 4. uge (A)",
     "restaffaldmadaffald": "240 L Rest og Mad",
     "pap": "Pap - Storskrald"
+  },
+  "hjørring_265": {
+    "madaffald": "140 l Mad sommer 32",
+    "pappapir": "140 l papir/pap sommer 32",
+    "plastmadkarton": "240 l PMD sommer 32",
+    "restaffaldmadaffald": "370 l rest sommer 32"
   }
 }

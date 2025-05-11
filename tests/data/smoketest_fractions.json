@@ -163,5 +163,13 @@
     "metalglas": "Metal/glas",
     "storskrald": "Storskrald",
     "pap": "Pap"
+  },
+  "esbjerg_277": {
+    "farligtaffaldmiljoboks": "Miljøkasse",
+    "haveaffald": "Havespand, 240 ltr",
+    "restaffaldmadaffald": "Mad/Restaffald, 240L",
+    "restaffald": "Restaffald, 140L (ekstra til 2-delt)",
+    "genbrug": "Genbrugsspand, 240L (2-delt)",
+    "pappapir": "Papir/Papspand, 240L"
   }
 }

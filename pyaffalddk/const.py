@@ -357,7 +357,8 @@ MATERIAL_LIST = {
         '4-kammer',
         'Pap og papir/metal, glas og hård plast - 240 L (1 stk.)',
         'Pap og papir/metal, glas og hård plast - 240 L (EX) (1 stk.)',
-        'plast/metal/drikkekartoner og papir/pap'
+        'plast/metal/drikkekartoner og papir/pap',
+        'plast/metal/MDK/papir/pap',
     ],
     "papirmetal": [
         "Metal og papir 240 L (ejer.kommune) (1 stk.)",
@@ -365,6 +366,7 @@ MATERIAL_LIST = {
     "pappapir": [
         "240L papir, pap (1 stk.)",
         "Genbrugsbeholder PP-240L/6uge (1 stk.)",
+        "pap/papir",
         "papir/pap",
         "Papir/Papspand",
         "papir, pap",
@@ -378,6 +380,7 @@ MATERIAL_LIST = {
         '4-kammer (240 l) (1 stk.)',
         'Glas & metal og papir & småt pap',
         'glas/metal og pap/papir',
+        'pap, papir, tekstil & metal og glas',
     ],
     "pappi": [
         '240 L - Plast og Papir (1 stk.)',
@@ -389,6 +392,7 @@ MATERIAL_LIST = {
         '240L genbrug (1 stk.)',
         '370 l Plast+MDK/Papir - Egenløsning (1 stk.)',
         '370 l Plast+MDK/Papir - Egenløsning (Privat) (1 stk.)',
+        'PMDK/PP',
         'PP/MDK-plast 240 l (hver 2. uge) (1 stk.)',
         'Papir & småt pap',
         'papir/plast og kartoner',
@@ -397,6 +401,7 @@ MATERIAL_LIST = {
         'Plast/papir (1 stk.)',
         'Plast/papir, afstand over 5 meter (1 stk.)',
         'Plast+MDK/Papir',
+        'plast & mad- og drikkekartoner',
         "plast og papir",
     ],
     "plast": [
@@ -429,6 +434,7 @@ MATERIAL_LIST = {
     "plastmdkglasmetal": [
         "240 L todelt genbrugsspand hver 4. uge (1 stk.)",
         "240L plast, MDK/metal, glas gl. (1 stk.)",
+        "todelt genbrugsspand",
         "Genbrugsbeholder, 190 ltr (1 stk.)",
         "Genbrugsspand, 240L (2-delt) (1 stk.)",
         "plast, MDK/metal, glas",
@@ -450,6 +456,7 @@ MATERIAL_LIST = {
         "rest/madaffald",
         "Restaffald/Madaffald",
         "Rest og Mad",
+        "todelt skraldespand",
     ],
     "storskrald": [
         "Elektronik, stort metal, keramik og porcelæn (1 stk.)",
@@ -562,10 +569,10 @@ STRIPS = [
         '140l ', '140 l ', '190l ', '190 l ',
         '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', ', 240l', ' 240 ltr',
         '370 l ', '370 liter ',
-        '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel',
-        'todelt 4 ugers tømning', 'todelt 14 dages tøm', 'hver 4. uge', '4-ugers', '2 delt',
-        'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ',
-        'egenløsning', 'distrikt 2', ' gl.', 'sommer 32',
+        '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel', 'med 14-dages tømning ved helårshuse',
+        'todelt 4 ugers tømning', 'todelt 14 dages tøm', '3 ugers tømning', 'hver 4. uge', '4-ugers', 'hver 6. uge', '2 delt',
+        'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '1-rums',
+        'egenløsning', 'distrikt 2', 'distrikt E', ' D1 ', ' gl.', 'sommer 32', 'm. sommertømning',
         '-skel 0-2 meter', '- Stand', '- Skel',
 ]
 ODD_EVEN_ARRAY = ["lige", "ulige"]

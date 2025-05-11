@@ -103,7 +103,7 @@ MUNICIPALITIES_IDS = {line.split(':')[1].strip().lower(): int(line.split(':')[0]
 
 
 MUNICIPALITIES_LIST = {
-    "Aabenraa": ["aabenraa", "6"],
+    "Aabenraa": ["aabenraa", "6"],  # ??
     "Aalborg": ["aalborg", "6"],
     "Aarhus": ["aarhus", "3"],
     "Albertslund": ["albertslund", "6"],
@@ -112,13 +112,12 @@ MUNICIPALITIES_LIST = {
     "Billund": ["billund", "6"],
     "Bornholm": ["bofa", "6"],
     "Brøndby": ["brondby", "6"],
-    "Brønderslev": ["bronderslev", "6"],
+    "Brønderslev": ["bronderslev", "6"],  # ??
     "Dragør": ["dragoer", "6"],
     "Egedal": ["egedal", "6"],
     "Esbjerg": ["esbjerg", "6"],
     "Faxe": ["faxe", "5"],
     "Fredensborg": ["fredensborg", "6"],
-    "Frederiksberg": ["frederiksberg", "6"],
     "Frederikssund": ["frederikssund", "5"],
     "Gentofte": ["gentofte", "6"],
     "Gladsaxe": ["gladsaxe", "5"],
@@ -127,18 +126,17 @@ MUNICIPALITIES_LIST = {
     "Gribskov": ["gribskov", "5"],
     "Guldborgsund": ["guldborgsund", "5"],
     "Halsnæs": ["halsnaes", "5"],
-    "Hedensted": ["hedensted", "6"],
     "Helsingør": ["helsingor", "6"],
     "Herlev": ["herlev", "6"],
-    "Hillerød": ["hillerod", "5"],
-    "Hjørring": ["hjoerring", "6"],
+    "Hillerød": ["hillerod", "5"], 
+    "Hjørring": ["hjoerring", "6"],  # ??
     "Horsens": ["horsens", "5"],
     "Hvidovre": ["hvidovre", "5"],
     "Høje-Taastrup": ["htk", "5"],
-    "Hørsholm": ["hoersholm", "6"],
-    "Jammerbugt": ["jammerbugt", "6"],
+    "Hørsholm": ["hoersholm", "6"],  # ??
+    "Jammerbugt": ["jammerbugt", "6"],  # ??
     "Kalundborg": ["kalundborg", "5"],
-    "Kerteminde": ["kerteminde", "6"],
+    "Kerteminde": ["kerteminde", "6"],  # ??
     "København": ["kk", "4"],
     "Køge": ["koege", "5"],
     "Lejre": ["lejre", "6"],
@@ -148,9 +146,8 @@ MUNICIPALITIES_LIST = {
     "Næstved": ["naestved", "5"],
     "Odense": ["odense", "2"],
     "Odsherred": ["odsherred", "5"],
-    "Randers": ["randers", "6"],
+    "Randers": ["randers", "6"],  # ??
     "Ringkøbing-Skjern": ["rksk", "5"],
-    "Ringsted": ["ringsted", "6"],
     "Roskilde": ["roskilde", "5"],
     "Rudersdal": ["rudersdal", "6"],
     "Rødovre": ["rk", "6"],
@@ -159,12 +156,12 @@ MUNICIPALITIES_LIST = {
     "Solrød": ["solrod", "6"],
     "Stevns": ["stevns", "5"],
     "Svendborg": ["svendborg", "6"],
-    "Sønderborg": ["sonderborg", "6"],
+    "Sønderborg": ["sonderborg", "6"],  # ??
     "Tårnby": ["taarnby", "5"],
-    "Varde": ["varde", "6"],
+    "Varde": ["varde", "6"],  # ??
     "Vejen": ["vejen", "5"],
-    "Vordingborg": ["vordingborg", "6"],
+    "Vordingborg": ["vordingborg", "6"],  # ??
 }
 
 
-MUNICIPALITIES_ARRAY = list(MUNICIPALITIES_LIST.keys())
+SUPPORTED_MUNICIPALITIES = sorted(list(MUNICIPALITIES_LIST.keys()))

@@ -186,5 +186,33 @@
     "pappapir": "140 l papir/pap sommer 32",
     "plastmadkarton": "240 l PMD sommer 32",
     "restaffaldmadaffald": "370 l rest sommer 32"
+  },
+  "aabenraa_1": {
+    "restaffaldmadaffald": "240 l mad/rest - 14. dags  ",
+    "pappapirglasmetal": "240 l pap, papir, tekstil & metal og glas  - 4 uger",
+    "pappi": "240 l plast & mad- og drikkekartoner - 4 uger"
+  },
+  "brønderslev_1": {
+    "papirglasmetalplast": "240L plast/metal/MDK/papir/pap",
+    "restaffaldmadaffald": "240L mad/rest"
+  },
+  "hørsholm_1": {
+    "pappi": "Plast/papir",
+    "metalglas": "Glas/metal",
+    "pap": "Pap 240 L (villa)",
+    "restaffaldmadaffald": "(H) Rest/mad 240 L beh. - 14. dg. tømning",
+    "farligtaffaldmiljoboks": "Farligt affald, distrikt E",
+    "storskrald": "Storskrald (tilmelding) Onsdag - dst 4 (H)"
+  },
+  "varde_1": {
+    "restaffaldmadaffald": "240 L todelt skraldespand med 14-dages tømning ved helårshuse",
+    "pappapir": "240 L 1-rums pap/papir hver 6. uge",
+    "plastmdkglasmetal": "240 L todelt genbrugsspand hver 4. uge"
+  },
+  "vordingborg_1": {
+    "storskrald": "Storskrald D1 torsdag",
+    "metalglas": "240 L. Glas/Metal - 4 tømninger",
+    "pappi": "240 L. PMDK/PP 3 ugers tømning",
+    "restaffaldmadaffald": "240 L. Restaffald/madaffald 14-dags m. sommertømning"
   }
 }

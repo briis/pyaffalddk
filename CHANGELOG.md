@@ -1,5 +1,14 @@
 # Changelog for pyaffalddk
 
+## [2.5.1] - `2025-05-12`
+
+### Changes
+
+* Høje Taastrup, mangler Haveaff,Papir- Plast/Mad- og Drikkekartoner og Metal/glas affalddk#280
+* Haveaffald Esbjerg affalddk#277
+* "Pap", "Papir, pap & glas", "Plast & Metal", "Rest- og madaffald" virker ikke i 2.40beta3 for Gentofte Kommune affalddk#275
+* Hjørring kommune affalddk#265
+
 ## [2.5.0] - `2025-05-10`
 
 ### Added

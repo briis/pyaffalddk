@@ -13,7 +13,7 @@ import pickle
 
 from pyaffalddk import (
     GarbageCollection,
-    MUNICIPALITIES_ARRAY,
+    MUNICIPALITIES_LIST,
     NAME_ARRAY,
     AffaldDKAddressInfo,
     PickupEvents,
@@ -28,12 +28,14 @@ async def main() -> None:
     parser = argparse.ArgumentParser(description="Async test module")
 
     parser.add_argument("municipality", help="The name of the municipality")
-    parser.add_argument("--municipalities", action="store_true", help="list municipalities")
+    parser.add_argument("--municipalities",
+                        action="store_true", help="list municipalities")
     parser.add_argument("-a", "--address_id", type=str, help="address id")
     parser.add_argument("-s", "--street", type=str, help="street name")
     parser.add_argument("-n", "--number", type=str, help="street number")
     parser.add_argument("-z", "--zipcode", type=str, help="zipcode")
-    parser.add_argument("--smoketest", type=str, help="add to smoketest data with this name")
+    parser.add_argument("--smoketest", type=str,
+                        help="add to smoketest data with this name")
     parser.add_argument("--pickup", action="store_true", help="show pickups")
 
     args = parser.parse_args()
@@ -44,7 +46,7 @@ async def main() -> None:
 
     async with ClientSession() as session:
         if args.municipalities:
-            for row in MUNICIPALITIES_ARRAY:
+            for row in MUNICIPALITIES_LIST:
                 print(row.capitalize())
             sys.exit(0)
 
@@ -73,7 +75,8 @@ async def main() -> None:
                     data = await gc.get_pickup_data(address_id)
                     if data:
                         print("")
-                        print("========================================================")
+                        print(
+                            "========================================================")
                         for item in NAME_ARRAY:
                             if data.get(item) is None:
                                 continue
@@ -82,14 +85,17 @@ async def main() -> None:
                             print("  Gruppe: ", data[item].group)
                             print("  Navn: ", data[item].friendly_name)
                             try:
-                                print("  Dato: ", data[item].date.strftime("%d-%m-%Y"))
+                                print("  Dato: ",
+                                      data[item].date.strftime("%d-%m-%Y"))
                             except:  # noqa: E722
                                 print("  Dato: ", data[item].date)
                             print("  Beskrivelse: ", data[item].description)
                             print("  Icon: ", data[item].icon)
                             print("  Picture: ", data[item].entity_picture)
-                            print("  Sidst Opdateret: ", dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
-                            print("  ======================================================")
+                            print("  Sidst Opdateret: ",
+                                  dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
+                            print(
+                                "  ======================================================")
 
                         item = "next_pickup"
                         print("Mext Pickup:")
@@ -99,8 +105,10 @@ async def main() -> None:
                         print("  Beskrivelse: ", data[item].description)
                         print("  Icon: ", data[item].icon)
                         print("  Picture: ", data[item].entity_picture)
-                        print("  Sidst Opdateret: ", dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
-                        print("  ======================================================")
+                        print("  Sidst Opdateret: ",
+                              dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
+                        print(
+                            "  ======================================================")
 
                 except AffaldDKNoConnection as err:
                     print(err)
@@ -112,8 +120,10 @@ async def main() -> None:
                 data = await gc._api.get_garbage_data(address_id)
                 if data:
                     if args.smoketest in smokedata:
-                        raise RuntimeError(f'the name "{args.smoketest}"is already in the smoketest set')
-                    smokedata[args.smoketest] = {'city': args.municipality, 'data':data}
+                        raise RuntimeError(
+                            f'the name "{args.smoketest}"is already in the smoketest set')
+                    smokedata[args.smoketest] = {
+                        'city': args.municipality, 'data': data}
                     print(f'Added "{args.smoketest}" to the smoketest set...')
                     with open('tests/data/smoketest_garbage_data.p', 'wb') as fh:
                         smokedata = pickle.dump(smokedata, fh)

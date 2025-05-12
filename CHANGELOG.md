@@ -8,6 +8,10 @@
 * Haveaffald Esbjerg affalddk#277
 * "Pap", "Papir, pap & glas", "Plast & Metal", "Rest- og madaffald" virker ikke i 2.40beta3 for Gentofte Kommune affalddk#275
 * Hjørring kommune affalddk#265
+* Removed the following Municipalities, as they cannot be supported with the current API:
+  * Frederiksberg
+  * Hedensted
+  * Ringsted
 
 ## [2.5.0] - `2025-05-10`
 

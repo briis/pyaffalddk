@@ -572,7 +572,7 @@ STRIPS = [
         '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel', 'med 14-dages tømning ved helårshuse',
         'todelt 4 ugers tømning', 'todelt 14 dages tøm', '3 ugers tømning', 'hver 4. uge', '4-ugers', 'hver 6. uge', '2 delt',
         'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '1-rums',
-        'egenløsning', 'distrikt 2', 'distrikt E', ' D1 ', ' gl.', 'sommer 32', 'm. sommertømning',
+        'egenløsning', ' D1 ', ' gl.', 'sommer 32', 'm. sommertømning',
         '-skel 0-2 meter', '- Stand', '- Skel',
 ]
 ODD_EVEN_ARRAY = ["lige", "ulige"]

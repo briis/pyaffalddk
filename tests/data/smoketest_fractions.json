@@ -214,5 +214,13 @@
     "metalglas": "240 L. Glas/Metal - 4 tømninger",
     "pappi": "240 L. PMDK/PP 3 ugers tømning",
     "restaffaldmadaffald": "240 L. Restaffald/madaffald 14-dags m. sommertømning"
+  },
+  "rudersdal_289": {
+    "pappi": "Plast/papir",
+    "metalglas": "Glas/metal",
+    "pap": "Pap 240 L (villa)",
+    "restaffaldmadaffald": "(R) REST/MAD 240 L beh. (villa) - ugetømning",
+    "farligtaffaldmiljoboks": "Farligt affald, distrikt A",
+    "storskrald": "Storskrald (tilmelding) Tirsdag - dst 4 (R)"
   }
 }

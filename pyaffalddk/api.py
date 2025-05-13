@@ -725,6 +725,8 @@ def get_garbage_type_from_material(item, municipality, address_id, fail=False):
     pattern = rf"\s*\((?!{'|'.join(escaped)}\)).*?\)"
     fixed_item = re.sub(pattern, "", fixed_item)  # strip anything in parenthesis
 
+    fixed_item = re.sub(r'\bdistrikt [A-Za-z0-9]\b', '', fixed_item)
+
     fixed_item = fixed_item.strip().rstrip(',').lstrip(', ').rstrip(' - ').lstrip(' - ')
     fixed_item = fixed_item.split(' - ')[0].strip()
 

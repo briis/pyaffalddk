@@ -1,5 +1,14 @@
 # Changelog for pyaffalddk
 
+Rudersdal - Material type [Farligt affald, distrikt A] is not defined in the system for Genbrug #289
+
+## [2.5.2] - `2025-05-13`
+
+### Changes
+
+* Rudersdal - Material type [Farligt affald, distrikt A] is not defined in the system for Genbrug #289
+
+
 ## [2.5.1] - `2025-05-12`
 
 ### Changes

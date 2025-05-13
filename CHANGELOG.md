@@ -7,7 +7,7 @@ Rudersdal - Material type [Farligt affald, distrikt A] is not defined in the sys
 ### Changes
 
 * Rudersdal - Material type [Farligt affald, distrikt A] is not defined in the system for Genbrug #289
-
+* Herlev - Herlev Kommune - #290
 
 ## [2.5.1] - `2025-05-12`
 

@@ -5,23 +5,6 @@ GH_API = b'NDc5RDQwRjQtQjNFMS00MDM4LTkxMzAtNzY0NTMxODhDNzRD'
 
 
 NON_SUPPORTED_ITEMS = [
-    "Asbest",
-    "Beholderudbringning",
-    "Beholderservice",
-    "Bestil afhentning",
-    "Bestillerordning",
-    "Farligt affald (skal bestilles)",
-    "Farligt affald - tilmeld",
-    "Haveaffald (skal bestilles)",
-    "Henteordning for grene",
-    "Ingen tømningsdato fundet!",
-    "Skal tilmeldes",
-    "Storskrald (skal bestilles)",
-    "Trærødder og stammer",
-]
-
-
-NON_SUPPORTED_ITEMS = [
     'Asbest',
     'Beholderservice',
     'Beholderudbringning',
@@ -336,6 +319,7 @@ MATERIAL_LIST = {
         "Pap 240 L (villa) (1 stk.)",
         "Pap, 660 liter (3 stk.)",
         "Pap - 240 l.  (1 stk.)",
+        "Papbeholder",
     ],
     "papir": [
         "660 L papir (1 stk.)",
@@ -402,6 +386,7 @@ MATERIAL_LIST = {
         'Plast/papir, afstand over 5 meter (1 stk.)',
         'Plast+MDK/Papir',
         'plast & mad- og drikkekartoner',
+        'plast og mad- & drikkekartoner/papir',
         "plast og papir",
     ],
     "plast": [
@@ -571,9 +556,9 @@ STRIPS = [
         '370 l ', '370 liter ',
         '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel', 'med 14-dages tømning ved helårshuse',
         'todelt 4 ugers tømning', 'todelt 14 dages tøm', '3 ugers tømning', 'hver 4. uge', '4-ugers', 'hver 6. uge', '2 delt',
-        'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '1-rums',
-        'egenløsning', ' D1 ', ' gl.', 'sommer 32', 'm. sommertømning',
-        '-skel 0-2 meter', '- Stand', '- Skel',
+        'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '1-rums', 'to-kammer',
+        'egenløsning', ' D1 ', ' gl.', 'sommer 32', 'm. sommertømning', 'villa',
+        '-skel 0-2 meter', '- Stand', '- Skel', ' ?'
 ]
 ODD_EVEN_ARRAY = ["lige", "ulige"]
 WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag",

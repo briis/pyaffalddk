@@ -222,5 +222,14 @@
     "restaffaldmadaffald": "(R) REST/MAD 240 L beh. (villa) - ugetømning",
     "farligtaffaldmiljoboks": "Farligt affald, distrikt A",
     "storskrald": "Storskrald (tilmelding) Tirsdag - dst 4 (R)"
+  },
+  "herlev_290": {
+    "haveaffald": "Haveaffald",
+    "storskrald": "Storskrald",
+    "farligtaffaldmiljoboks": "Miljøboks",
+    "pap": "Papbeholder villa",
+    "restaffaldmadaffald": "240 l to-kammer rest/mad ? 14. dags tømning",
+    "pappi": "240 L to-kammer Plast og Mad- & drikkekartoner/Papir",
+    "metalglas": "240 L to-kammer Glas/Metal"
   }
 }

@@ -1,7 +1,7 @@
 {
   "smoke_0": {
     "haveaffald": "140L haveaffald",
-    "genbrug": "240L genbrug",
+    "pappi": "240L genbrug",
     "restaffald": "190L restaffald 14. dags tømning"
   },
   "smoke_1": {
@@ -17,7 +17,7 @@
   },
   "smoke_2": {
     "haveaffald": "140L haveaffald",
-    "genbrug": "240L genbrug",
+    "pappi": "240L genbrug",
     "restaffald": "190L restaffald 14. dags tømning"
   },
   "smoke_3": {
@@ -55,7 +55,7 @@
     "restaffaldmadaffald": "240 l mad/rest"
   },
   "Aalborg_1": {
-    "genbrug": "240L genbrug",
+    "pappi": "240L genbrug",
     "restaffald": "240L restaffald sommerhustømning"
   },
   "egedal_1": {
@@ -69,7 +69,7 @@
     "metalglas": "240 l Glas/metal Egenløsning (Privat)"
   },
   "svendborg_1": {
-    "genbrug": "Genbrug henteordning",
+    "plastmadkarton": "Genbrug henteordning",
     "restaffaldmadaffald": "370 liter mad- og restaffald - 2 rum",
     "pappapirglasmetal": "370 liter glas/metal og pap/papir - 2 rum",
     "haveaffald": "Haveaffald henteordning",
@@ -86,7 +86,7 @@
   },
   "lyngby_1": {
     "storskrald": "Storskrald",
-    "papirglasmetalplast": "4-kammer (240 l)",
+    "pappapirglasmetal": "4-kammer (240 l)",
     "restaffaldmadaffald": "240 l. 14 dages tømning (M/R)",
     "haveaffald": "Haveaffald 1. mar-30. nov",
     "pap": "Beholder til pap",
@@ -119,7 +119,8 @@
     "genbrug": "Gen-Skel 0-2 meter",
     "haveaffald": "Have-Skel 0-2 meter",
     "plast": "Plast-Skel 0-2 meter",
-    "restaffaldmadaffald": "240 l energi 2-kammer "
+    "restaffaldmadaffald": "240 l energi 2-kammer ",
+    "pappapirglasmetal": "240 l genbrug 2-kammer "
   },
   "rudersdal_1": {
     "pappi": "Plast/papir",

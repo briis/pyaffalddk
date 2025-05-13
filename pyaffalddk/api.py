@@ -19,6 +19,7 @@ from .const import (
     NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
     PAR_EXCEPTIONS,
+    SPECIAL_MATERIALS,
     STRIPS,
     SUPPORTED_ITEMS,
     WEEKDAYS,
@@ -714,9 +715,27 @@ def get_garbage_type(item: str) -> str:
 def get_garbage_type_from_material(item, municipality, address_id, fail=False):
     """Get the garbage type from the materialnavn."""
     # _LOGGER.debug("Material: %s", item)
+
+    for special in SPECIAL_MATERIALS:
+        if special.lower() in item.lower():
+            return SPECIAL_MATERIALS[special]
+
+    for fixed_item in clean_fraction_string(item):
+
+        if item in NON_MATERIAL_LIST:
+            return 'genbrug'
+        for key, value in MATERIAL_LIST.items():
+            if fixed_item.lower() in str(value).lower():
+                for entry in value:
+                    if fixed_item.lower() == entry.lower():
+                        return key
+    print(f'\nmissing: "{fixed_item}"')
+    warn_or_fail(item, municipality, address_id, source='Material', fail=fail)
+    return "genbrug"
+
+
+def clean_fraction_string(item):
     fixed_item = item.lower()
-    if ':' in fixed_item:
-        fixed_item = fixed_item.split(':')[1]
 
     for strip in WEEKDAYS + STRIPS:
         fixed_item = fixed_item.replace(strip.lower(), '')
@@ -727,22 +746,11 @@ def get_garbage_type_from_material(item, municipality, address_id, fail=False):
 
     fixed_item = re.sub(r'\bdistrikt [A-Za-z0-9]\b', '', fixed_item)
 
-    fixed_item = fixed_item.strip().rstrip(',').lstrip(', ').rstrip(' - ').lstrip(' - ')
-    fixed_item = fixed_item.split(' - ')[0].strip()
+    if ':' in fixed_item:
+        fixed_item = fixed_item.split(':')[1]
 
-    if 'haveaffald' in fixed_item:
-        return 'haveaffald'  # Lyngby gives "Haveaffald 1. mar-30. nov"
-
-    if item in NON_MATERIAL_LIST:
-        return 'genbrug'
-    for key, value in MATERIAL_LIST.items():
-        if fixed_item.lower() in str(value).lower():
-            for entry in value:
-                if fixed_item.lower() == entry.lower():
-                    return key
-    print(f'\nmissing: "{fixed_item}"')
-    warn_or_fail(item, municipality, address_id, source='Material', fail=fail)
-    return "genbrug"
+    fixed_item = fixed_item.strip().rstrip(',').lstrip(', ').rstrip(' -').lstrip('- ').lstrip('*')
+    return [o.strip() for o in fixed_item.split(' - ')]
 
 
 def warn_or_fail(name, municipality, address_id, source='Garbage', fail=False):

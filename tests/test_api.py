@@ -1,7 +1,7 @@
 import pytest
 from freezegun import freeze_time
 from aiohttp import ClientSession
-from pyaffalddk import GarbageCollection, NAME_LIST
+from pyaffalddk import GarbageCollection, NAME_LIST, const, api
 from pathlib import Path
 import pickle
 import json
@@ -73,7 +73,7 @@ async def test_Aalborg_gh(capsys, monkeypatch):
             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
-            update_and_compare('Aalborg_gh', pickups, UPDATE)
+            update_and_compare('Aalborg_gh', pickups, True)
 
 
 @pytest.mark.asyncio
@@ -180,6 +180,16 @@ async def test_smoketest(capsys, monkeypatch, update=False):
                     print(data)
                     print(smokecompare[name])
                 assert smokecompare[name] == data
+
+
+# def test_clean_string(capsys):
+#     with capsys.disabled():
+#         for category, vals in const.MATERIAL_LIST2.items():
+#             for val in vals:
+#                 cat = api.get_garbage_type_from_material(val, 'test', '1111', fail=False)
+#                 if cat != category:
+#                     print(val, api.clean_fraction_string(val))
+#                 assert cat == category
 
 
 def test_ics(capsys):

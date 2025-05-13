@@ -468,6 +468,16 @@ MATERIAL_LIST = {
     ],
 }
 
+SPECIAL_MATERIALS = {
+    '240 l genbrug 2-kammer': 'pappapirglasmetal',
+    'haveaffald': 'haveaffald',
+    '4-kammer (370 l)': 'papirglasmetalplast',
+    '4-kammer (240 l)': 'pappapirglasmetal',
+    '240L genbrug': 'pappi',
+    'genbrug - blåt låg': 'plastmadkarton',
+    'Genbrug henteordning': 'plastmadkarton',
+}
+
 
 ICON_LIST = {
     "batterier": "mdi:battery",
@@ -551,13 +561,13 @@ NAME_LIST = {
 NAME_ARRAY = list(NAME_LIST.keys())
 PAR_EXCEPTIONS = ['M/R']
 STRIPS = [
-        '140l ', '140 l ', '190l ', '190 l ',
+        '140l ', '140 l ', '190l ', '190 l ', '190 ltr',
         '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', ', 240l', ' 240 ltr',
-        '370 l ', '370 liter ',
-        '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel', 'med 14-dages tømning ved helårshuse',
-        'todelt 4 ugers tømning', 'todelt 14 dages tøm', '3 ugers tømning', 'hver 4. uge', '4-ugers', 'hver 6. uge', '2 delt',
+        '370 l ', '370 liter ', '400 liter', '660 liter', '660 l ',
+        '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel', 'med 14-dages tømning ved helårshuse', '– tømmes hver 2. uge',
+        'todelt 4 ugers tømning', 'todelt 14 dages tøm', '3 ugers tømning', 'hver 4. uge', '4-ugers', 'hver 6. uge', '2 delt', '2-delt',
         'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '1-rums', 'to-kammer',
-        'egenløsning', ' D1 ', ' gl.', 'sommer 32', 'm. sommertømning', 'villa',
+        'egenløsning', 'en-familie', ' D1 ', ' gl.', 'sommer 32', 'm. sommertømning', 'villa',
         '-skel 0-2 meter', '- Stand', '- Skel', ' ?'
 ]
 ODD_EVEN_ARRAY = ["lige", "ulige"]

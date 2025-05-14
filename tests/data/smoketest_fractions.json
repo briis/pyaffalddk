@@ -51,7 +51,7 @@
     "pappapirglasmetal": "Genbrug - grønt låg"
   },
   "mariager_1": {
-    "genbrug": "240 l genbrug låg i låg",
+    "papirglasmetalplast": "240 l genbrug låg i låg",
     "restaffaldmadaffald": "240 l mad/rest"
   },
   "Aalborg_1": {
@@ -100,7 +100,7 @@
     "haveaffald": "Tømningsdag for haveaffald",
     "farligtaffaldmiljoboks": "Miljøkasse",
     "restaffaldmadaffald": "Mad/Restaffald, 240L",
-    "genbrug": "Genbrugsspand, 240L (2-delt)",
+    "plastmdkglasmetal": "Genbrugsspand, 240L (2-delt)",
     "pappapir": "Papir/Papspand, 240L"
   },
   "randers_1": {
@@ -170,7 +170,7 @@
     "haveaffald": "Havespand, 240 ltr",
     "restaffaldmadaffald": "Mad/Restaffald, 240L",
     "restaffald": "Restaffald, 140L (ekstra til 2-delt)",
-    "genbrug": "Genbrugsspand, 240L (2-delt)",
+    "plastmdkglasmetal": "Genbrugsspand, 240L (2-delt)",
     "pappapir": "Papir/Papspand, 240L"
   },
   "gentofte_275": {

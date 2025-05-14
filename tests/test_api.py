@@ -183,31 +183,22 @@ async def test_smoketest(capsys, monkeypatch, update=False):
                 assert smokecompare[name] == data
 
 
-def test_type_from_material_no_cleaning(capsys, monkeypatch):
+def test_type_from_material_cleaning(capsys, monkeypatch):
     with capsys.disabled():
-        def get_data(item, **kwargs):
-            return [item]
-        monkeypatch.setattr(api, "clean_fraction_string", get_data)
         for category, vals in const_tests.MATERIAL_LIST.items():
             for val in vals:
                 cat = api.get_garbage_type_from_material(val, 'test', '1111', fail=False)
+                if cat != category:
+                    print(val, api.clean_fraction_string(val))
                 assert cat == category
 
         # reverse the order of testing
         for category in list(const_tests.MATERIAL_LIST.keys())[::-1]:
             for val in const_tests.MATERIAL_LIST[category][::-1]:
                 cat = api.get_garbage_type_from_material(val, 'test', '1111', fail=False)
+                if cat != category:
+                    print(val, api.clean_fraction_string(val))
                 assert cat == category
-
-
-# def test_clean_string(capsys):
-#     with capsys.disabled():
-#         for category, vals in const.MATERIAL_LIST2.items():
-#             for val in vals:
-#                 cat = api.get_garbage_type_from_material(val, 'test', '1111', fail=False)
-#                 if cat != category:
-#                     print(val, api.clean_fraction_string(val))
-#                 assert cat == category
 
 
 def test_ics(capsys):

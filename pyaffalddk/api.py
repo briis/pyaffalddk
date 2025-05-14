@@ -721,7 +721,6 @@ def get_garbage_type_from_material(item, municipality, address_id, fail=False):
             return SPECIAL_MATERIALS[special]
 
     for fixed_item in clean_fraction_string(item):
-
         if item in NON_MATERIAL_LIST:
             return 'genbrug'
         for key, value in MATERIAL_LIST.items():

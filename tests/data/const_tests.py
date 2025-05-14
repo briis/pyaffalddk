@@ -217,7 +217,6 @@ MATERIAL_LIST = {
         "Batterier i pose på låg (1 stk.)",
     ],
     "dagrenovation": [
-        "*140 l grøn (1 stk.)",
         "240 l. container 1 x ugentligt (12 stk.)",
         "Dag",
     ],
@@ -245,9 +244,7 @@ MATERIAL_LIST = {
         "Genanvendeligt",
         "Genbrug",
         "Genbrug 240 L",
-        "genbrug låg i låg",
         "Genbrugshal (1 stk.)",
-        "genbrugsspand",
         "Genbrugsøer",
         "Tekstiler",
     ],
@@ -277,7 +274,6 @@ MATERIAL_LIST = {
         "Juletræer (1 stk.)",
     ],
     "madaffald": [
-        "*190 l rød (1 stk.)",
         "140 L madaffald (1 stk.)",
         "Madaffald",
         "Mad",

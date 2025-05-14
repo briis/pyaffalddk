@@ -319,6 +319,7 @@ MATERIAL_LIST = {
         'Glas & metal og papir & småt pap',
         'glas/metal og pap/papir',
         'pap, papir, tekstil & metal og glas',
+        'papir/pap + glas/metal',
     ],
     "pappi": [
         'Papir & småt pap',
@@ -380,6 +381,9 @@ MATERIAL_LIST = {
         "Rest og Mad",
         "rød",
         "skraldespand",
+    ],
+    "restplast": [
+        "Rest + plast/MDK",
     ],
     "storskrald": [
         "Elektronik, stort metal, keramik og porcelæn",

@@ -14,14 +14,12 @@ import aiohttp
 from .const import (
     GH_API,
     ICON_LIST,
-    MATERIAL_LIST,
     NAME_LIST,
     NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
     PAR_EXCEPTIONS,
     SPECIAL_MATERIALS,
     STRIPS,
-    SUPPORTED_ITEMS,
     SUPPORTED_ITEMS2,
     WEEKDAYS,
 )

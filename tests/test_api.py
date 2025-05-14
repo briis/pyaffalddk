@@ -192,10 +192,16 @@ def test_type_from_material_cleaning(capsys, monkeypatch):
                     print(val, api.clean_fraction_string(val))
                 assert cat == category
 
-        # reverse the order of testing
-        for category in list(const_tests.MATERIAL_LIST.keys())[::-1]:
-            for val in const_tests.MATERIAL_LIST[category][::-1]:
-                cat = api.get_garbage_type_from_material(val, 'test', '1111', fail=False)
+        for val in const_tests.NON_MATERIAL_LIST:
+            cat = api.get_garbage_type_from_material(val, 'test', '1111', fail=False)
+            assert cat == 'genbrug'
+
+
+def test_type_cleaning(capsys, monkeypatch):
+    with capsys.disabled():
+        for category, vals in const_tests.SUPPORTED_ITEMS.items():
+            for val in vals:
+                cat = api.get_garbage_type(val)
                 if cat != category:
                     print(val, api.clean_fraction_string(val))
                 assert cat == category

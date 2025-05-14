@@ -705,6 +705,9 @@ def iso_string_to_date(datetext: str) -> dt.date:
 def get_garbage_type(item: str) -> str:
     """Get the garbage type."""
     # _LOGGER.debug("Affalds type: %s", item)
+    if item in NON_SUPPORTED_ITEMS:
+        return 'not-supported'
+
     for key, values in SUPPORTED_ITEMS.items():
         for entry in values:
             if item.lower() == entry.lower():
@@ -721,13 +724,12 @@ def get_garbage_type_from_material(item, municipality, address_id, fail=False):
             return SPECIAL_MATERIALS[special]
 
     for fixed_item in clean_fraction_string(item):
-        if item in NON_MATERIAL_LIST:
+        if fixed_item in [non.lower() for non in NON_MATERIAL_LIST]:
             return 'genbrug'
         for key, value in MATERIAL_LIST.items():
-            if fixed_item.lower() in str(value).lower():
-                for entry in value:
-                    if fixed_item.lower() == entry.lower():
-                        return key
+            for entry in value:
+                if fixed_item.lower() == entry.lower():
+                    return key
     print(f'\nmissing: "{fixed_item}"')
     warn_or_fail(item, municipality, address_id, source='Material', fail=fail)
     return "genbrug"

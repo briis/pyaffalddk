@@ -27,7 +27,6 @@ SUPPORTED_ITEMS = {
     ],
     "farligtaffaldmiljoboks": [
         "Farligt affald/Miljøboks",
-        "Papir og glas/dåser",
         "Miljøboks",
     ],
     "flis": [
@@ -52,7 +51,6 @@ SUPPORTED_ITEMS = {
         "Haveaff.",
         "Haveaffald, flishugning",
         "Haveaffald",
-        "Trærødder og stammer",
         "Haveaffald - Frivilligt",
         "Haveaffald 140 L",
         "Frivillig Haveaffald tømmes fra mandag til onsdag",

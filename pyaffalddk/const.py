@@ -43,7 +43,7 @@ SUPPORTED_ITEMS = {
         'Genanvendeligt',
         'Genbrug',
         'Genbrug 240 L',
-        'Genbrugshal (1 stk.)',
+        'Genbrugshal',
         'Genbrugsøer'
     ],
     "glas": [
@@ -55,11 +55,6 @@ SUPPORTED_ITEMS = {
     ],
     "haveaffald": [
         "Haveaff.",
-        "Haveaffald, flishugning",
-        "Haveaffald",
-        "Haveaffald - Frivilligt",
-        "Haveaffald 140 L",
-        "Frivillig Haveaffald tømmes fra mandag til onsdag",
     ],
     "jern": [
         "Jern",
@@ -74,12 +69,12 @@ SUPPORTED_ITEMS = {
         "Mad",
     ],
     "metalglas": [
+        "Glas/Metal",
+        "Glas / Metal",
         "Glas og metal",
         "Metal/glas",
         "Metal-Glas",
-        "Glas/Metal",
         "Metal og Glas",
-        "Glas / Metal",
     ],
     "pap": [
         "Pap",
@@ -112,24 +107,25 @@ SUPPORTED_ITEMS = {
         "Papir, pap og tekstilaffald",
     ],
     "pappapirglasmetal": [
-        "Pap, papir, tekstil & metal og glas",
         "4delt beholder",
-        "Ressourcebeholder (pap/papir og glas/metal)",
+        "Genbrug - grønt låg",
+        "Grønt låg",
+        "Pap, papir, tekstil & metal og glas",
         "Papir/pap og glas/metal",
         "Plast og drikkekarton - Glas og metal",
-        "Genbrug - grønt låg",
+        "Ressourcebeholder",
     ],
     "pappi": [
-        "Plast MDK og papir",
+        "Papir/Plast og kartoner",
+        "Papir- Plast/Mad- og Drikkekartoner",
+        "Papir & Pap / Plast & MDK",
         "PAPPI",
         "Plast/MD-karton/PP",
         "Plast/Papir",
-        "Papir/Plast og kartoner",
-        "Papir- Plast/Mad- og Drikkekartoner",
-        "Plast og Mad- & drikkekartoner/Papir",
         "Plast, Mad- og drikkekartoner, Småt Pap og Papir",
-        "Papir & Pap / Plast & MDK",
         "Plast & MD-Karton / PP",
+        "Plast og Mad- & drikkekartoner/Papir",
+        "Plast MDK og papir",
     ],
     "plast": [
         "Plast - Obligatorisk min. 1 spand",
@@ -159,7 +155,7 @@ SUPPORTED_ITEMS = {
         "Plast, mad- og drikkekartoner og metal",
     ],
     "plastmetalpapir": [
-        "Plast/Metal/Papir ",
+        "Plast/Metal/Papir",
         "Genbrugsspand - Obligatorisk min. 1 spand",
     ],
     "restaffald": [
@@ -184,7 +180,7 @@ SUPPORTED_ITEMS = {
         "Rest Mad",
         "Energispand - Obligatorisk min. 1 spand",
         "Rest/madaffald",
-        "Energibeholder (mad/rest)",
+        "Energibeholder",
         "Rest- og Madaffald",
     ],
     "restplast": [
@@ -206,7 +202,7 @@ SUPPORTED_ITEMS = {
         "Tekstilaffald",
         "Miljøkasse/tekstiler",
         "Tekstil",
-        "Tekstilposer (1 stk.)",
+        "Tekstilposer",
     ],
 }
 
@@ -313,11 +309,11 @@ MATERIAL_LIST = {
         "Papir/Papspand",
     ],
     "pappapirglasmetal": [
-        'grønt låg',
+        "Genbrug - grønt låg",
         'glas/metal og pap/papir',
-        'metal, glas, plast/papir',
         'Glas & metal og papir & småt pap',
-        'glas/metal og pap/papir',
+        "Grønt låg",
+        'metal, glas, plast/papir',
         'pap, papir, tekstil & metal og glas',
         'papir/pap + glas/metal',
     ],

@@ -708,10 +708,15 @@ def get_garbage_type(item: str) -> str:
     if item in NON_SUPPORTED_ITEMS:
         return 'not-supported'
 
-    for key, values in SUPPORTED_ITEMS.items():
-        for entry in values:
-            if item.lower() == entry.lower():
-                return key
+    for special in SPECIAL_MATERIALS:
+        if special.lower() in item.lower():
+            return SPECIAL_MATERIALS[special]
+
+    for fixed_item in clean_fraction_string(item):
+        for key, values in SUPPORTED_ITEMS.items():
+            for entry in values:
+                if fixed_item.lower() == entry.lower():
+                    return key
     return item
 
 
@@ -751,7 +756,10 @@ def clean_fraction_string(item):
         fixed_item = fixed_item.split(':')[1]
 
     fixed_item = fixed_item.strip().rstrip(',').lstrip(', ').rstrip(' -').lstrip('- ').lstrip('*')
-    return [o.strip() for o in fixed_item.split(' - ')]
+    res = [fixed_item.strip()]
+    if ' - ' in fixed_item:
+        res += [o.strip() for o in fixed_item.split(' - ')]
+    return res
 
 
 def warn_or_fail(name, municipality, address_id, source='Garbage', fail=False):

@@ -118,7 +118,7 @@ async def test_Aarhus(capsys, monkeypatch):
             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
-            update_and_compare('Aarhus', pickups, UPDATE)
+            update_and_compare('Aarhus', pickups, False)
 
 
 @pytest.mark.asyncio
@@ -201,7 +201,7 @@ def test_type_cleaning(capsys, monkeypatch):
     with capsys.disabled():
         for category, vals in const_tests.SUPPORTED_ITEMS.items():
             for val in vals:
-                cat = api.get_garbage_type(val)
+                cat = api.get_garbage_type(val, 'test', '1111', fail=False)
                 if cat != category:
                     print(val, api.clean_fraction_string(val))
                 assert cat == category

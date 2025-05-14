@@ -157,14 +157,14 @@ SUPPORTED_ITEMS = {
         "Genbrugsspand - Obligatorisk min. 1 spand",
     ],
     "restaffald": [
-        "Restaffald // Batterier og Småt Elektronik",
         "Industri Restaffald",
+        "Restaffald",
+        "Restaffald // Batterier og Småt Elektronik",
         "Rest",
     ],
     "restaffaldmadaffald": [
         "Restaffald-Madaffald",
         "Rest/mad",
-        "Restaffald",
         "Rest - Mad",
         "Rest-/Madaffald",
         "Mad- og restaffald",
@@ -222,9 +222,9 @@ MATERIAL_LIST = {
         "Småt elektronik i pose på låg (1 stk.)",
     ],
     "farligtaffald": [
+        "Farligt Affald",
     ],
     "farligtaffaldmiljoboks": [
-        "Farligt Affald",
         "*Miljøkasse (1 stk.)",
         "Miljøboks",
         "Miljøkasse",
@@ -244,7 +244,6 @@ MATERIAL_LIST = {
         "Genbrug 240 L",
         "Genbrugshal (1 stk.)",
         "Genbrugsøer",
-        "Tekstiler",
     ],
     "glas": [
         "240 L glas (1 stk.)",
@@ -369,12 +368,10 @@ MATERIAL_LIST = {
         'Plast/papir (1 stk.)',
         'Plast/papir, afstand over 5 meter (1 stk.)',
         'Plast+MDK/Papir',
-        'plast & mad- og drikkekartoner',
         "plast og papir",
     ],
     "plast": [
         "Plast",
-        "Plast og MDK 240 L (ejer.kommune) (1 stk.)",
         "Plastaffald",
         "Plastaffald henteordning (1 stk.)",
         "Plast, 660 liter (2 stk.)",
@@ -386,6 +383,8 @@ MATERIAL_LIST = {
         "Genbrugsbeholder PMDK/MG-240L/3uge (1 stk.)",
         "Genbrug henteordning (1 stk.)",
         "Mad- og drikkekartoner",
+        "Plast og MDK 240 L (ejer.kommune) (1 stk.)",
+        'plast & mad- og drikkekartoner',
         "Plast og mad- & drikkekartoner",
         "PMD",
     ],
@@ -408,6 +407,7 @@ MATERIAL_LIST = {
         "plast, MDK/metal, glas",
     ],
     "restaffald": [
+        "rest",
         "9505: 770 L restaffald uge (2 stk.)",
         "Restaffald",
     ],
@@ -419,7 +419,6 @@ MATERIAL_LIST = {
         "Mad- og restaffald",
         "mad/rest",
         "mad/restaffald",
-        "rest",
         "Rest/Mad",
         "rest/madaffald",
         "Restaffald/Madaffald",
@@ -447,5 +446,6 @@ MATERIAL_LIST = {
         "Tekstilaffald (i lukket pose) (1 stk.)",
         "Tekstilpose 25 L (1 stk.)",
         "Tekstilpose tømning (1 stk.)",
+        "Tekstiler",
     ],
 }

@@ -159,14 +159,14 @@ SUPPORTED_ITEMS = {
         "Genbrugsspand - Obligatorisk min. 1 spand",
     ],
     "restaffald": [
-        "Restaffald // Batterier og Småt Elektronik",
         "Industri Restaffald",
+        "Restaffald",
+        "Restaffald // Batterier og Småt Elektronik",
         "Rest",
     ],
     "restaffaldmadaffald": [
         "Restaffald-Madaffald",
         "Rest/mad",
-        "Restaffald",
         "Rest - Mad",
         "Rest-/Madaffald",
         "Mad- og restaffald",
@@ -223,9 +223,9 @@ MATERIAL_LIST = {
         "Småt elektronik i pose på låg",
     ],
     "farligtaffald": [
+        "Farligt Affald",
     ],
     "farligtaffaldmiljoboks": [
-        "Farligt Affald",
         "Miljøboks",
         "Miljøkasse",
         "Miljøskab",
@@ -242,7 +242,6 @@ MATERIAL_LIST = {
         "Genbrug 240 l",
         "Genbrugshal",
         "Genbrugsøer",
-        "Tekstiler",
     ],
     "glas": [
         "Cube 1500 L",
@@ -325,7 +324,6 @@ MATERIAL_LIST = {
         'Plast/papir, afstand over 5 meter',
         'Plast+MDK/Papir',
         'Plast, MDK, papir, pap',
-        'plast & mad- og drikkekartoner',
         'plast og mad- & drikkekartoner/papir',
         'Plast og Papir',
         'PMDK/PP',
@@ -333,7 +331,6 @@ MATERIAL_LIST = {
     ],
     "plast": [
         "Plast",
-        "Plast og MDK",
         "Plastaffald",
     ],
     "plastmadkarton": [
@@ -343,6 +340,8 @@ MATERIAL_LIST = {
         "Mad- og drikkekartoner",
         "plast, mad- og drikkekartoner",
         "Plast/MDK",
+        "Plast og MDK",
+        'plast & mad- og drikkekartoner',
         "Plast og mad- & drikkekartoner",
         "PMD",
     ],
@@ -362,6 +361,7 @@ MATERIAL_LIST = {
         "plast, MDK/metal, glas",
     ],
     "restaffald": [
+        "rest",
         "Restaffald",
     ],
     "restaffaldmadaffald": [
@@ -370,7 +370,6 @@ MATERIAL_LIST = {
         "Mad- og restaffald",
         "mad/rest",
         "mad/restaffald",
-        "rest",
         "Rest/Mad",
         "rest/madaffald",
         "Restaffald/Madaffald",
@@ -396,6 +395,7 @@ MATERIAL_LIST = {
         "Tekstil pose",
         "Tekstilaffald",
         "Tekstilpose",
+        "Tekstiler",
     ],
 }
 
@@ -488,6 +488,11 @@ NAME_LIST = {
     "storskraldogtekstilaffald": "Storskrald & Tekstilaffald",
     "tekstil": "Tekstilaffald",
 }
+
+SUPPORTED_ITEMS2 = {key: [] for key in NAME_LIST}
+for key, vals in SUPPORTED_ITEMS2.items():
+    vals += SUPPORTED_ITEMS.get(key, [])
+    vals += MATERIAL_LIST.get(key, [])
 
 NAME_ARRAY = list(NAME_LIST.keys())
 PAR_EXCEPTIONS = ['M/R']

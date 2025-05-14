@@ -22,6 +22,7 @@ from .const import (
     SPECIAL_MATERIALS,
     STRIPS,
     SUPPORTED_ITEMS,
+    SUPPORTED_ITEMS2,
     WEEKDAYS,
 )
 from .municipalities import MUNICIPALITIES_IDS, MUNICIPALITIES_LIST
@@ -548,10 +549,10 @@ class GarbageCollection:
                             if _pickup_date < dt.date.today():
                                 continue
 
-                            key = get_garbage_type(garbage_type)
-                            if key == garbage_type:
-                                warn_or_fail(garbage_type, self._municipality, address_id, fail=self.fail)
+                            key = get_garbage_type(garbage_type, self._municipality, address_id, fail=self.fail)
+                            if key in ['not-supported', 'missing-type']:
                                 continue
+
                             _pickup_event = {
                                 key: PickupType(
                                     date=_pickup_date,
@@ -598,11 +599,8 @@ class GarbageCollection:
                         continue
                     for item in row["fractions"]:
                         fraction_name = item['fractionName']
-                        key = get_garbage_type(fraction_name)
-                        if fraction_name in NON_SUPPORTED_ITEMS:
-                            continue
-                        if key == fraction_name:
-                            warn_or_fail(fraction_name, self._municipality, address_id, fail=self.fail)
+                        key = get_garbage_type(fraction_name, self._municipality, address_id, fail=self.fail)
+                        if key in ['not-supported', 'missing-type']:
                             continue
 
                         _pickup_event = {
@@ -702,7 +700,7 @@ def iso_string_to_date(datetext: str) -> dt.date:
     return dt.datetime.fromisoformat(datetext).date()
 
 
-def get_garbage_type(item: str) -> str:
+def get_garbage_type(item, municipality, address_id, fail=False):
     """Get the garbage type."""
     # _LOGGER.debug("Affalds type: %s", item)
     if item in NON_SUPPORTED_ITEMS:
@@ -713,11 +711,12 @@ def get_garbage_type(item: str) -> str:
             return SPECIAL_MATERIALS[special]
 
     for fixed_item in clean_fraction_string(item):
-        for key, values in SUPPORTED_ITEMS.items():
+        for key, values in SUPPORTED_ITEMS2.items():
             for entry in values:
                 if fixed_item.lower() == entry.lower():
                     return key
-    return item
+    warn_or_fail(item, municipality, address_id, fail=fail)
+    return 'missing-type'
 
 
 def get_garbage_type_from_material(item, municipality, address_id, fail=False):
@@ -731,7 +730,7 @@ def get_garbage_type_from_material(item, municipality, address_id, fail=False):
     for fixed_item in clean_fraction_string(item):
         if fixed_item in [non.lower() for non in NON_MATERIAL_LIST]:
             return 'genbrug'
-        for key, value in MATERIAL_LIST.items():
+        for key, value in SUPPORTED_ITEMS2.items():
             for entry in value:
                 if fixed_item.lower() == entry.lower():
                     return key

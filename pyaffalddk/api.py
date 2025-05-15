@@ -748,6 +748,7 @@ def clean_fraction_string(item):
     fixed_item = re.sub(pattern, "", fixed_item)  # strip anything in parenthesis
 
     fixed_item = re.sub(r'\bdistrikt [A-Za-z0-9]\b', '', fixed_item)
+    fixed_item = re.sub(r'\brute [0-9]\b', '', fixed_item)
 
     if ':' in fixed_item:
         fixed_item = fixed_item.split(':')[1]

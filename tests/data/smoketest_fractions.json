@@ -237,5 +237,14 @@
     "restplast": "240 l rest + plast/MDK",
     "madaffald": "140 l mad",
     "pappapirglasmetal": "240 l papir/pap + glas/metal "
+  },
+  "helsingør_292": {
+    "pappapir": "240 L papir og pap",
+    "storskrald": "Storskrald Rute 6",
+    "haveaffald": "Haveaffald Rute 6",
+    "restaffaldmadaffald": "240 L mad/rest 14 dg",
+    "plastmetal": "240 L plast/metal",
+    "farligtaffald": "Farligt affald rute 6",
+    "tekstil": "Tekstilaffald rute 6"
   }
 }

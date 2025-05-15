@@ -23,7 +23,7 @@ compare_file = (datadir/'compare_data.p')
 
 # always sort and overwrite the supported_items.json when running pytest
 for key, vals in const.SUPPORTED_ITEMS.items():
-    const.SUPPORTED_ITEMS[key] = sorted(list(set(vals)))
+    const.SUPPORTED_ITEMS[key] = sorted(list(set(vals)), key=str.lower)
 with open(datadir.parents[1] / 'pyaffalddk/supported_items.json', 'w', encoding="utf-8") as fh:
     json.dump(const.SUPPORTED_ITEMS, fh, indent=4, ensure_ascii=False)
 

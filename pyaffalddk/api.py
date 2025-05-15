@@ -15,12 +15,11 @@ from .const import (
     GH_API,
     ICON_LIST,
     NAME_LIST,
-    NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
     PAR_EXCEPTIONS,
     SPECIAL_MATERIALS,
     STRIPS,
-    SUPPORTED_ITEMS2,
+    SUPPORTED_ITEMS,
     WEEKDAYS,
 )
 from .municipalities import MUNICIPALITIES_IDS, MUNICIPALITIES_LIST
@@ -444,9 +443,9 @@ class GarbageCollection:
                             if _pickup_date < dt.date.today():
                                 continue
 
-                            key = get_garbage_type_from_material(
-                                garbage_type, self._municipality, address_id, self.fail
-                            )
+                            key = get_garbage_type(garbage_type, self._municipality, address_id, self.fail)
+                            if key in ['not-supported', 'missing-type']:
+                                continue
                             _pickup_event = {
                                 key: PickupType(
                                     date=_pickup_date,
@@ -493,9 +492,9 @@ class GarbageCollection:
                     if _pickup_date < dt.date.today():
                         continue
                     for item in row["fractions"]:
-                        key = get_garbage_type_from_material(
-                            item, self._municipality, address_id, self.fail
-                        )
+                        key = get_garbage_type(item, self._municipality, address_id, self.fail)
+                        if key in ['not-supported', 'missing-type']:
+                            continue
                         _pickup_event = {
                             key: PickupType(
                                 date=_pickup_date,
@@ -646,9 +645,10 @@ class GarbageCollection:
                     _pickup_date = dt.datetime.fromtimestamp(int(item["nextpickupdatetimestamp"])).date()
                     if _pickup_date < dt.date.today():
                         continue
-                    key = get_garbage_type_from_material(
-                        item['name'], self._municipality, address_id, self.fail
-                    )
+
+                    key = get_garbage_type(item['name'], self._municipality, address_id, self.fail)
+                    if key in ['not-supported', 'missing-type']:
+                        continue
 
                     _pickup_event = {
                         key: PickupType(
@@ -709,32 +709,15 @@ def get_garbage_type(item, municipality, address_id, fail=False):
             return SPECIAL_MATERIALS[special]
 
     for fixed_item in clean_fraction_string(item):
-        for key, values in SUPPORTED_ITEMS2.items():
+        if fixed_item in [non.lower() for non in NON_SUPPORTED_ITEMS]:
+            return 'not-supported'
+        for key, values in SUPPORTED_ITEMS.items():
             for entry in values:
                 if fixed_item.lower() == entry.lower():
                     return key
+    print(f'\nmissing: "{fixed_item}"')
     warn_or_fail(item, municipality, address_id, fail=fail)
     return 'missing-type'
-
-
-def get_garbage_type_from_material(item, municipality, address_id, fail=False):
-    """Get the garbage type from the materialnavn."""
-    # _LOGGER.debug("Material: %s", item)
-
-    for special in SPECIAL_MATERIALS:
-        if special.lower() in item.lower():
-            return SPECIAL_MATERIALS[special]
-
-    for fixed_item in clean_fraction_string(item):
-        if fixed_item in [non.lower() for non in NON_MATERIAL_LIST]:
-            return 'genbrug'
-        for key, value in SUPPORTED_ITEMS2.items():
-            for entry in value:
-                if fixed_item.lower() == entry.lower():
-                    return key
-    print(f'\nmissing: "{fixed_item}"')
-    warn_or_fail(item, municipality, address_id, source='Material', fail=fail)
-    return "genbrug"
 
 
 def clean_fraction_string(item):
@@ -760,8 +743,8 @@ def clean_fraction_string(item):
     return res
 
 
-def warn_or_fail(name, municipality, address_id, source='Garbage', fail=False):
-    msg = f'{source} type [{name}] is not defined in the system for Genbrug. '
+def warn_or_fail(name, municipality, address_id, fail=False):
+    msg = f'Garbage type [{name}] is not defined in the system. '
     msg += f'Please notify the developer. Municipality: {municipality}, Address ID: {address_id}'
 
     if fail:

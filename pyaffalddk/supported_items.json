@@ -1,0 +1,277 @@
+{
+    "batterier": [
+        "Batterier",
+        "Batterier i pose på låg"
+    ],
+    "bioposer": [],
+    "dagrenovation": [
+        "Dag",
+        "Dagrenovation",
+        "container 1 x ugentligt"
+    ],
+    "elektronik": [
+        "Elektronik",
+        "Småt elektronik i pose på låg"
+    ],
+    "farligtaffald": [
+        "Farligt Affald",
+        "Farligt Affald, Rød boks",
+        "Farligt affald",
+        "Genbrugsbilen",
+        "Miljøkasser"
+    ],
+    "farligtaffaldmiljoboks": [
+        "Farligt affald/Miljøboks",
+        "Miljøboks",
+        "Miljøkasse",
+        "Miljøskab",
+        "Rød kasse",
+        "Rød miljøboks"
+    ],
+    "flis": [
+        "Flis",
+        "Flishugning"
+    ],
+    "genbrug": [
+        "Gen",
+        "Gen-Skel",
+        "Genanvendeligt",
+        "Genbrug",
+        "Genbrug 240 L",
+        "Genbrug 240 l",
+        "Genbrugshal",
+        "Genbrugsøer"
+    ],
+    "glas": [
+        "Cube 1500 L",
+        "Glas",
+        "Industri Genbrugeligt"
+    ],
+    "glasplast": [
+        "Glas/Plast og MDK"
+    ],
+    "haveaffald": [
+        "Have",
+        "Haveaff.",
+        "Haveaffald",
+        "Havespand"
+    ],
+    "jern": [
+        "Jern",
+        "Metal"
+    ],
+    "juletrae": [
+        "Juletræ",
+        "Juletræer"
+    ],
+    "madaffald": [
+        "Bioposer",
+        "Mad",
+        "Madaffald"
+    ],
+    "metal": [],
+    "metalglas": [
+        "Glas / Metal",
+        "Glas og metal",
+        "Glas/Metal",
+        "Glas/metal, afstand over 5 meter",
+        "Metal og Glas",
+        "Metal-Glas",
+        "Metal/glas",
+        "glas & metal"
+    ],
+    "pap": [
+        "Beholder til pap",
+        "Indsamling af pap",
+        "Pap",
+        "Pap og papir",
+        "Papbeholder"
+    ],
+    "pappapir": [
+        "Genbrugsbeholder PP-240L/6",
+        "Pap/Papir",
+        "Papir og Pap",
+        "Papir, pap og tekstilaffald",
+        "Papir/Pap",
+        "Papir/Papspand",
+        "pap/papir",
+        "papir, pap",
+        "papir/pap"
+    ],
+    "pappapirglasmetal": [
+        "4delt beholder",
+        "Genbrug - grønt låg",
+        "Glas & metal og papir & småt pap",
+        "Grønt låg",
+        "Pap, papir, tekstil & metal og glas",
+        "Papir/pap og glas/metal",
+        "Plast og drikkekarton - Glas og metal",
+        "Ressourcebeholder",
+        "glas/metal og pap/papir",
+        "metal, glas, plast/papir",
+        "pap, papir, tekstil & metal og glas",
+        "papir/pap + glas/metal"
+    ],
+    "pappi": [
+        "PAPPI",
+        "PMDK/PP",
+        "PP/MDK-plast",
+        "Papir & Pap / Plast & MDK",
+        "Papir & småt pap",
+        "Papir- Plast/Mad- og Drikkekartoner",
+        "Papir/Plast og MDK",
+        "Papir/Plast og kartoner",
+        "Plast & MD-Karton / PP",
+        "Plast MDK og papir",
+        "Plast og Mad- & drikkekartoner/Papir",
+        "Plast og Papir",
+        "Plast+MDK/Papir",
+        "Plast, MDK, papir, pap",
+        "Plast, Mad- og drikkekartoner, Småt Pap og Papir",
+        "Plast/MD-karton/PP",
+        "Plast/Papir",
+        "Plast/papir",
+        "Plast/papir, afstand over 5 meter",
+        "papir/plast og kartoner",
+        "plast og mad- & drikkekartoner/papir"
+    ],
+    "papir": [
+        "Papir",
+        "Papir // Tekstilaffald",
+        "Papir 660 L"
+    ],
+    "papirglas": [
+        "Glas-papir",
+        "Papir & glas",
+        "Papir og Glas",
+        "Papir og pap/Glas",
+        "Papir, Pap/Glas",
+        "Papir/glas"
+    ],
+    "papirglasdaaser": [
+        "Papir og glas/dåser",
+        "Papir/glas-dåser"
+    ],
+    "papirglasmetalplast": [
+        "4-kammer",
+        "Pap og papir/metal, glas og hård plast",
+        "genbrug låg i låg",
+        "plast/metal/MDK/papir/pap",
+        "plast/metal/drikkekartoner og papir/pap"
+    ],
+    "papirmetal": [
+        "Metal og papir",
+        "Metal/papir",
+        "Pap & metal",
+        "Papir & Metal",
+        "Papir og Metal",
+        "Papir/metal"
+    ],
+    "plast": [
+        "Plast",
+        "Plast - Obligatorisk min. 1 spand",
+        "Plastaffald"
+    ],
+    "plastmadkarton": [
+        "Genbrug - blåt låg",
+        "Genbrug henteordning",
+        "Genbrugsbeholder PMDK/MG-240L/3",
+        "Mad- og drikkekartoner",
+        "PMD",
+        "Plast & mad- og drikkekartoner",
+        "Plast og MDK",
+        "Plast og mad- & drikkekartoner",
+        "Plast/ Mad- og drikkekartoner",
+        "Plast/MDK",
+        "blåt låg",
+        "plast & mad- og drikkekartoner",
+        "plast, mad- og drikkekartoner"
+    ],
+    "plastmdkglasmetal": [
+        "Genbrugsbeholder",
+        "Plast og drikkekarton – Glas og metal",
+        "genbrugsspand",
+        "plast, MDK/metal, glas"
+    ],
+    "plastmetal": [
+        "Metal og Plast",
+        "Plast & Metal",
+        "Plast, Metal, MDK",
+        "Plast, metal & MDK 660L",
+        "Plast, småt metal & MDK",
+        "Plast-metal",
+        "Plast/ Metal",
+        "Plast/MDK/Metal",
+        "Plast/Metal"
+    ],
+    "plastmetalmadmdk": [
+        "Plast, mad- og drikkekartoner og metal",
+        "Plast/Metal/Mad- & drikkekartoner"
+    ],
+    "plastmetalpapir": [
+        "Genbrugsspand - Obligatorisk min. 1 spand",
+        "Plast/Metal/Papir",
+        "grøn"
+    ],
+    "restaffald": [
+        "Industri Restaffald",
+        "Rest",
+        "Restaffald",
+        "Restaffald // Batterier og Småt Elektronik",
+        "rest"
+    ],
+    "restaffaldmadaffald": [
+        "(M/R)",
+        "Energibeholder",
+        "Energispand - Obligatorisk min. 1 spand",
+        "Mad og restaffald",
+        "Mad- og restaffald",
+        "Mad-/ og restaffald",
+        "Mad/Rest",
+        "Mad/rest",
+        "Rest - Mad",
+        "Rest / Mad",
+        "Rest Mad",
+        "Rest og Mad",
+        "Rest- og Madaffald",
+        "Rest-/Madaffald",
+        "Rest-/madaffald",
+        "Rest/Mad",
+        "Rest/mad",
+        "Rest/madaffald",
+        "Restaffald-Madaffald",
+        "Restaffald/Madaffald",
+        "energi",
+        "mad/rest",
+        "mad/restaffald",
+        "rest/madaffald",
+        "rød",
+        "skraldespand"
+    ],
+    "restplast": [
+        "Rest + plast/MDK"
+    ],
+    "storskrald": [
+        "Elektronik, stort metal, keramik og porcelæn",
+        "Møbler/indbo",
+        "Pap og Storskrald",
+        "Småt brændbart",
+        "Storskrald",
+        "Storskrald og genbrug",
+        "Stort elektronik",
+        "Stort indbo og Indendørs træ"
+    ],
+    "storskraldogtekstilaffald": [
+        "Storskrald og tekstilaffald"
+    ],
+    "tekstil": [
+        "Miljøkasse/tekstiler",
+        "Standplads",
+        "Tekstil",
+        "Tekstil pose",
+        "Tekstilaffald",
+        "Tekstiler",
+        "Tekstilpose",
+        "Tekstilposer"
+    ]
+}

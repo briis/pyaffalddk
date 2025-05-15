@@ -1,7 +1,7 @@
 import pytest
 from freezegun import freeze_time
 from aiohttp import ClientSession
-from pyaffalddk import GarbageCollection, NAME_LIST, api
+from pyaffalddk import GarbageCollection, NAME_LIST, api, const
 from .data import const_tests
 from pathlib import Path
 import pickle
@@ -20,6 +20,12 @@ aarhus_data = json.loads((datadir/'Aarhus.data').read_text())
 koege_data = json.loads((datadir/'Koege.data').read_text())
 FREEZE_TIME = "2025-04-25"
 compare_file = (datadir/'compare_data.p')
+
+# always sort and overwrite the supported_items.json when running pytest
+for key, vals in const.SUPPORTED_ITEMS.items():
+    const.SUPPORTED_ITEMS[key] = sorted(list(set(vals)))
+with open(datadir.parents[1] / 'pyaffalddk/supported_items.json', 'w', encoding="utf-8") as fh:
+    json.dump(const.SUPPORTED_ITEMS, fh, indent=4, ensure_ascii=False)
 
 
 def update_and_compare(name, actual_data, update=False, debug=False):
@@ -187,14 +193,14 @@ def test_type_from_material_cleaning(capsys, monkeypatch):
     with capsys.disabled():
         for category, vals in const_tests.MATERIAL_LIST.items():
             for val in vals:
-                cat = api.get_garbage_type_from_material(val, 'test', '1111', fail=False)
+                cat = api.get_garbage_type(val, 'test', '1111', fail=False)
                 if cat != category:
                     print(val, api.clean_fraction_string(val))
                 assert cat == category
 
         for val in const_tests.NON_MATERIAL_LIST:
-            cat = api.get_garbage_type_from_material(val, 'test', '1111', fail=False)
-            assert cat == 'genbrug'
+            cat = api.get_garbage_type(val, 'test', '1111', fail=False)
+            assert cat == 'not-supported'
 
 
 def test_type_cleaning(capsys, monkeypatch):

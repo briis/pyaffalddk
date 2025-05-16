@@ -246,5 +246,12 @@
     "plastmetal": "240 L plast/metal",
     "farligtaffald": "Farligt affald rute 6",
     "tekstil": "Tekstilaffald rute 6"
+  },
+  "allerød_294": {
+    "storskrald": "Storskrald Distrikt 3",
+    "pappi": "Plast/papir",
+    "metalglas": "Glas/metal",
+    "pap": "Pap 240 L (villa)",
+    "restaffaldmadaffald": "(A) Rest/mad 240 L beh. - 14 dg. tømning"
   }
 }

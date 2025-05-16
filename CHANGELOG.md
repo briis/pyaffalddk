@@ -1,7 +1,5 @@
 # Changelog for pyaffalddk
 
-Rudersdal - Material type [Farligt affald, distrikt A] is not defined in the system for Genbrug #289
-
 ## [2.6.0] - `2025-05-15`
 
 ### Changes
@@ -11,6 +9,7 @@ Rudersdal - Material type [Farligt affald, distrikt A] is not defined in the sys
 * Bornholms Kommune #291
 * Helsingør Kommune - Mangler 5 entiteter #292
 * Sønderborg mangler en entitet #293
+* [Storskrald Distrikt 3] is not defined #294
 * Big re-structure and cleanup of internal material string to defined fractions code
 
 ### Added

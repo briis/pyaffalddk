@@ -10,6 +10,7 @@ Rudersdal - Material type [Farligt affald, distrikt A] is not defined in the sys
 * Herlev - Herlev Kommune - #290
 * Bornholms Kommune #291
 * Helsingør Kommune - Mangler 5 entiteter #292
+* Sønderborg mangler en entitet #293
 * Big re-structure and cleanup of internal material string to defined fractions code
 
 ### Added

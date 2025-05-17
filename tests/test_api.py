@@ -1,7 +1,8 @@
 import pytest
 from freezegun import freeze_time
 from aiohttp import ClientSession
-from pyaffalddk import GarbageCollection, NAME_LIST
+from pyaffalddk import GarbageCollection, NAME_LIST, api, const
+from .data import const_tests
 from pathlib import Path
 import pickle
 import json
@@ -19,6 +20,12 @@ aarhus_data = json.loads((datadir/'Aarhus.data').read_text())
 koege_data = json.loads((datadir/'Koege.data').read_text())
 FREEZE_TIME = "2025-04-25"
 compare_file = (datadir/'compare_data.p')
+
+# always sort and overwrite the supported_items.json when running pytest
+for key, vals in const.SUPPORTED_ITEMS.items():
+    const.SUPPORTED_ITEMS[key] = sorted(list(set(vals)), key=str.lower)
+with open(datadir.parents[1] / 'pyaffalddk/supported_items.json', 'w', encoding="utf-8") as fh:
+    json.dump(const.SUPPORTED_ITEMS, fh, indent=4, ensure_ascii=False)
 
 
 def update_and_compare(name, actual_data, update=False, debug=False):
@@ -73,7 +80,7 @@ async def test_Aalborg_gh(capsys, monkeypatch):
             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
-            update_and_compare('Aalborg_gh', pickups, UPDATE)
+            update_and_compare('Aalborg_gh', pickups, True)
 
 
 @pytest.mark.asyncio
@@ -117,7 +124,7 @@ async def test_Aarhus(capsys, monkeypatch):
             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
-            update_and_compare('Aarhus', pickups, UPDATE)
+            update_and_compare('Aarhus', pickups, False)
 
 
 @pytest.mark.asyncio
@@ -180,6 +187,30 @@ async def test_smoketest(capsys, monkeypatch, update=False):
                     print(data)
                     print(smokecompare[name])
                 assert smokecompare[name] == data
+
+
+def test_type_from_material_cleaning(capsys, monkeypatch):
+    with capsys.disabled():
+        for category, vals in const_tests.MATERIAL_LIST.items():
+            for val in vals:
+                cat = api.get_garbage_type(val, 'test', '1111', fail=False)
+                if cat != category:
+                    print(val, api.clean_fraction_string(val))
+                assert cat == category
+
+        for val in const_tests.NON_MATERIAL_LIST:
+            cat = api.get_garbage_type(val, 'test', '1111', fail=False)
+            assert cat == 'not-supported'
+
+
+def test_type_cleaning(capsys, monkeypatch):
+    with capsys.disabled():
+        for category, vals in const_tests.SUPPORTED_ITEMS.items():
+            for val in vals:
+                cat = api.get_garbage_type(val, 'test', '1111', fail=False)
+                if cat != category:
+                    print(val, api.clean_fraction_string(val))
+                assert cat == category
 
 
 def test_ics(capsys):

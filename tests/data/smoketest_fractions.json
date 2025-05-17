@@ -1,7 +1,7 @@
 {
   "smoke_0": {
     "haveaffald": "140L haveaffald",
-    "genbrug": "240L genbrug",
+    "pappi": "240L genbrug",
     "restaffald": "190L restaffald 14. dags tømning"
   },
   "smoke_1": {
@@ -9,7 +9,7 @@
     "madaffald": "Madaffald",
     "papir": "Papir",
     "pap": "Pap",
-    "genbrug": "Tekstiler",
+    "tekstil": "Tekstiler",
     "plast": "Plast",
     "plastmadkarton": "Mad- og drikkekartoner",
     "glas": "Glas",
@@ -17,7 +17,7 @@
   },
   "smoke_2": {
     "haveaffald": "140L haveaffald",
-    "genbrug": "240L genbrug",
+    "pappi": "240L genbrug",
     "restaffald": "190L restaffald 14. dags tømning"
   },
   "smoke_3": {
@@ -51,16 +51,16 @@
     "pappapirglasmetal": "Genbrug - grønt låg"
   },
   "mariager_1": {
-    "genbrug": "240 l genbrug låg i låg",
+    "papirglasmetalplast": "240 l genbrug låg i låg",
     "restaffaldmadaffald": "240 l mad/rest"
   },
   "Aalborg_1": {
-    "genbrug": "240L genbrug",
+    "pappi": "240L genbrug",
     "restaffald": "240L restaffald sommerhustømning"
   },
   "egedal_1": {
     "haveaffald": "Haveaffald - Smørum, Stenløse (Privat)",
-    "farligtaffaldmiljoboks": "Farligt Affald Distrikt 2 (Privat)",
+    "farligtaffald": "Farligt Affald Distrikt 2 (Privat)",
     "restaffaldmadaffald": "240 L Rest/Mad - Beholder (Privat)",
     "restaffald": "190 L Restaffald - Ekstra beholder (tilvalg) (Privat)",
     "storskrald": "Storskrald - Distrikt 5 (Privat)",
@@ -69,7 +69,7 @@
     "metalglas": "240 l Glas/metal Egenløsning (Privat)"
   },
   "svendborg_1": {
-    "genbrug": "Genbrug henteordning",
+    "plastmadkarton": "Genbrug henteordning",
     "restaffaldmadaffald": "370 liter mad- og restaffald - 2 rum",
     "pappapirglasmetal": "370 liter glas/metal og pap/papir - 2 rum",
     "haveaffald": "Haveaffald henteordning",
@@ -86,7 +86,7 @@
   },
   "lyngby_1": {
     "storskrald": "Storskrald",
-    "papirglasmetalplast": "4-kammer (240 l)",
+    "pappapirglasmetal": "4-kammer (240 l)",
     "restaffaldmadaffald": "240 l. 14 dages tømning (M/R)",
     "haveaffald": "Haveaffald 1. mar-30. nov",
     "pap": "Beholder til pap",
@@ -100,7 +100,7 @@
     "haveaffald": "Tømningsdag for haveaffald",
     "farligtaffaldmiljoboks": "Miljøkasse",
     "restaffaldmadaffald": "Mad/Restaffald, 240L",
-    "genbrug": "Genbrugsspand, 240L (2-delt)",
+    "plastmdkglasmetal": "Genbrugsspand, 240L (2-delt)",
     "pappapir": "Papir/Papspand, 240L"
   },
   "randers_1": {
@@ -119,7 +119,8 @@
     "genbrug": "Gen-Skel 0-2 meter",
     "haveaffald": "Have-Skel 0-2 meter",
     "plast": "Plast-Skel 0-2 meter",
-    "restaffaldmadaffald": "240 l energi 2-kammer "
+    "restaffaldmadaffald": "240 l energi 2-kammer ",
+    "pappapirglasmetal": "240 l genbrug 2-kammer "
   },
   "rudersdal_1": {
     "pappi": "Plast/papir",
@@ -169,7 +170,7 @@
     "haveaffald": "Havespand, 240 ltr",
     "restaffaldmadaffald": "Mad/Restaffald, 240L",
     "restaffald": "Restaffald, 140L (ekstra til 2-delt)",
-    "genbrug": "Genbrugsspand, 240L (2-delt)",
+    "plastmdkglasmetal": "Genbrugsspand, 240L (2-delt)",
     "pappapir": "Papir/Papspand, 240L"
   },
   "gentofte_275": {
@@ -185,12 +186,12 @@
     "madaffald": "140 l Mad sommer 32",
     "pappapir": "140 l papir/pap sommer 32",
     "plastmadkarton": "240 l PMD sommer 32",
-    "restaffaldmadaffald": "370 l rest sommer 32"
+    "restaffald": "370 l rest sommer 32"
   },
   "aabenraa_1": {
     "restaffaldmadaffald": "240 l mad/rest - 14. dags  ",
     "pappapirglasmetal": "240 l pap, papir, tekstil & metal og glas  - 4 uger",
-    "pappi": "240 l plast & mad- og drikkekartoner - 4 uger"
+    "plastmadkarton": "240 l plast & mad- og drikkekartoner - 4 uger"
   },
   "brønderslev_1": {
     "papirglasmetalplast": "240L plast/metal/MDK/papir/pap",
@@ -201,7 +202,7 @@
     "metalglas": "Glas/metal",
     "pap": "Pap 240 L (villa)",
     "restaffaldmadaffald": "(H) Rest/mad 240 L beh. - 14. dg. tømning",
-    "farligtaffaldmiljoboks": "Farligt affald, distrikt E",
+    "farligtaffald": "Farligt affald, distrikt E",
     "storskrald": "Storskrald (tilmelding) Onsdag - dst 4 (H)"
   },
   "varde_1": {
@@ -214,5 +215,43 @@
     "metalglas": "240 L. Glas/Metal - 4 tømninger",
     "pappi": "240 L. PMDK/PP 3 ugers tømning",
     "restaffaldmadaffald": "240 L. Restaffald/madaffald 14-dags m. sommertømning"
+  },
+  "rudersdal_289": {
+    "pappi": "Plast/papir",
+    "metalglas": "Glas/metal",
+    "pap": "Pap 240 L (villa)",
+    "restaffaldmadaffald": "(R) REST/MAD 240 L beh. (villa) - ugetømning",
+    "farligtaffald": "Farligt affald, distrikt A",
+    "storskrald": "Storskrald (tilmelding) Tirsdag - dst 4 (R)"
+  },
+  "herlev_290": {
+    "haveaffald": "Haveaffald",
+    "storskrald": "Storskrald",
+    "farligtaffaldmiljoboks": "Miljøboks",
+    "pap": "Papbeholder villa",
+    "restaffaldmadaffald": "240 l to-kammer rest/mad ? 14. dags tømning",
+    "pappi": "240 L to-kammer Plast og Mad- & drikkekartoner/Papir",
+    "metalglas": "240 L to-kammer Glas/Metal"
+  },
+  "bornholm_291": {
+    "restplast": "240 l rest + plast/MDK",
+    "madaffald": "140 l mad",
+    "pappapirglasmetal": "240 l papir/pap + glas/metal "
+  },
+  "helsingør_292": {
+    "pappapir": "240 L papir og pap",
+    "storskrald": "Storskrald Rute 6",
+    "haveaffald": "Haveaffald Rute 6",
+    "restaffaldmadaffald": "240 L mad/rest 14 dg",
+    "plastmetal": "240 L plast/metal",
+    "farligtaffald": "Farligt affald rute 6",
+    "tekstil": "Tekstilaffald rute 6"
+  },
+  "allerød_294": {
+    "storskrald": "Storskrald Distrikt 3",
+    "pappi": "Plast/papir",
+    "metalglas": "Glas/metal",
+    "pap": "Pap 240 L (villa)",
+    "restaffaldmadaffald": "(A) Rest/mad 240 L beh. - 14 dg. tømning"
   }
 }

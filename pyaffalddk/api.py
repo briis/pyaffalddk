@@ -14,11 +14,10 @@ import aiohttp
 from .const import (
     GH_API,
     ICON_LIST,
-    MATERIAL_LIST,
     NAME_LIST,
-    NON_MATERIAL_LIST,
     NON_SUPPORTED_ITEMS,
     PAR_EXCEPTIONS,
+    SPECIAL_MATERIALS,
     STRIPS,
     SUPPORTED_ITEMS,
     WEEKDAYS,
@@ -444,9 +443,9 @@ class GarbageCollection:
                             if _pickup_date < dt.date.today():
                                 continue
 
-                            key = get_garbage_type_from_material(
-                                garbage_type, self._municipality, address_id, self.fail
-                            )
+                            key = get_garbage_type(garbage_type, self._municipality, address_id, self.fail)
+                            if key in ['not-supported', 'missing-type']:
+                                continue
                             _pickup_event = {
                                 key: PickupType(
                                     date=_pickup_date,
@@ -493,9 +492,9 @@ class GarbageCollection:
                     if _pickup_date < dt.date.today():
                         continue
                     for item in row["fractions"]:
-                        key = get_garbage_type_from_material(
-                            item, self._municipality, address_id, self.fail
-                        )
+                        key = get_garbage_type(item, self._municipality, address_id, self.fail)
+                        if key in ['not-supported', 'missing-type']:
+                            continue
                         _pickup_event = {
                             key: PickupType(
                                 date=_pickup_date,
@@ -547,10 +546,10 @@ class GarbageCollection:
                             if _pickup_date < dt.date.today():
                                 continue
 
-                            key = get_garbage_type(garbage_type)
-                            if key == garbage_type:
-                                warn_or_fail(garbage_type, self._municipality, address_id, fail=self.fail)
+                            key = get_garbage_type(garbage_type, self._municipality, address_id, fail=self.fail)
+                            if key in ['not-supported', 'missing-type']:
                                 continue
+
                             _pickup_event = {
                                 key: PickupType(
                                     date=_pickup_date,
@@ -597,11 +596,8 @@ class GarbageCollection:
                         continue
                     for item in row["fractions"]:
                         fraction_name = item['fractionName']
-                        key = get_garbage_type(fraction_name)
-                        if fraction_name in NON_SUPPORTED_ITEMS:
-                            continue
-                        if key == fraction_name:
-                            warn_or_fail(fraction_name, self._municipality, address_id, fail=self.fail)
+                        key = get_garbage_type(fraction_name, self._municipality, address_id, fail=self.fail)
+                        if key in ['not-supported', 'missing-type']:
                             continue
 
                         _pickup_event = {
@@ -649,9 +645,10 @@ class GarbageCollection:
                     _pickup_date = dt.datetime.fromtimestamp(int(item["nextpickupdatetimestamp"])).date()
                     if _pickup_date < dt.date.today():
                         continue
-                    key = get_garbage_type_from_material(
-                        item['name'], self._municipality, address_id, self.fail
-                    )
+
+                    key = get_garbage_type(item['name'], self._municipality, address_id, self.fail)
+                    if key in ['not-supported', 'missing-type']:
+                        continue
 
                     _pickup_event = {
                         key: PickupType(
@@ -701,22 +698,30 @@ def iso_string_to_date(datetext: str) -> dt.date:
     return dt.datetime.fromisoformat(datetext).date()
 
 
-def get_garbage_type(item: str) -> str:
+def get_garbage_type(item, municipality, address_id, fail=False):
     """Get the garbage type."""
     # _LOGGER.debug("Affalds type: %s", item)
-    for key, values in SUPPORTED_ITEMS.items():
-        for entry in values:
-            if item.lower() == entry.lower():
-                return key
-    return item
+    if item in NON_SUPPORTED_ITEMS:
+        return 'not-supported'
+
+    for special in SPECIAL_MATERIALS:
+        if special.lower() in item.lower():
+            return SPECIAL_MATERIALS[special]
+
+    for fixed_item in clean_fraction_string(item):
+        if fixed_item in [non.lower() for non in NON_SUPPORTED_ITEMS]:
+            return 'not-supported'
+        for key, values in SUPPORTED_ITEMS.items():
+            for entry in values:
+                if fixed_item.lower() == entry.lower():
+                    return key
+    print(f'\nmissing: "{fixed_item}"')
+    warn_or_fail(item, municipality, address_id, fail=fail)
+    return 'missing-type'
 
 
-def get_garbage_type_from_material(item, municipality, address_id, fail=False):
-    """Get the garbage type from the materialnavn."""
-    # _LOGGER.debug("Material: %s", item)
+def clean_fraction_string(item):
     fixed_item = item.lower()
-    if ':' in fixed_item:
-        fixed_item = fixed_item.split(':')[1]
 
     for strip in WEEKDAYS + STRIPS:
         fixed_item = fixed_item.replace(strip.lower(), '')
@@ -725,26 +730,21 @@ def get_garbage_type_from_material(item, municipality, address_id, fail=False):
     pattern = rf"\s*\((?!{'|'.join(escaped)}\)).*?\)"
     fixed_item = re.sub(pattern, "", fixed_item)  # strip anything in parenthesis
 
-    fixed_item = fixed_item.strip().rstrip(',').lstrip(', ').rstrip(' - ').lstrip(' - ')
-    fixed_item = fixed_item.split(' - ')[0].strip()
+    fixed_item = re.sub(r'\bdistrikt [A-Za-z0-9]\b', '', fixed_item)
+    fixed_item = re.sub(r'\brute [0-9]\b', '', fixed_item)
 
-    if 'haveaffald' in fixed_item:
-        return 'haveaffald'  # Lyngby gives "Haveaffald 1. mar-30. nov"
+    if ':' in fixed_item:
+        fixed_item = fixed_item.split(':')[1]
 
-    if item in NON_MATERIAL_LIST:
-        return 'genbrug'
-    for key, value in MATERIAL_LIST.items():
-        if fixed_item.lower() in str(value).lower():
-            for entry in value:
-                if fixed_item.lower() == entry.lower():
-                    return key
-    print(f'\nmissing: "{fixed_item}"')
-    warn_or_fail(item, municipality, address_id, source='Material', fail=fail)
-    return "genbrug"
+    fixed_item = fixed_item.strip().rstrip(',').lstrip(', ').rstrip(' -').lstrip('- ').lstrip('*')
+    res = [fixed_item.strip()]
+    if ' - ' in fixed_item:
+        res += [o.strip() for o in fixed_item.split(' - ')]
+    return res
 
 
-def warn_or_fail(name, municipality, address_id, source='Garbage', fail=False):
-    msg = f'{source} type [{name}] is not defined in the system for Genbrug. '
+def warn_or_fail(name, municipality, address_id, fail=False):
+    msg = f'Garbage type [{name}] is not defined in the system. '
     msg += f'Please notify the developer. Municipality: {municipality}, Address ID: {address_id}'
 
     if fail:

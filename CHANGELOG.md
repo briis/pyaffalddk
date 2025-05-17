@@ -1,5 +1,21 @@
 # Changelog for pyaffalddk
 
+## [2.6.0] - `2025-05-15`
+
+### Changes
+
+* Rudersdal - Material type [Farligt affald, distrikt A] is not defined in the system for Genbrug #289
+* Herlev - Herlev Kommune - #290
+* Bornholms Kommune #291
+* Helsingør Kommune - Mangler 5 entiteter #292
+* Sønderborg mangler en entitet #293
+* [Storskrald Distrikt 3] is not defined #294
+* Big re-structure and cleanup of internal material string to defined fractions code
+
+### Added
+* Test against all the old SUPPORTED_ITEMS and MATERIALS_LIST items
+* Make sure to sort the supported_items json file when running tests
+
 ## [2.5.1] - `2025-05-12`
 
 ### Changes

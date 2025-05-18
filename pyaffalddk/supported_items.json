@@ -76,7 +76,8 @@
         "Glas/metal, afstand over 5 meter",
         "Metal og Glas",
         "Metal-Glas",
-        "Metal/glas"
+        "Metal/glas",
+        "Metal/Glas affald"
     ],
     "pap": [
         "Beholder til pap",
@@ -111,6 +112,7 @@
         "Papir & Pap / Plast & MDK",
         "Papir & småt pap",
         "Papir- Plast/Mad- og Drikkekartoner",
+        "Papir/Plast & MDK",
         "Papir/Plast og kartoner",
         "Papir/Plast og MDK",
         "PAPPI",
@@ -171,6 +173,7 @@
         "Genbrugsbeholder PMDK/MG-240L/3",
         "Mad- og drikkekartoner",
         "Plast & mad- og drikkekartoner",
+        "Plast & MDK",
         "Plast og mad- & drikkekartoner",
         "Plast og MDK",
         "plast, mad- og drikkekartoner",
@@ -219,6 +222,7 @@
         "Mad- og restaffald",
         "Mad-/ og restaffald",
         "Mad/Rest",
+        "Mad/Rest affald",
         "mad/restaffald",
         "Rest - Mad",
         "Rest / Mad",

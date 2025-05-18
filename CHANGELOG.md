@@ -1,5 +1,17 @@
 # Changelog for pyaffalddk
 
+## [2.7.0] - `2025-05-18`
+
+### Changes
+* Unified get_pickup_event functions
+
+### Added
+* Added new AIP for Vest Forbrænding, fixing Ballerup and adding new municipalities:
+  * Furesø
+  * Ishøj
+  * Vallensbæk
+* New API test for Vest Forbrænding API, and smoketests for the new municipalities
+
 ## [2.6.0] - `2025-05-15`
 
 ### Changes

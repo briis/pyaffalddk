@@ -106,9 +106,9 @@ MUNICIPALITIES_LIST = {
     "Aabenraa": ["aabenraa", "6"],  # ??
     "Aalborg": ["aalborg", "6"],
     "Aarhus": ["aarhus", "3"],
-    "Albertslund": ["albertslund", "6"],
+    "Albertslund": ["albertslund", "6"],  # also vestforbrænding, 7
     "Allerød": ["allerod", "6"],
-    "Ballerup": ["ballerup", "5"],
+    "Ballerup": ["ballerup", "7"],
     "Billund": ["billund", "6"],
     "Bornholm": ["bofa", "6"],
     "Brøndby": ["brondby", "6"],
@@ -119,6 +119,7 @@ MUNICIPALITIES_LIST = {
     "Faxe": ["faxe", "5"],
     "Fredensborg": ["fredensborg", "6"],
     "Frederikssund": ["frederikssund", "5"],
+    "Furesø": ["fureso", "7"],
     "Gentofte": ["gentofte", "6"],
     "Gladsaxe": ["gladsaxe", "5"],
     "Glostrup": ["glostrup", "6"],
@@ -134,6 +135,7 @@ MUNICIPALITIES_LIST = {
     "Hvidovre": ["hvidovre", "5"],
     "Høje-Taastrup": ["htk", "5"],
     "Hørsholm": ["hoersholm", "6"],  # ??
+    "Ishøj": ["ishoj", "7"],
     "Jammerbugt": ["jammerbugt", "6"],  # ??
     "Kalundborg": ["kalundborg", "5"],
     "Kerteminde": ["kerteminde", "6"],  # ??
@@ -158,6 +160,7 @@ MUNICIPALITIES_LIST = {
     "Svendborg": ["svendborg", "6"],
     "Sønderborg": ["sonderborg", "6"],  # ??
     "Tårnby": ["taarnby", "5"],
+    "Vallensbæk": ["vallensbaek", "7"],
     "Varde": ["varde", "6"],  # ??
     "Vejen": ["vejen", "5"],
     "Vordingborg": ["vordingborg", "6"],  # ??

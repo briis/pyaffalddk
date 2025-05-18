@@ -10,6 +10,7 @@ from urllib.parse import urlparse, parse_qsl
 from typing import Any
 import base64
 import aiohttp
+from bs4 import BeautifulSoup
 
 from .const import (
     GH_API,
@@ -153,6 +154,48 @@ class NemAffaldAPI(AffaldDKAPIBase):
 
     async def get_garbage_data(self, address_id):
         return await self.async_get_ical_data(address_id)
+
+
+class VestForAPI(AffaldDKAPIBase):
+    # Vest Forbrænding API
+    def __init__(self, session=None):
+        super().__init__(session)
+        self.baseurl = "https://selvbetjening.vestfor.dk"
+        self.url_data = self.baseurl + "/Home/MinSide"
+        self.url_search = self.baseurl + "/Adresse/AddressByName"
+        self.today = dt.date.today()
+
+    async def get_address_id(self, zipcode, street, house_number):
+        para = {'term': f'{street} {house_number}, {zipcode}', 'numberOfResults': 50}
+        data = await self.async_get_request(self.url_search, para=para, as_json=True)
+        if len(data) == 1:
+            return data[0]['Id']
+        return None
+
+    def parse_next_date(self, day_str):
+        day, month = map(int, day_str.split()[1].split('/'))
+        _date = dt.date(self.today.year, month, day)
+
+        if _date > self.today:
+            return _date
+        return dt.date(self.today.year + 1, month, day)
+
+    async def get_garbage_data(self, address_id):
+        para = {'address-selected-id': address_id}
+        _ = await self.async_get_request(self.url_data, para=para, as_json=False)
+        html = await self.async_get_request(self.url_data, as_json=False)
+        soup = BeautifulSoup(html, 'html.parser')
+        rows = soup.select('div.table > div.row')
+
+        data = []
+        # Skip the first row (header)
+        for row in rows[1:]:
+            cells = row.find_all('div', class_=['col-md-2', 'col-xs-5'])
+            if len(cells) > 1:
+                garbage_type = cells[0].get_text(strip=True)
+                date = self.parse_next_date(cells[1].get_text(strip=True))
+                data.append({'garbage_type': garbage_type, 'pickup': date})
+        return data
 
 
 class PerfectWasteAPI(AffaldDKAPIBase):
@@ -381,6 +424,9 @@ class GarbageCollection:
                 elif self._api_data == '6':
                     self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
                     self._api = RenowebghAPI(self._municipality_url, session=session)
+                elif self._api_data == '7':
+                    self._api = VestForAPI(session=session)
+                    self._municipality_url = self._api.baseurl
 
         if not hasattr(self, '_api'):
             raise RuntimeError(f'Unknow municipality: "{municipality}"')
@@ -443,6 +489,8 @@ class GarbageCollection:
         return 'done'
 
     def set_next_event(self):
+        if not self.pickup_events:
+            return
         _next_pickup = min(event.date for event in self.pickup_events.values())
         _next_name = [event.friendly_name for event in self.pickup_events.values() if event.date == _next_pickup]
         _next_description = [event.description for event in self.pickup_events.values() if event.date == _next_pickup]
@@ -526,6 +574,13 @@ class GarbageCollection:
                         continue
                     _pickup_date = dt.datetime.fromtimestamp(int(item["nextpickupdatetimestamp"])).date()
                     res = self.update_pickup_event(item['name'], address_id, _pickup_date)
+                    if res != 'done':
+                        continue
+
+            elif self._api_data == "7":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    res = self.update_pickup_event(item['garbage_type'], address_id, item['pickup'])
                     if res != 'done':
                         continue
 

@@ -10,7 +10,6 @@ from urllib.parse import urlparse, parse_qsl
 from typing import Any
 import base64
 import aiohttp
-from bs4 import BeautifulSoup
 
 from .const import (
     GH_API,
@@ -172,29 +171,15 @@ class VestForAPI(AffaldDKAPIBase):
             return data[0]['Id']
         return None
 
-    def parse_next_date(self, day_str):
-        day, month = map(int, day_str.split()[1].split('/'))
-        _date = dt.date(self.today.year, month, day)
-
-        if _date > self.today:
-            return _date
-        return dt.date(self.today.year + 1, month, day)
-
     async def get_garbage_data(self, address_id):
         para = {'address-selected-id': address_id}
         _ = await self.async_get_request(self.url_data, para=para, as_json=False)
-        html = await self.async_get_request(self.url_data, as_json=False)
-        soup = BeautifulSoup(html, 'html.parser')
-        rows = soup.select('div.table > div.row')
-
-        data = []
-        # Skip the first row (header)
-        for row in rows[1:]:
-            cells = row.find_all('div', class_=['col-md-2', 'col-xs-5'])
-            if len(cells) > 1:
-                garbage_type = cells[0].get_text(strip=True)
-                date = self.parse_next_date(cells[1].get_text(strip=True))
-                data.append({'garbage_type': garbage_type, 'pickup': date})
+        url = 'https://selvbetjening.vestfor.dk/Adresse/ToemmeDates'
+        para = {
+            'start': str(self.today + dt.timedelta(days=-1)),
+            'end': str(self.today + dt.timedelta(days=60))
+            }
+        data = await self.async_get_request(url, para=para)
         return data
 
 
@@ -580,7 +565,8 @@ class GarbageCollection:
             elif self._api_data == "7":
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for item in garbage_data:
-                    res = self.update_pickup_event(item['garbage_type'], address_id, item['pickup'])
+                    _pickup_date = iso_string_to_date(item['start'])
+                    res = self.update_pickup_event(item['title'], address_id, _pickup_date)
                     if res != 'done':
                         continue
 

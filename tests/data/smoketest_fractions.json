@@ -260,8 +260,7 @@
     "metalglas": "Metal/Glas affald",
     "haveaffald": "Haveaffald",
     "pap": "Pap",
-    "storskrald": "Storskrald",
-    "juletrae": "Juletræer"
+    "storskrald": "Storskrald"
   },
   "furesø_1": {
     "restaffaldmadaffald": "Mad/Rest affald",
@@ -272,11 +271,9 @@
   "ishøj_1": {
     "restaffaldmadaffald": "Mad/Rest affald",
     "pappi": "Papir/Plast & MDK",
-    "metalglas": "Metal/Glas affald",
     "haveaffald": "Haveaffald",
     "pap": "Pap",
-    "storskrald": "Storskrald",
-    "juletrae": "Juletræer"
+    "storskrald": "Storskrald"
   },
   "vallensbæk_1": {
     "restaffaldmadaffald": "Mad/Rest affald",
@@ -284,7 +281,6 @@
     "metalglas": "Metal/Glas affald",
     "haveaffald": "Haveaffald",
     "pap": "Pap",
-    "storskrald": "Storskrald",
-    "juletrae": "Juletræer"
+    "storskrald": "Storskrald"
   }
 }

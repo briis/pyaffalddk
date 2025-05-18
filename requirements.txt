@@ -1,6 +1,5 @@
 aiohttp
 aiozoneinfo
-beautifulsoup4
 black
 coverage
 flake8

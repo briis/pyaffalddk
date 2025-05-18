@@ -37,6 +37,7 @@ async def main() -> None:
     parser.add_argument("--smoketest", type=str,
                         help="add to smoketest data with this name")
     parser.add_argument("--pickup", action="store_true", help="show pickups")
+    parser.add_argument("--force", action="store_true", help="force overwrite of smoketest")
 
     args = parser.parse_args()
 
@@ -119,7 +120,7 @@ async def main() -> None:
 
                 data = await gc._api.get_garbage_data(address_id)
                 if data:
-                    if args.smoketest in smokedata:
+                    if args.smoketest in smokedata and args.force is False:
                         raise RuntimeError(
                             f'the name "{args.smoketest}"is already in the smoketest set')
                     smokedata[args.smoketest] = {

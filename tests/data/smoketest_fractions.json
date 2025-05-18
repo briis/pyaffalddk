@@ -253,5 +253,34 @@
     "metalglas": "Glas/metal",
     "pap": "Pap 240 L (villa)",
     "restaffaldmadaffald": "(A) Rest/mad 240 L beh. - 14 dg. tømning"
+  },
+  "ballerup_1": {
+    "restaffaldmadaffald": "Mad/Rest affald",
+    "pappi": "Papir/Plast & MDK",
+    "metalglas": "Metal/Glas affald",
+    "haveaffald": "Haveaffald",
+    "pap": "Pap",
+    "storskrald": "Storskrald"
+  },
+  "furesø_1": {
+    "restaffaldmadaffald": "Mad/Rest affald",
+    "pappi": "Papir/Plast & MDK",
+    "metalglas": "Metal/Glas affald",
+    "pap": "Pap"
+  },
+  "ishøj_1": {
+    "restaffaldmadaffald": "Mad/Rest affald",
+    "pappi": "Papir/Plast & MDK",
+    "haveaffald": "Haveaffald",
+    "pap": "Pap",
+    "storskrald": "Storskrald"
+  },
+  "vallensbæk_1": {
+    "restaffaldmadaffald": "Mad/Rest affald",
+    "pappi": "Papir/Plast & MDK",
+    "metalglas": "Metal/Glas affald",
+    "haveaffald": "Haveaffald",
+    "pap": "Pap",
+    "storskrald": "Storskrald"
   }
 }

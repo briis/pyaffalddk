@@ -155,6 +155,34 @@ class NemAffaldAPI(AffaldDKAPIBase):
         return await self.async_get_ical_data(address_id)
 
 
+class VestForAPI(AffaldDKAPIBase):
+    # Vest Forbrænding API
+    def __init__(self, session=None):
+        super().__init__(session)
+        self.baseurl = "https://selvbetjening.vestfor.dk"
+        self.url_data = self.baseurl + "/Home/MinSide"
+        self.url_search = self.baseurl + "/Adresse/AddressByName"
+        self.today = dt.date.today()
+
+    async def get_address_id(self, zipcode, street, house_number):
+        para = {'term': f'{street} {house_number}, {zipcode}', 'numberOfResults': 50}
+        data = await self.async_get_request(self.url_search, para=para, as_json=True)
+        if len(data) == 1:
+            return data[0]['Id']
+        return None
+
+    async def get_garbage_data(self, address_id):
+        para = {'address-selected-id': address_id}
+        _ = await self.async_get_request(self.url_data, para=para, as_json=False)
+        url = 'https://selvbetjening.vestfor.dk/Adresse/ToemmeDates'
+        para = {
+            'start': str(self.today + dt.timedelta(days=-1)),
+            'end': str(self.today + dt.timedelta(days=60))
+            }
+        data = await self.async_get_request(url, para=para)
+        return data
+
+
 class PerfectWasteAPI(AffaldDKAPIBase):
     # Perfect Waste API
     def __init__(self, municipality_id, session=None):
@@ -381,6 +409,9 @@ class GarbageCollection:
                 elif self._api_data == '6':
                     self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
                     self._api = RenowebghAPI(self._municipality_url, session=session)
+                elif self._api_data == '7':
+                    self._api = VestForAPI(session=session)
+                    self._municipality_url = self._api.baseurl
 
         if not hasattr(self, '_api'):
             raise RuntimeError(f'Unknow municipality: "{municipality}"')
@@ -420,16 +451,52 @@ class GarbageCollection:
         else:
             raise AffaldDKNotSupportedError("Cannot find Municipality")
 
+    def update_pickup_event(self, item_name, address_id, _pickup_date):
+        if _pickup_date < self.today:
+            return 'old-event'
+
+        key = get_garbage_type(item_name, self._municipality, address_id, self.fail)
+        if key in ['not-supported', 'missing-type']:
+            return key
+
+        if (key not in self.pickup_events) or (_pickup_date < self.pickup_events[key].date):
+            _pickup_event = {
+                key: PickupType(
+                    date=_pickup_date,
+                    group=key,
+                    friendly_name=NAME_LIST.get(key),
+                    icon=ICON_LIST.get(key),
+                    entity_picture=f"{key}.svg",
+                    description=item_name,
+                )
+            }
+            self.pickup_events.update(_pickup_event)
+        return 'done'
+
+    def set_next_event(self):
+        if not self.pickup_events:
+            return
+        _next_pickup = min(event.date for event in self.pickup_events.values())
+        _next_name = [event.friendly_name for event in self.pickup_events.values() if event.date == _next_pickup]
+        _next_description = [event.description for event in self.pickup_events.values() if event.date == _next_pickup]
+        _next_pickup_event = {
+            "next_pickup": PickupType(
+                date=_next_pickup,
+                group="genbrug",
+                friendly_name=list_to_string(_next_name),
+                icon=ICON_LIST.get("genbrug"),
+                entity_picture="genbrug.svg",
+                description=list_to_string(_next_description),
+            )
+        }
+        self.pickup_events.update(_next_pickup_event)
+
     async def get_pickup_data(self, address_id: str, debug=False) -> PickupEvents:
         """Get the garbage collection data."""
 
         if self._municipality_url is not None:
-            pickup_events: PickupEvents = {}
-            _next_pickup = dt.datetime(2030, 12, 31, 23, 59, 0)
-            _next_pickup = _next_pickup.date()
-            _next_pickup_event: PickupType = None
-            _next_name = []
-            _next_description = []
+            self.pickup_events: PickupEvents = {}
+            self.today = dt.date.today()
 
             if self._api_data == "2":
                 data = await self._api.get_garbage_data(address_id)
@@ -440,48 +507,9 @@ class GarbageCollection:
                             event.summary)
                         for garbage_type in _garbage_types:
                             _pickup_date = event.start_datetime.date()
-                            if _pickup_date < dt.date.today():
+                            res = self.update_pickup_event(garbage_type, address_id, _pickup_date)
+                            if res != 'done':
                                 continue
-
-                            key = get_garbage_type(garbage_type, self._municipality, address_id, self.fail)
-                            if key in ['not-supported', 'missing-type']:
-                                continue
-                            _pickup_event = {
-                                key: PickupType(
-                                    date=_pickup_date,
-                                    group=key,
-                                    friendly_name=NAME_LIST.get(key),
-                                    icon=ICON_LIST.get(key),
-                                    entity_picture=f"{key}.svg",
-                                    description=garbage_type,
-                                )
-                            }
-                            if not key_exists_in_pickup_events(pickup_events, key):
-                                pickup_events.update(_pickup_event)
-
-                            if _pickup_date is not None:
-                                if _pickup_date < dt.date.today():
-                                    continue
-                                if _pickup_date < _next_pickup:
-                                    _next_pickup = _pickup_date
-                                    _next_name = []
-                                    _next_description = []
-                                if _pickup_date == _next_pickup:
-                                    _next_name.append(NAME_LIST.get(key))
-                                    _next_description.append(garbage_type)
-
-                    if _next_name:
-                        _next_pickup_event = {
-                            "next_pickup": PickupType(
-                                date=_next_pickup,
-                                group="genbrug",
-                                friendly_name=list_to_string(_next_name),
-                                icon=ICON_LIST.get("genbrug"),
-                                entity_picture="genbrug.svg",
-                                description=list_to_string(_next_description),
-                            )
-                        }
-                        pickup_events.update(_next_pickup_event)
                 except CalendarParseError as err:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
@@ -491,46 +519,10 @@ class GarbageCollection:
                     _pickup_date = iso_string_to_date(row["date"])
                     if _pickup_date < dt.date.today():
                         continue
-                    for item in row["fractions"]:
-                        key = get_garbage_type(item, self._municipality, address_id, self.fail)
-                        if key in ['not-supported', 'missing-type']:
+                    for garbage_type in row["fractions"]:
+                        res = self.update_pickup_event(garbage_type, address_id, _pickup_date)
+                        if res != 'done':
                             continue
-                        _pickup_event = {
-                            key: PickupType(
-                                date=_pickup_date,
-                                group=key,
-                                friendly_name=NAME_LIST.get(key),
-                                icon=ICON_LIST.get(key),
-                                entity_picture=f"{key}.svg",
-                                description=item,
-                            )
-                        }
-                        if not key_exists_in_pickup_events(pickup_events, key):
-                            pickup_events.update(_pickup_event)
-
-                        if _pickup_date is not None:
-                            if _pickup_date < dt.date.today():
-                                continue
-                            if _pickup_date < _next_pickup:
-                                _next_pickup = _pickup_date
-                                _next_name = []
-                                _next_description = []
-                            if _pickup_date == _next_pickup:
-                                _next_name.append(NAME_LIST.get(key))
-                                _next_description.append(item)
-
-                if _next_name:
-                    _next_pickup_event = {
-                        "next_pickup": PickupType(
-                            date=_next_pickup,
-                            group="genbrug",
-                            friendly_name=list_to_string(_next_name),
-                            icon=ICON_LIST.get("genbrug"),
-                            entity_picture="genbrug.svg",
-                            description=list_to_string(_next_description),
-                        )
-                    }
-                    pickup_events.update(_next_pickup_event)
 
             elif self._api_data == "4":
                 data = await self._api.get_garbage_data(address_id)
@@ -541,50 +533,10 @@ class GarbageCollection:
                             event.summary)
                         for garbage_type in _garbage_types:
                             _pickup_date = (event.start_datetime + self.utc_offset).date()
-                            # _LOGGER.debug(
-                            #     "Start Date: %s - End Date: %s", _start_date, _pickup_date)
-                            if _pickup_date < dt.date.today():
+                            res = self.update_pickup_event(garbage_type, address_id, _pickup_date)
+                            if res != 'done':
                                 continue
 
-                            key = get_garbage_type(garbage_type, self._municipality, address_id, fail=self.fail)
-                            if key in ['not-supported', 'missing-type']:
-                                continue
-
-                            _pickup_event = {
-                                key: PickupType(
-                                    date=_pickup_date,
-                                    group=key,
-                                    friendly_name=NAME_LIST.get(key),
-                                    icon=ICON_LIST.get(key),
-                                    entity_picture=f"{key}.svg",
-                                    description=garbage_type,
-                                )
-                            }
-                            if not key_exists_in_pickup_events(pickup_events, key):
-                                pickup_events.update(_pickup_event)
-
-                            if _pickup_date is not None:
-                                if _pickup_date < dt.date.today():
-                                    continue
-                                if _pickup_date < _next_pickup:
-                                    _next_pickup = _pickup_date
-                                    _next_name = []
-                                    _next_description = []
-                                if _pickup_date == _next_pickup:
-                                    _next_name.append(NAME_LIST.get(key))
-                                    _next_description.append(garbage_type)
-                    if _next_name:
-                        _next_pickup_event = {
-                            "next_pickup": PickupType(
-                                date=_next_pickup,
-                                group="genbrug",
-                                friendly_name=list_to_string(_next_name),
-                                icon=ICON_LIST.get("genbrug"),
-                                entity_picture="genbrug.svg",
-                                description=list_to_string(_next_description),
-                            )
-                        }
-                        pickup_events.update(_next_pickup_event)
                 except CalendarParseError as err:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
@@ -595,47 +547,10 @@ class GarbageCollection:
                     if _pickup_date < dt.date.today():
                         continue
                     for item in row["fractions"]:
-                        fraction_name = item['fractionName']
-                        key = get_garbage_type(fraction_name, self._municipality, address_id, fail=self.fail)
-                        if key in ['not-supported', 'missing-type']:
+                        garbage_type = item['fractionName']
+                        res = self.update_pickup_event(garbage_type, address_id, _pickup_date)
+                        if res != 'done':
                             continue
-
-                        _pickup_event = {
-                            key: PickupType(
-                                date=_pickup_date,
-                                group=key,
-                                friendly_name=NAME_LIST.get(key),
-                                icon=ICON_LIST.get(key),
-                                entity_picture=f"{key}.svg",
-                                description=fraction_name,
-                            )
-                        }
-                        if not key_exists_in_pickup_events(pickup_events, key):
-                            pickup_events.update(_pickup_event)
-
-                        if _pickup_date is not None:
-                            if _pickup_date < dt.date.today():
-                                continue
-                            if _pickup_date < _next_pickup:
-                                _next_pickup = _pickup_date
-                                _next_name = []
-                                _next_description = []
-                            if _pickup_date == _next_pickup:
-                                _next_name.append(NAME_LIST.get(key))
-                                _next_description.append(fraction_name)
-
-                if _next_name:
-                    _next_pickup_event = {
-                        "next_pickup": PickupType(
-                            date=_next_pickup,
-                            group="genbrug",
-                            friendly_name=list_to_string(_next_name),
-                            icon=ICON_LIST.get("genbrug"),
-                            entity_picture="genbrug.svg",
-                            description=list_to_string(_next_description),
-                        )
-                    }
-                    pickup_events.update(_next_pickup_event)
 
             elif self._api_data == "6":
                 garbage_data = await self._api.get_garbage_data(address_id)
@@ -643,51 +558,20 @@ class GarbageCollection:
                     if not item['nextpickupdatetimestamp']:
                         continue
                     _pickup_date = dt.datetime.fromtimestamp(int(item["nextpickupdatetimestamp"])).date()
-                    if _pickup_date < dt.date.today():
+                    res = self.update_pickup_event(item['name'], address_id, _pickup_date)
+                    if res != 'done':
                         continue
 
-                    key = get_garbage_type(item['name'], self._municipality, address_id, self.fail)
-                    if key in ['not-supported', 'missing-type']:
+            elif self._api_data == "7":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    _pickup_date = iso_string_to_date(item['start'])
+                    res = self.update_pickup_event(item['title'], address_id, _pickup_date)
+                    if res != 'done':
                         continue
 
-                    _pickup_event = {
-                        key: PickupType(
-                            date=_pickup_date,
-                            group=key,
-                            friendly_name=NAME_LIST.get(key),
-                            icon=ICON_LIST.get(key),
-                            entity_picture=f"{key}.svg",
-                            description=item['name'],
-                        )
-                    }
-                    if not key_exists_in_pickup_events(pickup_events, key):
-                        pickup_events.update(_pickup_event)
-
-                    if _pickup_date is not None:
-                        if _pickup_date < dt.date.today():
-                            continue
-                        if _pickup_date < _next_pickup:
-                            _next_pickup = _pickup_date
-                            _next_name = []
-                            _next_description = []
-                        if _pickup_date == _next_pickup:
-                            _next_name.append(NAME_LIST.get(key))
-                            _next_description.append(item['name'])
-
-                if _next_name:
-                    _next_pickup_event = {
-                        "next_pickup": PickupType(
-                            date=_next_pickup,
-                            group="genbrug",
-                            friendly_name=list_to_string(_next_name),
-                            icon=ICON_LIST.get("genbrug"),
-                            entity_picture="genbrug.svg",
-                            description=list_to_string(_next_description),
-                        )
-                    }
-                    pickup_events.update(_next_pickup_event)
-
-            return pickup_events
+            self.set_next_event()
+            return self.pickup_events
 
 
 def iso_string_to_date(datetext: str) -> dt.date:

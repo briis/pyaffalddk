@@ -6,7 +6,13 @@ from .data import const_tests
 from pathlib import Path
 import pickle
 import json
+import os
 from ical.calendar_stream import IcsCalendarStream
+
+
+skip_in_ci = pytest.mark.skipif(
+    os.getenv("CI") == "true", reason="Skipped in CI environment"
+)
 
 
 UPDATE = False
@@ -18,6 +24,7 @@ odense_ics_data = (datadir/'odense_ics.data').read_text()
 aalborg_data_gh = json.loads((datadir/'Aalborg_gh.data').read_text())
 aarhus_data = json.loads((datadir/'Aarhus.data').read_text())
 koege_data = json.loads((datadir/'Koege.data').read_text())
+vestfor_data = pickle.loads((datadir/'vestfor.data').read_bytes())
 FREEZE_TIME = "2025-04-25"
 compare_file = (datadir/'compare_data.p')
 
@@ -58,7 +65,7 @@ async def test_Koege(capsys, monkeypatch):
             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
-            update_and_compare('Koege', pickups, False)
+            update_and_compare('Koege', pickups, UPDATE)
 
 
 @pytest.mark.asyncio
@@ -80,7 +87,7 @@ async def test_Aalborg_gh(capsys, monkeypatch):
             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
-            update_and_compare('Aalborg_gh', pickups, True)
+            update_and_compare('Aalborg_gh', pickups, UPDATE)
 
 
 @pytest.mark.asyncio
@@ -124,7 +131,31 @@ async def test_Aarhus(capsys, monkeypatch):
             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
             pickups = await gc.get_pickup_data(address.address_id)
-            update_and_compare('Aarhus', pickups, False)
+            update_and_compare('Aarhus', pickups, UPDATE)
+
+
+@skip_in_ci
+@pytest.mark.asyncio
+@freeze_time("2025-05-18")
+async def test_VestFor(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Ballerup', session=session, fail=True)
+
+            address = await gc.get_address_id('2750', 'Banegårdspladsen', '1')
+            # print(address.__dict__)
+            add = {
+                'uid': 'Ballerup_2690c90b-016f-e511-80cd-005056be6a4c',
+                'address_id': '2690c90b-016f-e511-80cd-005056be6a4c',
+                'kommunenavn': 'Ballerup', 'vejnavn': 'Banegårdspladsen', 'husnr': '1'}
+            assert address.__dict__ == add
+
+            async def get_data(*args, **kwargs):
+                return vestfor_data
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+
+            pickups = await gc.get_pickup_data(address.address_id)
+            update_and_compare('Ballerup', pickups, UPDATE)
 
 
 @pytest.mark.asyncio

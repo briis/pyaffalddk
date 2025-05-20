@@ -48,8 +48,9 @@ class AffaldDKGarbageTypeNotFound(Exception):
 class AffaldDKAPIBase:
     """Base class for the API."""
 
-    def __init__(self, session=None) -> None:
+    def __init__(self, municipality_id, session=None) -> None:
         """Initialize the class."""
+        self.municipality_id = municipality_id
         self.session = session
         if self.session is None:
             self.session = aiohttp.ClientSession()
@@ -76,7 +77,7 @@ class AffaldDKAPIBase:
             json_input = None
             data_input = para
 
-        async with session.request(method, url, headers=headers, json=json_input, data=data_input) as response:
+        async with session.request(method, url, headers=headers, json=json_input, params=data_input) as response:
             if response.status != 200:
                 if new_session:
                     await session.close()
@@ -108,12 +109,12 @@ class AffaldDKAPIBase:
 
 class NemAffaldAPI(AffaldDKAPIBase):
     # NemAffaldService API
-    def __init__(self, domain, session=None):
-        super().__init__(session)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._token = None
         self._id = None
         self.street = None
-        self.base_url = f'https://nemaffaldsservice.{domain}.dk'
+        self.base_url = f'https://nemaffaldsservice.{self.municipality_id}.dk'
 
     @property
     async def token(self):
@@ -157,8 +158,8 @@ class NemAffaldAPI(AffaldDKAPIBase):
 
 class VestForAPI(AffaldDKAPIBase):
     # Vest Forbrænding API
-    def __init__(self, session=None):
-        super().__init__(session)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.baseurl = "https://selvbetjening.vestfor.dk"
         self.url_data = self.baseurl + "/Home/MinSide"
         self.url_search = self.baseurl + "/Adresse/AddressByName"
@@ -185,12 +186,11 @@ class VestForAPI(AffaldDKAPIBase):
 
 class PerfectWasteAPI(AffaldDKAPIBase):
     # Perfect Waste API
-    def __init__(self, municipality_id, session=None):
-        super().__init__(session)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.baseurl = "https://europe-west3-perfect-waste.cloudfunctions.net"
         self.url_data = self.baseurl + "/getAddressCollections"
         self.url_search = self.baseurl + "/searchExternalAddresses"
-        self.municipality_id = municipality_id
 
     async def get_address_id(self, zipcode, street, house_number):
         body = {'data': {
@@ -223,12 +223,11 @@ class PerfectWasteAPI(AffaldDKAPIBase):
 
 class RenowebghAPI(AffaldDKAPIBase):
     # Renoweb servicegh API
-    def __init__(self, municipality_id, session=None):
-        super().__init__(session)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.url_data = "https://servicesgh.renoweb.dk/v1_13/"
         self.uuid = base64.b64decode(GH_API).decode('utf-8')
         self.headers = {'Accept-Encoding': 'gzip'}
-        self.municipality_id = municipality_id
         self.info = {}
 
     async def get_road(self, zipcode, street):
@@ -275,10 +274,36 @@ class RenowebghAPI(AffaldDKAPIBase):
         return []
 
 
+class AffaldOnlineAPI(AffaldDKAPIBase):
+    # Affald online API
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://www.affaldonline.dk/api/address/"
+        uuid = base64.b64decode(self.municipality_id).decode('utf-8')
+        self.headers = {
+            'X-Client-Provider': uuid,
+            'X-Client-Type': 'Kunde app',
+            'X-Client-Version': '22',
+        }
+
+    async def get_address_id(self, zipcode, street, house_number):
+        para = {'q': f'{street} {house_number}'}
+        data = await self.async_get_request(self.url_base + 'search', para=para, headers=self.headers)
+        for res in data['results']:
+            if str(zipcode) in res['displayName']:
+                return res['addressId']
+        return None
+
+    async def get_garbage_data(self, address_id):
+        para = {'groupBy': 'date', 'addressId': address_id}
+        data = await self.async_get_request(self.url_base + 'collections', para=para, headers=self.headers)
+        return data
+
+
 class AarhusAffaldAPI(AffaldDKAPIBase):
     # Aarhus Forsyning API
-    def __init__(self, session=None):
-        super().__init__(session)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.url_data = "https://portal-api.kredslob.dk/api/calendar/address/"
         self.url_search = "https://api.dataforsyningen.dk/adresser?kommunekode=751&q="
 
@@ -304,8 +329,8 @@ class AarhusAffaldAPI(AffaldDKAPIBase):
 
 class OdenseAffaldAPI(AffaldDKAPIBase):
     # Odense Renovation API
-    def __init__(self, session=None):
-        super().__init__(session)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.url_data = "https://mit.odenserenovation.dk/api/Calendar/GetICalCalendar?addressNo="
         self.url_search = "https://mit.odenserenovation.dk/api/Calendar/CommunicationHouseNumbers?addressString="
 
@@ -334,8 +359,8 @@ class AffaldDKAPI(AffaldDKAPIBase):
     # Renoweb API
     """Class to get data from AffaldDK."""
 
-    def __init__(self, session=None):
-        super().__init__(session)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.url_data = ".renoweb.dk/Legacy/JService.asmx/GetAffaldsplanMateriel_mitAffald"
         self.url_search = ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString"
 
@@ -370,6 +395,17 @@ class AffaldDKAPI(AffaldDKAPIBase):
         return address_id
 
 
+APIS = {
+    'odense': OdenseAffaldAPI,
+    'aarhus': AarhusAffaldAPI,
+    'nemaffald': NemAffaldAPI,
+    'perfectwaste': PerfectWasteAPI,
+    'renoweb': RenowebghAPI,
+    'vestfor': VestForAPI,
+    'affaldonline': AffaldOnlineAPI,
+}
+
+
 class GarbageCollection:
     """Class to get garbage collection data."""
 
@@ -381,53 +417,29 @@ class GarbageCollection:
     ) -> None:
         """Initialize the class."""
         self._municipality = municipality
-        # self._tzinfo = None
         self._street = None
         self._house_number = None
-        self._api_data = None
-        self._data = None
-        self._municipality_url = None
+        self._api_type = None
         self._address_id = None
         self.fail = fail
         self.utc_offset = dt.datetime.now().astimezone().utcoffset()
 
+        municipality_id = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
+
         for key, value in MUNICIPALITIES_LIST.items():
             if key.lower() == self._municipality.lower():
-                self._api_data = value[1]
-                if self._api_data == '2':
-                    self._api = OdenseAffaldAPI(session=session)
-                    self._municipality_url = value[0]
-                elif self._api_data == '3':
-                    self._api = AarhusAffaldAPI(session=session)
-                    self._municipality_url = value[0]
-                elif self._api_data == '4':
-                    self._api = NemAffaldAPI(value[0], session=session)
-                    self._municipality_url = self._api.base_url
-                elif self._api_data == '5':
-                    self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
-                    self._api = PerfectWasteAPI(self._municipality_url, session=session)
-                elif self._api_data == '6':
-                    self._municipality_url = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
-                    self._api = RenowebghAPI(self._municipality_url, session=session)
-                elif self._api_data == '7':
-                    self._api = VestForAPI(session=session)
-                    self._municipality_url = self._api.baseurl
+                self._api_type = value[0]
+                if len(value) > 1:
+                    municipality_id = value[1]
+                self._api = APIS[self._api_type](municipality_id, session=session)
 
-        if not hasattr(self, '_api'):
+        if self._api_type is None:
             raise RuntimeError(f'Unknow municipality: "{municipality}"')
-        if session:
-            self._api.session = session
 
     async def async_init(self) -> None:
         """Initialize the connection."""
         if self._municipality is not None:
-            if self._api_data == "2":
-                url = f"{self._api.url_search}{self._street}"
-                await self._api.async_get_request(url)
-            elif self._api_data == "3":
-                url = f"{self._api.url_search}{self._street}*"
-                await self._api.async_get_request(url)
-            elif self._api_data == "4":
+            if self._api_type == "nemaffald":
                 await self._api.token
 
     async def get_address_id(
@@ -435,7 +447,7 @@ class GarbageCollection:
     ) -> AffaldDKAddressInfo:
         """Get the address id."""
 
-        if self._municipality_url is not None:
+        if self._api_type is not None:
             self._address_id = await self._api.get_address_id(zipcode, street, house_number)
 
             if self._address_id is None:
@@ -494,11 +506,11 @@ class GarbageCollection:
     async def get_pickup_data(self, address_id: str, debug=False) -> PickupEvents:
         """Get the garbage collection data."""
 
-        if self._municipality_url is not None:
+        if self._api_type is not None:
             self.pickup_events: PickupEvents = {}
             self.today = dt.date.today()
 
-            if self._api_data == "2":
+            if self._api_type == 'odense':
                 data = await self._api.get_garbage_data(address_id)
                 try:
                     ics = IcsCalendarStream.calendar_from_ics(data)
@@ -507,24 +519,20 @@ class GarbageCollection:
                             event.summary)
                         for garbage_type in _garbage_types:
                             _pickup_date = event.start_datetime.date()
-                            res = self.update_pickup_event(garbage_type, address_id, _pickup_date)
-                            if res != 'done':
-                                continue
+                            self.update_pickup_event(garbage_type, address_id, _pickup_date)
                 except CalendarParseError as err:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
-            elif self._api_data == "3":
+            elif self._api_type == "aarhus":
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for row in garbage_data:
                     _pickup_date = iso_string_to_date(row["date"])
                     if _pickup_date < dt.date.today():
                         continue
                     for garbage_type in row["fractions"]:
-                        res = self.update_pickup_event(garbage_type, address_id, _pickup_date)
-                        if res != 'done':
-                            continue
+                        self.update_pickup_event(garbage_type, address_id, _pickup_date)
 
-            elif self._api_data == "4":
+            elif self._api_type == "nemaffald":
                 data = await self._api.get_garbage_data(address_id)
                 try:
                     ics = IcsCalendarStream.calendar_from_ics(data)
@@ -533,14 +541,12 @@ class GarbageCollection:
                             event.summary)
                         for garbage_type in _garbage_types:
                             _pickup_date = (event.start_datetime + self.utc_offset).date()
-                            res = self.update_pickup_event(garbage_type, address_id, _pickup_date)
-                            if res != 'done':
-                                continue
+                            self.update_pickup_event(garbage_type, address_id, _pickup_date)
 
                 except CalendarParseError as err:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
-            elif self._api_data == "5":
+            elif self._api_type == "perfectwaste":
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for row in garbage_data:
                     _pickup_date = iso_string_to_date(row["date"])
@@ -548,27 +554,31 @@ class GarbageCollection:
                         continue
                     for item in row["fractions"]:
                         garbage_type = item['fractionName']
-                        res = self.update_pickup_event(garbage_type, address_id, _pickup_date)
-                        if res != 'done':
-                            continue
+                        self.update_pickup_event(garbage_type, address_id, _pickup_date)
 
-            elif self._api_data == "6":
+            elif self._api_type == "renoweb":
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for item in garbage_data:
                     if not item['nextpickupdatetimestamp']:
                         continue
                     _pickup_date = dt.datetime.fromtimestamp(int(item["nextpickupdatetimestamp"])).date()
-                    res = self.update_pickup_event(item['name'], address_id, _pickup_date)
-                    if res != 'done':
-                        continue
+                    self.update_pickup_event(item['name'], address_id, _pickup_date)
 
-            elif self._api_data == "7":
+            elif self._api_type == "vestfor":
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for item in garbage_data:
                     _pickup_date = iso_string_to_date(item['start'])
-                    res = self.update_pickup_event(item['title'], address_id, _pickup_date)
-                    if res != 'done':
-                        continue
+                    self.update_pickup_event(item['title'], address_id, _pickup_date)
+
+            elif self._api_type == "affaldonline":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    _pickup_date = iso_string_to_date(item['date'])
+                    for garbage_type in item['collections']:
+#                        fraction_name = garbage_type['fraction']['name']
+                        fraction_description = garbage_type['containers'][0]['description']
+#                        print(fraction_name, fraction_description)
+                        self.update_pickup_event(fraction_description, address_id, _pickup_date)
 
             self.set_next_event()
             return self.pickup_events
@@ -616,6 +626,7 @@ def clean_fraction_string(item):
 
     fixed_item = re.sub(r'\bdistrikt [A-Za-z0-9]\b', '', fixed_item)
     fixed_item = re.sub(r'\brute [0-9]\b', '', fixed_item)
+    fixed_item = re.sub(r'\bs[0-9]\b', '', fixed_item) # remove " S6 " Rebild
 
     if ':' in fixed_item:
         fixed_item = fixed_item.split(':')[1]

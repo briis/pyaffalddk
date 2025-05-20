@@ -318,5 +318,10 @@
     "pappapirglasmetal": "Metal/Glas/Plast/MDK",
     "pappapir": "Papir/Pap",
     "restaffaldmadaffald": "Rest/Madaffald"
+  },
+  "ærø_1": {
+    "restaffaldmadaffald": "240 L Mad- og Restaffald",
+    "papirglas": "240 L Papir/Pap og Glas",
+    "plastmdkglasmetal": "240 L Plast/Drikkekarton og Metal"
   }
 }

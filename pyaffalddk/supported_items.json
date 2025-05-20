@@ -144,7 +144,8 @@
         "Papir og Glas",
         "Papir og pap/Glas",
         "Papir, Pap/Glas",
-        "Papir/glas"
+        "Papir/glas",
+        "Papir/Pap og Glas"
     ],
     "papirglasdaaser": [
         "Papir og glas/dåser",
@@ -191,7 +192,8 @@
         "Genbrugsbeholder",
         "genbrugsspand",
         "Plast og drikkekarton – Glas og metal",
-        "plast, MDK/metal, glas"
+        "plast, MDK/metal, glas",
+        "Plast/Drikkekarton og Metal"
     ],
     "plastmetal": [
         "Metal og Plast",

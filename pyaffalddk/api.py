@@ -6,7 +6,7 @@ from ical.exceptions import CalendarParseError
 import json
 import logging
 import re
-from urllib.parse import urlparse, parse_qsl
+from urllib.parse import urlparse, parse_qsl, quote
 from typing import Any
 import base64
 import aiohttp
@@ -300,6 +300,27 @@ class AffaldOnlineAPI(AffaldDKAPIBase):
         return data
 
 
+class RevasAPI(AffaldDKAPIBase):
+    # Revas Viborg API
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://dagrenovation.viborg.dk/app/AppService/"
+
+    async def get_address_id(self, zipcode, street, house_number):
+        address = quote(f'{street} {house_number}, {zipcode}')
+        url = self.url_base + f'search/address/{address}/limit/50'
+        data = await self.async_get_request(url)
+        for res in sorted(data['results'], key=lambda x: x["addressId"]):
+            if str(zipcode) in res['displayName']:
+                return res['addressId']
+        return None
+
+    async def get_garbage_data(self, address_id):
+        url = self.url_base + f'address/{address_id}/collections'
+        data = await self.async_get_request(url)
+        return data
+
+
 class AarhusAffaldAPI(AffaldDKAPIBase):
     # Aarhus Forsyning API
     def __init__(self, *args, **kwargs):
@@ -403,6 +424,7 @@ APIS = {
     'renoweb': RenowebghAPI,
     'vestfor': VestForAPI,
     'affaldonline': AffaldOnlineAPI,
+    'viborg': RevasAPI,
 }
 
 
@@ -579,6 +601,15 @@ class GarbageCollection:
                         fraction_description = garbage_type['containers'][0]['description']
 #                        print(fraction_name, fraction_description)
                         self.update_pickup_event(fraction_description, address_id, _pickup_date)
+
+            elif self._api_type == "viborg":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data['collections']:
+                    dt_list = [iso_string_to_date(d) for d in item['dates']]
+                    if dt_list:
+                        _pickup_date = min([d for d in dt_list if d >= self.today])
+                        fraction_name = item['fraction']['name']
+                        self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
             self.set_next_event()
             return self.pickup_events

@@ -313,5 +313,10 @@
     "pappi": "240L Genbrug",
     "storskrald": "Storskrald S6",
     "restaffaldmadaffald": "240 L mad/rest - 14 dags"
+  },
+  "viborg_1": {
+    "pappapirglasmetal": "Metal/Glas/Plast/MDK",
+    "pappapir": "Papir/Pap",
+    "restaffaldmadaffald": "Rest/Madaffald"
   }
 }

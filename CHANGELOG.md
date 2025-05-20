@@ -1,12 +1,28 @@
 # Changelog for pyaffalddk
 
+## [2.7.0] - `2025-05-20`
+
+### Changes
+* Re-factored API naming in GarbageCollection Class
+
+### Added
+* Added new API for AffaldOnline with new municipalities:
+  * Favrskov
+  * Holbæk
+  * Langeland
+  * Morsø
+  * Rebild
+  * Vejle
+  * Ærø
+* New API test for AffaldOnline API, and smoketests for the new municipalities
+
 ## [2.7.0] - `2025-05-18`
 
 ### Changes
 * Unified get_pickup_event functions
 
 ### Added
-* Added new AIP for Vest Forbrænding, fixing Ballerup and adding new municipalities:
+* Added new API for Vest Forbrænding, fixing Ballerup and adding new municipalities:
   * Furesø
   * Ishøj
   * Vallensbæk

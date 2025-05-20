@@ -431,7 +431,7 @@ class GarbageCollection:
                 self._api_type = value[0]
                 if len(value) > 1:
                     municipality_id = value[1]
-                self._api = APIS[value[0]](municipality_id, session=session)
+                self._api = APIS[self._api_type](municipality_id, session=session)
 
         if self._api_type is None:
             raise RuntimeError(f'Unknow municipality: "{municipality}"')

@@ -1,6 +1,6 @@
 # Changelog for pyaffalddk
 
-## [2.7.0] - `2025-05-20`
+## [2.8.0] - `2025-05-20`
 
 ### Changes
 * Re-factored API naming in GarbageCollection Class

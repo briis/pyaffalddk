@@ -1,5 +1,11 @@
 # Changelog for pyaffalddk
 
+## [2.9.0] - `2025-05-20`
+
+### Added
+* API for Revas for Viborg municipality
+* New API test for Revas API, and smoketests for Viborg municipalities
+
 ## [2.8.0] - `2025-05-20`
 
 ### Changes

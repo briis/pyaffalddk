@@ -282,5 +282,36 @@
     "haveaffald": "Haveaffald",
     "pap": "Pap",
     "storskrald": "Storskrald"
+  },
+  "vejle_1": {
+    "dagrenovation": "240 L Dagrenovation 2-delt",
+    "genbrug": "240 L Genanvendeligt 2-delt",
+    "haveaffald": "240 L Haveaffald"
+  },
+  "favrskov_1": {
+    "pappapirglasmetal": "240 L Plast/mad- og drikkekartoner og glas/metal (skel)",
+    "restaffaldmadaffald": "240 L Rest-/madaffald (skel)",
+    "pappapir": "240 L Papir/pap og tekstiler (skel)"
+  },
+  "holbæk_1": {
+    "restaffaldmadaffald": "240L Rest/Mad 14.dg Skel",
+    "papirglas": "240L Glas/Papir 8. uge Skel",
+    "pap": "240L Pap 8. uge Skel",
+    "plastmetal": "240L PMDK/Metal 4. uge Skel"
+  },
+  "langeland_1": {
+    "restaffaldmadaffald": "Rest/bio 240 L - 2-delt",
+    "plastmadkarton": "PL/MD 240L 4uge",
+    "papirglasmetalplast": "PP/GM 240L 2-delt 4uge"
+  },
+  "morsø_1": {
+    "restaffaldmadaffald": "240 L Restaffald og Madaffald 26 tøm",
+    "plast": "240 L Plast - Mad- & Drikkekartoner 13 tøm",
+    "pappapir": "240 L Papir og Pap - Metal og Glas 13 tøm"
+  },
+  "rebild_1": {
+    "pappi": "240L Genbrug",
+    "storskrald": "Storskrald S6",
+    "restaffaldmadaffald": "240 L mad/rest - 14 dags"
   }
 }

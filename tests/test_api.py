@@ -24,6 +24,7 @@ odense_ics_data = (datadir/'odense_ics.data').read_text()
 aalborg_data_gh = json.loads((datadir/'Aalborg_gh.data').read_text())
 aarhus_data = json.loads((datadir/'Aarhus.data').read_text())
 koege_data = json.loads((datadir/'Koege.data').read_text())
+affaldonline_data = json.loads((datadir/'affaldonline.data').read_text())
 vestfor_data = pickle.loads((datadir/'vestfor.data').read_bytes())
 FREEZE_TIME = "2025-04-25"
 compare_file = (datadir/'compare_data.p')
@@ -44,6 +45,28 @@ def update_and_compare(name, actual_data, update=False, debug=False):
         print(actual_data.keys())
         print(compare_data[name].keys())
     assert actual_data == compare_data[name]
+
+
+@pytest.mark.asyncio
+@freeze_time("2025-05-20")
+async def test_Affaldonline(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Vejle', session=session, fail=True)
+
+            address = await gc.get_address_id('7100', 'Klostergade', '2A')
+            add = {
+                'uid': 'Vejle_1261533|490691026|0', 'address_id': '1261533|490691026|0',
+                'kommunenavn': 'Vejle', 'vejnavn': 'Klostergade', 'husnr': '2A'}
+            # print(address.__dict__)
+            assert address.__dict__ == add
+
+            async def get_data(*args, **kwargs):
+                return affaldonline_data
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+
+            pickups = await gc.get_pickup_data(address.address_id)
+            update_and_compare('Vejle', pickups, UPDATE)
 
 
 @pytest.mark.asyncio

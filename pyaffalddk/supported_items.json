@@ -93,6 +93,7 @@
         "papir, pap",
         "Papir, pap og tekstilaffald",
         "Papir/Pap",
+        "Papir/pap og tekstiler",
         "Papir/Papspand"
     ],
     "pappapirglasmetal": [
@@ -106,6 +107,7 @@
         "papir/pap + glas/metal",
         "Papir/pap og glas/metal",
         "Plast og drikkekarton - Glas og metal",
+        "Plast/mad- og drikkekartoner og glas/metal",
         "Ressourcebeholder"
     ],
     "pappi": [
@@ -136,6 +138,7 @@
     ],
     "papirglas": [
         "Glas-papir",
+        "Glas/Papir",
         "Papir & glas",
         "Papir og Glas",
         "Papir og pap/Glas",
@@ -151,7 +154,8 @@
         "genbrug låg i låg",
         "Pap og papir/metal, glas og hård plast",
         "plast/metal/drikkekartoner og papir/pap",
-        "plast/metal/MDK/papir/pap"
+        "plast/metal/MDK/papir/pap",
+        "PP/GM"
     ],
     "papirmetal": [
         "Metal og papir",
@@ -172,6 +176,7 @@
         "Genbrug henteordning",
         "Genbrugsbeholder PMDK/MG-240L/3",
         "Mad- og drikkekartoner",
+        "PL/MD",
         "Plast & mad- og drikkekartoner",
         "Plast & MDK",
         "Plast og mad- & drikkekartoner",
@@ -196,7 +201,8 @@
         "Plast-metal",
         "Plast/ Metal",
         "Plast/MDK/Metal",
-        "Plast/Metal"
+        "Plast/Metal",
+        "PMDK/Metal"
     ],
     "plastmetalmadmdk": [
         "Plast, mad- og drikkekartoner og metal",
@@ -230,8 +236,10 @@
         "Rest og Mad",
         "Rest- og Madaffald",
         "Rest-/Madaffald",
+        "Rest/bio",
         "Rest/Mad",
         "Rest/madaffald",
+        "Restaffald og Madaffald",
         "Restaffald-Madaffald",
         "Restaffald/Madaffald",
         "rød",

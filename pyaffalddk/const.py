@@ -117,15 +117,6 @@ NAME_LIST = {
     "tekstil": "Tekstilaffald",
 }
 
-# SUPPORTED_ITEMS2 = {key: [] for key in NAME_LIST}
-# for key, vals in SUPPORTED_ITEMS2.items():
-#     vals += SUPPORTED_ITEMS.get(key, [])
-#     vals += MATERIAL_LIST.get(key, [])
-#     vals = sorted(list(set(vals)))
-
-# with open('supported_items.json', 'w', encoding="utf-8") as fh:
-#     json.dump(SUPPORTED_ITEMS2, fh, indent=4, ensure_ascii=False)
-
 NAME_ARRAY = list(NAME_LIST.keys())
 PAR_EXCEPTIONS = ['M/R']
 STRIPS = [
@@ -133,10 +124,11 @@ STRIPS = [
         '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', ', 240l', ' 240 ltr',
         '370 l ', '370 liter ', '400 liter', '660 liter', '660 l ', '770 l ',
         'med 14-dages tømning ved helårshuse', '– tømmes hver 2. uge',
-        '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel', ' 14 dg.', ' 14 dg',
+        '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel', ' 14 dg.', ' 14 dg', '14.dg skel',
+        '4. uge Skel', '8. uge skel', ' 4uge',
         'todelt 4 ugers tømning', 'todelt 14 dages tøm', '3 ugers tømning', 'hver 4. uge', '4-ugers', 'hver 6. uge', '2 delt', '2-delt',
         'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '1-rums', 'to-kammer', 'todelt',
-        'egenløsning', 'en-familie', 'enfamiliehus', ' D1 ', ' gl.', 'sommer 32', 'm. sommertømning', 'villa', 'tømning',
+        'egenløsning', 'en-familie', 'enfamiliehus', ' D1 ', ' gl.', '26 tøm', 'sommer 32', 'm. sommertømning', 'villa', 'tømning',
         '-skel 0-2 meter', '- Stand', '- Skel', ' ?', 'uge ',
 ]
 ODD_EVEN_ARRAY = ["lige", "ulige"]

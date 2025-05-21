@@ -6,6 +6,12 @@
 * API for Revas for Viborg municipality
 * New API test for Revas API, and smoketests for Viborg municipality
 
+### Changes
+* Solrød mangler plast, pap og tekstiler #300
+* Kommune: Esbjerg (ID: 70987) #298
+* [FR]: Viborg (Kommune) #297
+
+
 ## [2.8.0] - `2025-05-20`
 
 ### Changes

@@ -435,6 +435,7 @@ class GarbageCollection:
         self,
         municipality: str,
         session: aiohttp.ClientSession = None,
+        switch_hour: int = 15,
         fail: bool = False,
     ) -> None:
         """Initialize the class."""
@@ -444,7 +445,7 @@ class GarbageCollection:
         self._api_type = None
         self._address_id = None
         self.fail = fail
-        self.set_switch_time(15, 0)
+        self.set_switch_time(switch_hour, 0)
         self.utc_offset = dt.datetime.now().astimezone().utcoffset()
         self.today = None
 

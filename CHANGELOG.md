@@ -4,7 +4,7 @@
 
 ### Added
 * API for Revas for Viborg municipality
-* New API test for Revas API, and smoketests for Viborg municipalities
+* New API test for Revas API, and smoketests for Viborg municipality
 
 ## [2.8.0] - `2025-05-20`
 

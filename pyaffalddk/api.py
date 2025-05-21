@@ -444,7 +444,9 @@ class GarbageCollection:
         self._api_type = None
         self._address_id = None
         self.fail = fail
+        self.set_switch_time(15, 0)
         self.utc_offset = dt.datetime.now().astimezone().utcoffset()
+        self.today = None
 
         municipality_id = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
 
@@ -457,6 +459,9 @@ class GarbageCollection:
 
         if self._api_type is None:
             raise RuntimeError(f'Unknow municipality: "{municipality}"')
+
+    def set_switch_time(self, hours, minutes):
+        self.switch_time = dt.time(hours, minutes)
 
     async def async_init(self) -> None:
         """Initialize the connection."""
@@ -510,7 +515,10 @@ class GarbageCollection:
     def set_next_event(self):
         if not self.pickup_events:
             return
-        _next_pickup = min(event.date for event in self.pickup_events.values())
+        if dt.datetime.now().time() > self.switch_time:
+            _next_pickup = min(event.date for event in self.pickup_events.values() if event.date > self.today)
+        else:
+            _next_pickup = min(event.date for event in self.pickup_events.values())
         _next_name = [event.friendly_name for event in self.pickup_events.values() if event.date == _next_pickup]
         _next_description = [event.description for event in self.pickup_events.values() if event.date == _next_pickup]
         _next_pickup_event = {
@@ -528,7 +536,7 @@ class GarbageCollection:
     async def get_pickup_data(self, address_id: str, debug=False) -> PickupEvents:
         """Get the garbage collection data."""
 
-        if self._api_type is not None:
+        if (self._api_type is not None) & (self.today != dt.date.today()):
             self.pickup_events: PickupEvents = {}
             self.today = dt.date.today()
 
@@ -610,9 +618,11 @@ class GarbageCollection:
                         _pickup_date = min([d for d in dt_list if d >= self.today])
                         fraction_name = item['fraction']['name']
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)
-
-            self.set_next_event()
-            return self.pickup_events
+            if self.pickup_events == {}:
+                # failed to get any data
+                self.today = None
+        self.set_next_event()
+        return self.pickup_events
 
 
 def iso_string_to_date(datetext: str) -> dt.date:

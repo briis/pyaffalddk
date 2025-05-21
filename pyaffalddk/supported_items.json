@@ -97,12 +97,13 @@
         "Papir/Papspand"
     ],
     "pappapirglasmetal": [
-        "4delt beholder",
+        "4delt",
         "Genbrug - grønt låg",
         "Glas & metal og papir & småt pap",
         "glas/metal og pap/papir",
         "Grønt låg",
         "metal, glas, plast/papir",
+        "Metal/Glas/Plast/MDK",
         "Pap, papir, tekstil & metal og glas",
         "papir/pap + glas/metal",
         "Papir/pap og glas/metal",
@@ -143,7 +144,8 @@
         "Papir og Glas",
         "Papir og pap/Glas",
         "Papir, Pap/Glas",
-        "Papir/glas"
+        "Papir/glas",
+        "Papir/Pap og Glas"
     ],
     "papirglasdaaser": [
         "Papir og glas/dåser",
@@ -190,7 +192,8 @@
         "Genbrugsbeholder",
         "genbrugsspand",
         "Plast og drikkekarton – Glas og metal",
-        "plast, MDK/metal, glas"
+        "plast, MDK/metal, glas",
+        "Plast/Drikkekarton og Metal"
     ],
     "plastmetal": [
         "Metal og Plast",

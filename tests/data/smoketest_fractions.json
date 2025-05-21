@@ -313,5 +313,34 @@
     "pappi": "240L Genbrug",
     "storskrald": "Storskrald S6",
     "restaffaldmadaffald": "240 L mad/rest - 14 dags"
+  },
+  "viborg_1": {
+    "pappapirglasmetal": "Metal/Glas/Plast/MDK",
+    "pappapir": "Papir/Pap",
+    "restaffaldmadaffald": "Rest/Madaffald"
+  },
+  "ærø_1": {
+    "restaffaldmadaffald": "240 L Mad- og Restaffald",
+    "papirglas": "240 L Papir/Pap og Glas",
+    "plastmdkglasmetal": "240 L Plast/Drikkekarton og Metal"
+  },
+  "esbjerg_2": {
+    "restaffald": "240 ltr, restaffald",
+    "farligtaffaldmiljoboks": "Miljøkasse",
+    "madaffald": "Madaffald, 140 ltr",
+    "plastmdkglasmetal": "Genbrugsspand, 240L (2-delt)",
+    "pappapir": "Papir/Papspand, 240L"
+  },
+  "solrød_1": {
+    "haveaffald": "Haveaffald enfamiliehus",
+    "plast": "240 L Plast beholder",
+    "pap": "240 L Pap beholder",
+    "tekstil": "Tekstilpose 25 L",
+    "batterier": "Batterier i pose på låg",
+    "elektronik": "Småt elektronik i pose på låg",
+    "restaffaldmadaffald": "240 L 2-delt Mad/rest en-familie",
+    "papirglasdaaser": "240 L 2-delt Papir/glas-dåser en-familie",
+    "farligtaffaldmiljoboks": "Miljøkasse",
+    "storskrald": "Storskrald enfamiliehus"
   }
 }

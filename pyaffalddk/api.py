@@ -17,6 +17,7 @@ from .const import (
     NAME_LIST,
     NON_SUPPORTED_ITEMS,
     PAR_EXCEPTIONS,
+    RE_WORDS,
     SPECIAL_MATERIALS,
     STRIPS,
     SUPPORTED_ITEMS,
@@ -376,46 +377,6 @@ class OdenseAffaldAPI(AffaldDKAPIBase):
         return await self.async_get_ical_data(address_id)
 
 
-class AffaldDKAPI(AffaldDKAPIBase):
-    # Renoweb API
-    """Class to get data from AffaldDK."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.url_data = ".renoweb.dk/Legacy/JService.asmx/GetAffaldsplanMateriel_mitAffald"
-        self.url_search = ".renoweb.dk/Legacy/JService.asmx/Adresse_SearchByString"
-
-    async def get_address_id(self, municipality_url, zipcode, street, house_number):
-        url = f"https://{municipality_url}{self.url_search}"
-        body = {
-            "searchterm": f"{street} {house_number}",
-            "addresswithmateriel": 7,
-        }
-        # _LOGGER.debug("Municipality URL: %s %s", url, body)
-        data = await self.async_post_request(url, para=body)
-        result = json.loads(data["d"])
-        # _LOGGER.debug("Address Data: %s", result)
-        if "list" not in result:
-            raise AffaldDKNoConnection(
-                f'''AffaldDK API: {
-                    result['status']['status']} - {result['status']['msg']}'''
-            )
-
-        _result_count = len(result["list"])
-        _item: int = 0
-        _row_index: int = 0
-        if _result_count > 1:
-            for row in result["list"]:
-                if zipcode in row["label"] and house_number in row["label"]:
-                    _item = _row_index
-                    break
-                _row_index += 1
-        address_id = result["list"][_item]["value"]
-        if address_id == "0000":
-            return None
-        return address_id
-
-
 APIS = {
     'odense': OdenseAffaldAPI,
     'aarhus': AarhusAffaldAPI,
@@ -655,9 +616,8 @@ def clean_fraction_string(item):
     pattern = rf"\s*\((?!{'|'.join(escaped)}\)).*?\)"
     fixed_item = re.sub(pattern, "", fixed_item)  # strip anything in parenthesis
 
-    fixed_item = re.sub(r'\bdistrikt [A-Za-z0-9]\b', '', fixed_item)
-    fixed_item = re.sub(r'\brute [0-9]\b', '', fixed_item)
-    fixed_item = re.sub(r'\bs[0-9]\b', '', fixed_item) # remove " S6 " Rebild
+    for word in RE_WORDS:
+        fixed_item = re.sub(fr'\b{word}\b', '', fixed_item)
 
     if ':' in fixed_item:
         fixed_item = fixed_item.split(':')[1]

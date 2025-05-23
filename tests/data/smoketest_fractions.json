@@ -34,7 +34,7 @@
   "smoke_5": {
     "pappapirglasmetal": "Plast og drikkekarton - Glas og metal",
     "restaffaldmadaffald": "Rest - Mad",
-    "pappapir": "Papir, pap og tekstilaffald"
+    "pappapirtekstil": "Papir, pap og tekstilaffald"
   },
   "smoke_6": {
     "papirmetal": "Papir/metal",
@@ -289,9 +289,9 @@
     "haveaffald": "240 L Haveaffald"
   },
   "favrskov_1": {
-    "pappapirglasmetal": "240 L Plast/mad- og drikkekartoner og glas/metal (skel)",
+    "plastmdkglasmetal": "240 L Plast/mad- og drikkekartoner og glas/metal (skel)",
     "restaffaldmadaffald": "240 L Rest-/madaffald (skel)",
-    "pappapir": "240 L Papir/pap og tekstiler (skel)"
+    "pappapirtekstil": "240 L Papir/pap og tekstiler (skel)"
   },
   "holbæk_1": {
     "restaffaldmadaffald": "240L Rest/Mad 14.dg Skel",

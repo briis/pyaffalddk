@@ -80,8 +80,7 @@ SUPPORTED_ITEMS = {
     ],
     "papir": [
         "Papir",
-        "Papir 660 L",
-        "Papir // Tekstilaffald",
+        "Papir 660 L"
     ],
     "papirglas": [
         "Papir og pap/Glas",
@@ -102,8 +101,7 @@ SUPPORTED_ITEMS = {
     "pappapir": [
         "Pap/Papir",
         "Papir/Pap",
-        "Papir og Pap",
-        "Papir, pap og tekstilaffald",
+        "Papir og Pap"
     ],
     "pappapirglasmetal": [
         "Pap, papir, tekstil & metal og glas",
@@ -112,6 +110,10 @@ SUPPORTED_ITEMS = {
         "Papir/pap og glas/metal",
         "Plast og drikkekarton - Glas og metal",
         "Genbrug - grønt låg",
+    ],
+    "pappapirtekstil": [
+        "Papir // Tekstilaffald",
+        "Papir, pap og tekstilaffald"
     ],
     "pappi": [
         "Plast MDK og papir",

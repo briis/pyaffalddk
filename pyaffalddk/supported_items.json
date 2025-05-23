@@ -91,9 +91,7 @@
         "Pap/Papir",
         "Papir og Pap",
         "papir, pap",
-        "Papir, pap og tekstilaffald",
         "Papir/Pap",
-        "Papir/pap og tekstiler",
         "Papir/Papspand"
     ],
     "pappapirglasmetal": [
@@ -108,8 +106,12 @@
         "papir/pap + glas/metal",
         "Papir/pap og glas/metal",
         "Plast og drikkekarton - Glas og metal",
-        "Plast/mad- og drikkekartoner og glas/metal",
         "Ressourcebeholder"
+    ],
+    "pappapirtekstil": [
+        "Papir // Tekstilaffald",
+        "Papir, pap og tekstilaffald",
+        "Papir/pap og tekstiler"
     ],
     "pappi": [
         "Papir & Pap / Plast & MDK",
@@ -134,7 +136,6 @@
     ],
     "papir": [
         "Papir",
-        "Papir // Tekstilaffald",
         "Papir 660 L"
     ],
     "papirglas": [
@@ -193,7 +194,8 @@
         "genbrugsspand",
         "Plast og drikkekarton – Glas og metal",
         "plast, MDK/metal, glas",
-        "Plast/Drikkekarton og Metal"
+        "Plast/Drikkekarton og Metal",
+        "Plast/mad- og drikkekartoner og glas/metal"
     ],
     "plastmetal": [
         "Metal og Plast",

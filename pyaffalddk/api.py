@@ -3,7 +3,6 @@
 import datetime as dt
 from ical.calendar_stream import IcsCalendarStream
 from ical.exceptions import CalendarParseError
-import json
 import logging
 import re
 from urllib.parse import urlparse, parse_qsl, quote

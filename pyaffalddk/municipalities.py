@@ -106,7 +106,7 @@ MUNICIPALITIES_LIST = {
     "Aabenraa": ["renoweb"],
     "Aalborg": ["renoweb"],
     "Aarhus": ["aarhus"],
-    "Albertslund": ["renoweb"],  # also vestfor
+    "Albertslund": ["vestfor"],
     "Allerød": ["renoweb"],
     "Ballerup": ["vestfor"],
     "Billund": ["renoweb"],

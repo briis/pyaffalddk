@@ -342,5 +342,15 @@
     "papirglasdaaser": "240 L 2-delt Papir/glas-dåser en-familie",
     "farligtaffaldmiljoboks": "Miljøkasse",
     "storskrald": "Storskrald enfamiliehus"
+  },
+  "greve_305": {
+    "restaffaldmadaffald": "Rest/mad",
+    "papirglas": "Papir/glas",
+    "haveaffald": "Haveaffald (marts-november)",
+    "pap": "Pap",
+    "storskrald": "Storskrald og genbrug",
+    "plastmetalmadmdk": "Plast/småt metal/mdk",
+    "farligtaffald": "Farligt affald",
+    "tekstil": "Tekstil"
   }
 }

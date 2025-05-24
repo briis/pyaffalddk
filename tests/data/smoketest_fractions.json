@@ -315,7 +315,7 @@
     "restaffaldmadaffald": "240 L mad/rest - 14 dags"
   },
   "viborg_1": {
-    "pappapirglasmetal": "Metal/Glas/Plast/MDK",
+    "plastmdkglasmetal": "Metal/Glas/Plast/MDK",
     "pappapir": "Papir/Pap",
     "restaffaldmadaffald": "Rest/Madaffald"
   },

@@ -102,7 +102,6 @@
         "glas/metal og pap/papir",
         "Grønt låg",
         "metal, glas, plast/papir",
-        "Metal/Glas/Plast/MDK",
         "Pap, papir, tekstil & metal og glas",
         "papir/pap + glas/metal",
         "Papir/pap og glas/metal",
@@ -194,6 +193,7 @@
     "plastmdkglasmetal": [
         "Genbrugsbeholder",
         "genbrugsspand",
+        "Metal/Glas/Plast/MDK",
         "Plast og drikkekarton – Glas og metal",
         "plast, MDK/metal, glas",
         "Plast/Drikkekarton og Metal",

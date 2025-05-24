@@ -594,16 +594,15 @@ def get_garbage_type(item, municipality, address_id, fail=False):
         if special.lower() in item.lower():
             return SPECIAL_MATERIALS[special]
 
-    for i, fixed_item in enumerate(clean_fraction_string(item)):
+    fixed_items = clean_fraction_string(item)
+    for fixed_item in fixed_items:
         if fixed_item in [non.lower() for non in NON_SUPPORTED_ITEMS]:
             return 'not-supported'
         for key, values in SUPPORTED_ITEMS.items():
             for entry in values:
                 if fixed_item.lower() == entry.lower():
                     return key
-        if i > 0:
-            print(f'\nmissing: "{fixed_item}"')
-    print(f'\nmissing: "{fixed_item}"')
+    print(f'\nmissing: {fixed_items}')
     warn_or_fail(item, municipality, address_id, fail=fail)
     return 'missing-type'
 

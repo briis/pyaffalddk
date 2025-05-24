@@ -129,11 +129,12 @@ STRIPS = [
         '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel', ' 14 dg.', ' 14 dg', '14.dg',
         '4. uge', '8. uge skel', ' 4uge',
         'todelt 4 ugers tømning', 'todelt 14 dages tøm', '3 ugers tømning', 'hver 4. uge', '4-ugers', 'hver 6. uge', '2 delt', '2-delt',
-        'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '1-rums', 'to-kammer', 'todelt',
+        'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '1-rums', 'to-kammer', 'todelt', '2 kammer spand',
         'egenløsning', 'en-familie', 'enfamiliehus', ' D1 ', ' gl.', '26 tøm', 'sommer 32', 'm. sommertømning', 'villa', 'tømning',
-        '-skel 0-2 meter', ' ?', 'uge ', ' beholder',
+        '-skel 0-2 meter', ' ?', 'uge ', ' beholder', ' spand',
 ]
-RE_WORDS = ['uge', 'stand', 'skel', 'hver', 'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]']
+RE_WORDS = ['uge', 'stand', 'skel', 'hver', 'nord', 'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', r'\d{4}\b\ og \b\d{4}']
+RE_RAW = [r'\b\d{4}\b\s*,']
 ODD_EVEN_ARRAY = ["lige", "ulige"]
 WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag",
             "Torsdag", "Fredag", "Lørdag", "Søndag"]

@@ -91,6 +91,7 @@
         "Pap/Papir",
         "Papir og Pap",
         "papir, pap",
+        "papir/ pap",
         "Papir/Pap",
         "Papir/Papspand"
     ],
@@ -206,6 +207,7 @@
         "Plast, småt metal & MDK",
         "Plast-metal",
         "Plast/ Metal",
+        "Plast/MDK / Metal",
         "Plast/MDK/Metal",
         "Plast/Metal",
         "PMDK/Metal"
@@ -216,7 +218,7 @@
         "Plast/småt metal/mdk"
     ],
     "plastmetalpapir": [
-        "Genbrugsspand - Obligatorisk min. 1 spand",
+        "Genbrugsspand - Obligatorisk min. 1",
         "grøn",
         "Plast/Metal/Papir"
     ],
@@ -230,7 +232,7 @@
         "(M/R)",
         "energi",
         "Energibeholder",
-        "Energispand - Obligatorisk min. 1 spand",
+        "Energispand - Obligatorisk min. 1",
         "Mad og restaffald",
         "Mad- og restaffald",
         "Mad-/ og restaffald",

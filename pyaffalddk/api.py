@@ -17,6 +17,7 @@ from .const import (
     NON_SUPPORTED_ITEMS,
     PAR_EXCEPTIONS,
     RE_WORDS,
+    RE_RAW,
     SPECIAL_MATERIALS,
     STRIPS,
     SUPPORTED_ITEMS,
@@ -593,13 +594,15 @@ def get_garbage_type(item, municipality, address_id, fail=False):
         if special.lower() in item.lower():
             return SPECIAL_MATERIALS[special]
 
-    for fixed_item in clean_fraction_string(item):
+    for i, fixed_item in enumerate(clean_fraction_string(item)):
         if fixed_item in [non.lower() for non in NON_SUPPORTED_ITEMS]:
             return 'not-supported'
         for key, values in SUPPORTED_ITEMS.items():
             for entry in values:
                 if fixed_item.lower() == entry.lower():
                     return key
+        if i > 0:
+            print(f'\nmissing: "{fixed_item}"')
     print(f'\nmissing: "{fixed_item}"')
     warn_or_fail(item, municipality, address_id, fail=fail)
     return 'missing-type'
@@ -617,6 +620,8 @@ def clean_fraction_string(item):
 
     for word in RE_WORDS:
         fixed_item = re.sub(fr'\b{word}\b', '', fixed_item)
+    for word in RE_RAW:
+        fixed_item = re.sub(word, '', fixed_item)
 
     if ':' in fixed_item:
         fixed_item = fixed_item.split(':')[1]

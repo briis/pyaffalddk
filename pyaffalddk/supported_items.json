@@ -202,20 +202,20 @@
     "plastmetal": [
         "Metal og Plast",
         "Plast & Metal",
-        "Plast, metal & MDK 660L",
-        "Plast, Metal, MDK",
-        "Plast, småt metal & MDK",
         "Plast-metal",
         "Plast/ Metal",
-        "Plast/MDK / Metal",
-        "Plast/MDK/Metal",
-        "Plast/Metal",
-        "PMDK/Metal"
+        "Plast/Metal"
     ],
     "plastmetalmadmdk": [
         "Plast, mad- og drikkekartoner og metal",
+        "Plast, metal & MDK 660L",
+        "Plast, Metal, MDK",
+        "Plast, småt metal & MDK",
+        "Plast/MDK / Metal",
+        "Plast/MDK/Metal",
         "Plast/Metal/Mad- & drikkekartoner",
-        "Plast/småt metal/mdk"
+        "Plast/småt metal/mdk",
+        "PMDK/Metal"
     ],
     "plastmetalpapir": [
         "Genbrugsspand - Obligatorisk min. 1",

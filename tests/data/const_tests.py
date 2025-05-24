@@ -143,14 +143,14 @@ SUPPORTED_ITEMS = {
     ],
     "plastmetal": [
         "Plast & Metal",
-        "Plast, metal & MDK 660L",
         "Plast/ Metal",
-        "Plast/MDK/Metal",
         "Plast-metal",
         "Plast/Metal",
-        "Plast, Metal, MDK",
     ],
     "plastmetalmadmdk": [
+        "Plast, Metal, MDK",
+        "Plast/MDK/Metal",
+        "Plast, metal & MDK 660L",
         "Plast/Metal/Mad- & drikkekartoner",
         "Plast, mad- og drikkekartoner og metal",
     ],
@@ -392,10 +392,10 @@ MATERIAL_LIST = {
     ],
     "plastmetal": [
         "Metal og Plast",
-        "Plast, småt metal & MDK - 240 l. (1 stk.)",
         "Plast/Metal",
     ],
     "plastmetalmadmdk": [
+        "Plast, småt metal & MDK - 240 l. (1 stk.)"
     ],
     "plastmetalpapir": [
         "*140 l grøn, 14 dags tømning (1 stk.)",

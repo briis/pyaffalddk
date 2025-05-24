@@ -80,8 +80,7 @@ SUPPORTED_ITEMS = {
     ],
     "papir": [
         "Papir",
-        "Papir 660 L",
-        "Papir // Tekstilaffald",
+        "Papir 660 L"
     ],
     "papirglas": [
         "Papir og pap/Glas",
@@ -102,8 +101,7 @@ SUPPORTED_ITEMS = {
     "pappapir": [
         "Pap/Papir",
         "Papir/Pap",
-        "Papir og Pap",
-        "Papir, pap og tekstilaffald",
+        "Papir og Pap"
     ],
     "pappapirglasmetal": [
         "Pap, papir, tekstil & metal og glas",
@@ -112,6 +110,10 @@ SUPPORTED_ITEMS = {
         "Papir/pap og glas/metal",
         "Plast og drikkekarton - Glas og metal",
         "Genbrug - grønt låg",
+    ],
+    "pappapirtekstil": [
+        "Papir // Tekstilaffald",
+        "Papir, pap og tekstilaffald"
     ],
     "pappi": [
         "Plast MDK og papir",
@@ -141,14 +143,14 @@ SUPPORTED_ITEMS = {
     ],
     "plastmetal": [
         "Plast & Metal",
-        "Plast, metal & MDK 660L",
         "Plast/ Metal",
-        "Plast/MDK/Metal",
         "Plast-metal",
         "Plast/Metal",
-        "Plast, Metal, MDK",
     ],
     "plastmetalmadmdk": [
+        "Plast, Metal, MDK",
+        "Plast/MDK/Metal",
+        "Plast, metal & MDK 660L",
         "Plast/Metal/Mad- & drikkekartoner",
         "Plast, mad- og drikkekartoner og metal",
     ],
@@ -390,10 +392,10 @@ MATERIAL_LIST = {
     ],
     "plastmetal": [
         "Metal og Plast",
-        "Plast, småt metal & MDK - 240 l. (1 stk.)",
         "Plast/Metal",
     ],
     "plastmetalmadmdk": [
+        "Plast, småt metal & MDK - 240 l. (1 stk.)"
     ],
     "plastmetalpapir": [
         "*140 l grøn, 14 dags tømning (1 stk.)",

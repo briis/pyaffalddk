@@ -277,10 +277,10 @@ def clean_fraction_string(item):
     pattern = rf"\s*\((?!{'|'.join(escaped)}\)).*?\)"
     fixed_item = re.sub(pattern, "", fixed_item)  # strip anything in parenthesis
 
-    for word in RE_WORDS:
-        fixed_item = re.sub(fr'\b{word}\b', '', fixed_item)
     for word in RE_RAW:
         fixed_item = re.sub(word, '', fixed_item)
+    for word in RE_WORDS:
+        fixed_item = re.sub(fr'\b{word}(?=\s|$)', '', fixed_item)
 
     if ':' in fixed_item:
         fixed_item = fixed_item.split(':')[1]

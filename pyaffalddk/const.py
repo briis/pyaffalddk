@@ -122,19 +122,26 @@ NAME_LIST = {
 NAME_ARRAY = list(NAME_LIST.keys())
 PAR_EXCEPTIONS = ['M/R']
 STRIPS = [
-        '25 l ', ' 25 l', '140l ', '140 l ', '140 ltr', '190l ', '190 l ', '190 ltr',
-        '240l ', '240 l ', '240 l.', '(240 l)', '240 liter', ', 240l', '240 ltr',
-        '370 l ', '370 liter ', '400 liter', '660 liter', '660 l ', '770 l ', '770l ',
         'med 14-dages tømning ved helårshuse', '– tømmes hver 2. uge',
-        '14. dags tømning', '14 dages tømning', '14-dags', '14 dags tømning', '14. dage skel', ' 14 dg.', ' 14 dg', '14.dg',
-        '4. uge', '8. uge skel', ' 4uge',
-        'todelt 4 ugers tømning', 'todelt 14 dages tøm', '3 ugers tømning', 'hver 4. uge', '4-ugers', 'hver 6. uge', '2 delt', '2-delt',
-        'sommerhustømning', 'henteordning', 'beholder til', ' beh.', '1-kammer ', '2-kammer ', '1-rums', 'to-kammer', 'todelt', '2 kammer spand',
-        'egenløsning', 'en-familie', 'enfamiliehus', ' D1 ', ' gl.', '26 tøm', 'sommer 32', 'm. sommertømning', 'villa', 'tømning',
-        '-skel 0-2 meter', ' ?', 'uge ', ' beholder', ' spand',
+        'sommerhustømning', 'henteordning', 'beholder til', '1-rums',
+        'egenløsning', 'en-familie', 'enfamiliehus', '26 tøm', 'sommer 32', 'm. sommertømning',
+        '-skel 0-2 meter', ' ?',
 ]
-RE_WORDS = ['uge', 'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest', 'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', r'\d{4}\b\ og \b\d{4}']
-RE_RAW = [r'\b\d{4}\b\s*,']
+RE_WORDS = [
+    r'14(\.)?[\s-]?(?:dags|dage|dages|dg)(\.)?',  # diffenrent ways of 14. dags
+    r'(?:3|4|6|8)?(\.)?[\s-]?(?:uge|ugers)',  # diffenrent ways of uge
+    r'(?:to|1|2)[\s-]?(?:delt|kammer)',  # diffenrent ways of  2-delt or 2-kammer
+    r'beh\.', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning',
+    'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest',
+    'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', 'd[0-9]',
+    ]
+
+RE_RAW = [
+    r'\b\d{4}\b\s*,',  # 4 digit postal codes with a comma after
+    r'\b\d{4}\b\ og \b\d{4}\b',  # special ending of postal code listing
+    r'(?<![\w/-])(?:25|140|190|240|370|400|660|770)\s*l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts
+    r'(?<![\w/-])(?:25|140|190|240|370|400|660|770)l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts (no space before L)
+    ]
 
 ODD_EVEN_ARRAY = ["lige", "ulige"]
 WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag",

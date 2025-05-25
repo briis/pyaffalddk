@@ -303,6 +303,31 @@ class OpenExperienceAPI(AffaldDKAPIBase):
         return data
 
 
+class OpenExperienceLiveAPI(AffaldDKAPIBase):
+    # Open Experience API
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://live.affaldsapi.dk/"
+        uuid = base64.b64decode(self.municipality_id[1:]).decode('utf-8')
+        self.headers = {'X-Auth-Token': uuid}
+        self.mid = self.municipality_id[0]
+
+    async def get_address_id(self, zipcode, street, house_number):
+        address = quote(f'{street} {house_number}')
+        url = self.url_base + f'address/v1/search/{self.mid}/{address}/50'
+        data = await self.async_get_request(url, headers=self.headers)
+#        print(data)
+        for res in sorted(data, key=lambda x: x["name"]):
+            if str(zipcode) in res['name']:
+                return res['id']
+        return None
+
+    async def get_garbage_data(self, address_id):
+        url = self.url_base + f'arrangements/v1/collections/calendar/{self.mid}/{address_id}'
+        data = await self.async_get_request(url, headers=self.headers)
+        return data
+
+
 class AarhusAffaldAPI(AffaldDKAPIBase):
     # Aarhus Forsyning API
     def __init__(self, *args, **kwargs):

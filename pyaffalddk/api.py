@@ -36,6 +36,7 @@ APIS = {
     'vestfor': interface.VestForAPI,
     'affaldonline': interface.AffaldOnlineAPI,
     'openexp': interface.OpenExperienceAPI,
+    'openexplive': interface.OpenExperienceLiveAPI,
 }
 
 
@@ -220,6 +221,15 @@ class GarbageCollection:
                     if dt_list:
                         _pickup_date = min([d for d in dt_list if d >= self.today])
                         fraction_name = item['fraction']['name']
+                        self.update_pickup_event(fraction_name, address_id, _pickup_date)
+
+            elif self._api_type == "openexplive":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    fraction_name = item['fraction']['name']
+                    dt_list = [iso_string_to_date(d['date']) for d in item['upcoming_dates']]
+                    if dt_list:
+                        _pickup_date = min([d for d in dt_list if d >= self.today])
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
             self.set_next_event()

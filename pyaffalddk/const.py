@@ -133,8 +133,9 @@ STRIPS = [
         'egenløsning', 'en-familie', 'enfamiliehus', ' D1 ', ' gl.', '26 tøm', 'sommer 32', 'm. sommertømning', 'villa', 'tømning',
         '-skel 0-2 meter', ' ?', 'uge ', ' beholder', ' spand',
 ]
-RE_WORDS = ['uge', 'stand', 'skel', 'hver', 'nord', 'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', r'\d{4}\b\ og \b\d{4}']
+RE_WORDS = ['uge', 'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest', 'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', r'\d{4}\b\ og \b\d{4}']
 RE_RAW = [r'\b\d{4}\b\s*,']
+
 ODD_EVEN_ARRAY = ["lige", "ulige"]
 WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag",
             "Torsdag", "Fredag", "Lørdag", "Søndag"]

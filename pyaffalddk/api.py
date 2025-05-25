@@ -280,7 +280,7 @@ def clean_fraction_string(item):
     for word in RE_RAW:
         fixed_item = re.sub(word, '', fixed_item)
     for word in RE_WORDS:
-        fixed_item = re.sub(fr'\b{word}(?=\s|$)', '', fixed_item)
+        fixed_item = re.sub(fr'(?:\s|\b){word}(?=\s|$)', '', fixed_item)
 
     if ':' in fixed_item:
         fixed_item = fixed_item.split(':')[1]

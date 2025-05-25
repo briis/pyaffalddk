@@ -383,5 +383,11 @@
     "metalglas": "Glas/metal",
     "restaffaldmadaffald": "Mad-/restaffald",
     "pappi": "Papir-pap/plast-MDK"
+  },
+  "billund_309": {
+    "madaffald": "Madaffald 90 L/14",
+    "restaffald": "Restaffald container 370L/14      ",
+    "pappapir": "Genbrugsbeholder PP-240L/6uge",
+    "plastmadkarton": "Genbrugsbeholder PMDK/MG-240L/3uge"
   }
 }

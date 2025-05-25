@@ -133,14 +133,14 @@ RE_WORDS = [
     r'(?:to|1|2)[\s-]?(?:delt|kammer)',  # diffenrent ways of  2-delt or 2-kammer
     r'beh\.', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning',
     'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest',
-    'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', 'd[0-9]',
+    'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', 'd[0-9]', r'/\d{2}',
     ]
 
 RE_RAW = [
     r'\b\d{4}\b\s*,',  # 4 digit postal codes with a comma after
     r'\b\d{4}\b\ og \b\d{4}\b',  # special ending of postal code listing
-    r'(?<![\w/-])(?:25|140|190|240|370|400|660|770)\s*l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts
-    r'(?<![\w/-])(?:25|140|190|240|370|400|660|770)l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts (no space before L)
+    r'(?<![\w/-])(?:25|90|140|190|240|370|400|660|770)\s*l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts
+    r'(?<![\w/-])(?:25|90|140|190|240|370|400|660|770)l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts (no space before L)
     ]
 
 ODD_EVEN_ARRAY = ["lige", "ulige"]

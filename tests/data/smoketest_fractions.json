@@ -34,7 +34,7 @@
   "smoke_5": {
     "pappapirglasmetal": "Plast og drikkekarton - Glas og metal",
     "restaffaldmadaffald": "Rest - Mad",
-    "pappapir": "Papir, pap og tekstilaffald"
+    "pappapirtekstil": "Papir, pap og tekstilaffald"
   },
   "smoke_6": {
     "papirmetal": "Papir/metal",
@@ -289,15 +289,15 @@
     "haveaffald": "240 L Haveaffald"
   },
   "favrskov_1": {
-    "pappapirglasmetal": "240 L Plast/mad- og drikkekartoner og glas/metal (skel)",
+    "plastmdkglasmetal": "240 L Plast/mad- og drikkekartoner og glas/metal (skel)",
     "restaffaldmadaffald": "240 L Rest-/madaffald (skel)",
-    "pappapir": "240 L Papir/pap og tekstiler (skel)"
+    "pappapirtekstil": "240 L Papir/pap og tekstiler (skel)"
   },
   "holbæk_1": {
     "restaffaldmadaffald": "240L Rest/Mad 14.dg Skel",
     "papirglas": "240L Glas/Papir 8. uge Skel",
     "pap": "240L Pap 8. uge Skel",
-    "plastmetal": "240L PMDK/Metal 4. uge Skel"
+    "plastmetalmadmdk": "240L PMDK/Metal 4. uge Skel"
   },
   "langeland_1": {
     "restaffaldmadaffald": "Rest/bio 240 L - 2-delt",
@@ -315,7 +315,7 @@
     "restaffaldmadaffald": "240 L mad/rest - 14 dags"
   },
   "viborg_1": {
-    "pappapirglasmetal": "Metal/Glas/Plast/MDK",
+    "plastmdkglasmetal": "Metal/Glas/Plast/MDK",
     "pappapir": "Papir/Pap",
     "restaffaldmadaffald": "Rest/Madaffald"
   },
@@ -342,5 +342,52 @@
     "papirglasdaaser": "240 L 2-delt Papir/glas-dåser en-familie",
     "farligtaffaldmiljoboks": "Miljøkasse",
     "storskrald": "Storskrald enfamiliehus"
+  },
+  "greve_305": {
+    "restaffaldmadaffald": "Rest/mad",
+    "papirglas": "Papir/glas",
+    "haveaffald": "Haveaffald (marts-november)",
+    "pap": "Pap",
+    "storskrald": "Storskrald og genbrug",
+    "plastmetalmadmdk": "Plast/småt metal/mdk",
+    "farligtaffald": "Farligt affald",
+    "tekstil": "Tekstil"
+  },
+  "holbæk_306": {
+    "restaffald": "770L Rest uge Stand",
+    "plastmadkarton": "770L PMDK 4. uge Stand",
+    "pap": "770L Pap 14.dg Stand",
+    "farligtaffaldmiljoboks": "Miljøskab"
+  },
+  "fredensborg_1": {
+    "storskrald": "Storskrald nord 3050, 3060, 3400, 3480 og 3490",
+    "plastmetalmadmdk": "Plast/MDK / Metal 240 L 2 kammer spand - 3 uger",
+    "restaffaldmadaffald": "Rest/Mad 240 L 2 kammer spand - 2 uger",
+    "pappapir": "Papir/ Pap 140 L spand - 5 uger"
+  },
+  "frederiksberg_1": {
+    "restaffald": "Restaffald",
+    "haveaffald": "Haveaffald",
+    "storskrald": "Stort Elektronik",
+    "madaffald": "Madaffald",
+    "pap": "Pap",
+    "papirmetal": "Metal/papir",
+    "plastmadkarton": "Plast/ Mad- og drikkekartoner",
+    "tekstil": "Tekstilaffald"
+  },
+  "fredericia_1": {
+    "genbrug": "Genbrug",
+    "restaffaldmadaffald": "Mad/Rest"
+  },
+  "thy_1": {
+    "metalglas": "Glas/metal",
+    "restaffaldmadaffald": "Mad-/restaffald",
+    "pappi": "Papir-pap/plast-MDK"
+  },
+  "billund_309": {
+    "madaffald": "Madaffald 90 L/14",
+    "restaffald": "Restaffald container 370L/14      ",
+    "pappapir": "Genbrugsbeholder PP-240L/6uge",
+    "plastmadkarton": "Genbrugsbeholder PMDK/MG-240L/3uge"
   }
 }

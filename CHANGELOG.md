@@ -1,5 +1,27 @@
 # Changelog for pyaffalddk
 
+## [2.10.0] - `2025-05-26`
+
+### Added
+* API for Open Experience and Open Experience Live
+  * Viborg (earlier named Revas API)
+  * Nordfyns
+  * Fredericia
+  * Frederiksberg
+  * Thy
+* New API test for Open Experience APIs, and smoketests for new municipalities
+
+### Changes
+* Re-structure code and move to use of more regex instead of explicit strings
+* [FR]: Viborg (Kommune) affalddk#297
+* Greve Kommune manger Plast, Metal, MDK affalddk#305
+* Albertslund kommune vestfor affalddk#304
+* Favrskov kommune affalddk#302
+* Holbæk Kommune hus nummer flere cifre affalddk#306
+* Fredensborg kommune, mistet afhentningsdata affalddk#308
+* Billund kommune affaldstyper affalddk#309
+
+
 ## [2.9.0] - `2025-05-20`
 
 ### Added

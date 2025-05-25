@@ -364,5 +364,24 @@
     "plastmetalmadmdk": "Plast/MDK / Metal 240 L 2 kammer spand - 3 uger",
     "restaffaldmadaffald": "Rest/Mad 240 L 2 kammer spand - 2 uger",
     "pappapir": "Papir/ Pap 140 L spand - 5 uger"
+  },
+  "frederiksberg_1": {
+    "restaffald": "Restaffald",
+    "haveaffald": "Haveaffald",
+    "storskrald": "Stort Elektronik",
+    "madaffald": "Madaffald",
+    "pap": "Pap",
+    "papirmetal": "Metal/papir",
+    "plastmadkarton": "Plast/ Mad- og drikkekartoner",
+    "tekstil": "Tekstilaffald"
+  },
+  "fredericia_1": {
+    "genbrug": "Genbrug",
+    "restaffaldmadaffald": "Mad/Rest"
+  },
+  "thy_1": {
+    "metalglas": "Glas/metal",
+    "restaffaldmadaffald": "Mad-/restaffald",
+    "pappi": "Papir-pap/plast-MDK"
   }
 }

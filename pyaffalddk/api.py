@@ -84,7 +84,7 @@ class GarbageCollection:
             self._address_id = await self._api.get_address_id(zipcode, street, house_number)
 
             if self._address_id is None:
-                raise AffaldDKNotValidAddressError("Address not found")
+                raise interface.AffaldDKNotValidAddressError("Address not found")
 
             address_data = AffaldDKAddressInfo(
                 str(self._address_id),
@@ -94,7 +94,7 @@ class GarbageCollection:
             )
             return address_data
         else:
-            raise AffaldDKNotSupportedError("Cannot find Municipality")
+            raise interface.AffaldDKNotSupportedError("Cannot find Municipality")
 
     def update_pickup_event(self, item_name, address_id, _pickup_date):
         if _pickup_date < self.today:

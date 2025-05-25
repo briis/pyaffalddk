@@ -1,8 +1,8 @@
 # ruff: noqa: F401
 """A Python Wrapper to communicate with AffaldDK API."""
 
-from pyaffalddk.api import (
-    GarbageCollection,
+from pyaffalddk.api import GarbageCollection
+from pyaffalddk.interface import (
     AffaldDKGarbageTypeNotFound,
     AffaldDKNotSupportedError,
     AffaldDKNotValidAddressError,

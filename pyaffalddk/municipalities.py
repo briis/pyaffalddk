@@ -150,6 +150,7 @@ MUNICIPALITIES_LIST = {
     "Mariagerfjord": ["renoweb"],
     "Morsø": ["affaldonline", "MDE5OWI3ZDItYmJhZS00NmE1LWE3MjYtMjkzYzkyMzZmNGU1"],
     "Næstved": ["perfectwaste"],
+    "Nordfyns": ['openexp', 'reno.nordfynskommune.dk/app/AppService/AppService/'],
     "Odense": ["odense"],
     "Odsherred": ["perfectwaste"],
     "Randers": ["renoweb"],
@@ -169,7 +170,7 @@ MUNICIPALITIES_LIST = {
     "Varde": ["renoweb"],
     "Vejen": ["perfectwaste"],
     "Vejle": ["affaldonline", "MjA5Y2I2NjktZTJlOC00YzliLTgwNDgtODI4N2RiNTFhNjFl"],
-    "Viborg": ["viborg"],
+    "Viborg": ["openexp", "dagrenovation.viborg.dk/app/AppService/"],
     "Vordingborg": ["renoweb"],
     "Ærø": ["affaldonline", "ZGI3NjVhMmYtM2Y1MC00YWJkLWE3MzgtMzgyNTgxM2ZlZGNi"],
 }

@@ -135,6 +135,7 @@ MUNICIPALITIES_LIST = {
     "Hillerød": ["perfectwaste"],
     "Hjørring": ["renoweb"],
     "Holbæk": ["affaldonline", "MDE3ZWZkMDYtYWM0Mi00YjM2LThhNzAtYWIzMDkxNjJlOTg4"],
+    "Holstebro": ["openexp", "renomatic.nomi4s.dk/app/appservice/"],
     "Horsens": ["perfectwaste"],
     "Hvidovre": ["perfectwaste"],
     "Høje-Taastrup": ["perfectwaste"],

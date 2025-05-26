@@ -389,5 +389,10 @@
     "restaffald": "Restaffald container 370L/14      ",
     "pappapir": "Genbrugsbeholder PP-240L/6uge",
     "plastmadkarton": "Genbrugsbeholder PMDK/MG-240L/3uge"
+  },
+  "holstebro_214": {
+    "metalglas": "Glas/metal",
+    "restaffaldmadaffald": "Mad/Restaffald",
+    "pappi": "Papir/pap/plast/mdk"
   }
 }

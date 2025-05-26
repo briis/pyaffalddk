@@ -47,6 +47,7 @@ class GarbageCollection:
         self,
         municipality: str,
         session: aiohttp.ClientSession = None,
+        switch_hour: int = 15,
         fail: bool = False,
     ) -> None:
         """Initialize the class."""
@@ -56,8 +57,10 @@ class GarbageCollection:
         self._api_type = None
         self._address_id = None
         self.fail = fail
+        self.set_switch_time(switch_hour, 0)
         self.utc_offset = dt.datetime.now().astimezone().utcoffset()
-
+        self.today = None
+        self.last_fetch = ''
         municipality_id = MUNICIPALITIES_IDS.get(self._municipality.lower(), '')
 
         for key, value in MUNICIPALITIES_LIST.items():
@@ -69,6 +72,9 @@ class GarbageCollection:
 
         if self._api_type is None:
             raise RuntimeError(f'Unknow municipality: "{municipality}"')
+
+    def set_switch_time(self, hours, minutes):
+        self.switch_time = dt.time(hours, minutes)
 
     async def async_init(self) -> None:
         """Initialize the connection."""
@@ -98,7 +104,7 @@ class GarbageCollection:
             raise interface.AffaldDKNotSupportedError("Cannot find Municipality")
 
     def update_pickup_event(self, item_name, address_id, _pickup_date):
-        if _pickup_date < self.today:
+        if _pickup_date is not None and _pickup_date < self.today:
             return 'old-event'
 
         key = get_garbage_type(item_name, self._municipality, address_id, self.fail)
@@ -122,7 +128,10 @@ class GarbageCollection:
     def set_next_event(self):
         if not self.pickup_events:
             return
-        _next_pickup = min(event.date for event in self.pickup_events.values())
+        if dt.datetime.now().time() > self.switch_time:
+            _next_pickup = min(event.date for event in self.pickup_events.values() if event.date is not None and event.date > self.today)
+        else:
+            _next_pickup = min(event.date for event in self.pickup_events.values() if event.date is not None)
         _next_name = [event.friendly_name for event in self.pickup_events.values() if event.date == _next_pickup]
         _next_description = [event.description for event in self.pickup_events.values() if event.date == _next_pickup]
         _next_pickup_event = {
@@ -140,17 +149,17 @@ class GarbageCollection:
     async def get_pickup_data(self, address_id: str, debug=False) -> PickupEvents:
         """Get the garbage collection data."""
 
-        if self._api_type is not None:
+        if (self._api_type is not None) & (self.today != dt.date.today()):
             self.pickup_events: PickupEvents = {}
             self.today = dt.date.today()
+            self.last_fetch = str(dt.datetime.now())
 
             if self._api_type == 'odense':
                 data = await self._api.get_garbage_data(address_id)
                 try:
                     ics = IcsCalendarStream.calendar_from_ics(data)
                     for event in ics.timeline:
-                        _garbage_types = split_ical_garbage_types(
-                            event.summary)
+                        _garbage_types = split_ical_garbage_types(event.summary)
                         for garbage_type in _garbage_types:
                             _pickup_date = event.start_datetime.date()
                             self.update_pickup_event(garbage_type, address_id, _pickup_date)
@@ -161,8 +170,6 @@ class GarbageCollection:
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for row in garbage_data:
                     _pickup_date = iso_string_to_date(row["date"])
-                    if _pickup_date < dt.date.today():
-                        continue
                     for garbage_type in row["fractions"]:
                         self.update_pickup_event(garbage_type, address_id, _pickup_date)
 
@@ -171,12 +178,10 @@ class GarbageCollection:
                 try:
                     ics = IcsCalendarStream.calendar_from_ics(data)
                     for event in ics.timeline:
-                        _garbage_types = split_ical_garbage_types(
-                            event.summary)
+                        _garbage_types = split_ical_garbage_types(event.summary)
                         for garbage_type in _garbage_types:
                             _pickup_date = (event.start_datetime + self.utc_offset).date()
                             self.update_pickup_event(garbage_type, address_id, _pickup_date)
-
                 except CalendarParseError as err:
                     _LOGGER.error("Error parsing iCal data: %s", err)
 
@@ -184,8 +189,6 @@ class GarbageCollection:
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for row in garbage_data:
                     _pickup_date = iso_string_to_date(row["date"])
-                    if _pickup_date < dt.date.today():
-                        continue
                     for item in row["fractions"]:
                         garbage_type = item['fractionName']
                         self.update_pickup_event(garbage_type, address_id, _pickup_date)
@@ -193,10 +196,9 @@ class GarbageCollection:
             elif self._api_type == "renoweb":
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for item in garbage_data:
-                    if not item['nextpickupdatetimestamp']:
-                        continue
-                    _pickup_date = dt.datetime.fromtimestamp(int(item["nextpickupdatetimestamp"])).date()
-                    self.update_pickup_event(item['name'], address_id, _pickup_date)
+                    if item['nextpickupdatetimestamp']:
+                        _pickup_date = dt.datetime.fromtimestamp(int(item["nextpickupdatetimestamp"])).date()
+                        self.update_pickup_event(item['name'], address_id, _pickup_date)
 
             elif self._api_type == "vestfor":
                 garbage_data = await self._api.get_garbage_data(address_id)
@@ -232,8 +234,8 @@ class GarbageCollection:
                         _pickup_date = min([d for d in dt_list if d >= self.today])
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
-            self.set_next_event()
-            return self.pickup_events
+        self.set_next_event()
+        return self.pickup_events
 
 
 def iso_string_to_date(datetext: str) -> dt.date:

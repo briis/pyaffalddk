@@ -1,5 +1,13 @@
 # Changelog for pyaffalddk
 
+## [2.10.1] - `2025-05-26`
+
+### Changes
+* set_next_event based on switch time, fixes [#41](https://github.com/briis/pyaffalddk/issues/41)
+* only fetch online data once a day, and elsewhere just update next_event
+* added Holstebro
+
+
 ## [2.10.0] - `2025-05-26`
 
 ### Added

@@ -1,6 +1,7 @@
 import pytest
 from freezegun import freeze_time
 from aiohttp import ClientSession
+import datetime as dt
 from pyaffalddk import GarbageCollection, NAME_LIST, api, const
 from .data import const_tests
 from pathlib import Path
@@ -53,6 +54,26 @@ async def test_smoketest(capsys, monkeypatch, update=False):
                     print(data)
                     print(smokecompare[name])
                 assert smokecompare[name] == data
+
+
+@pytest.mark.asyncio
+@freeze_time("2025-05-22 12:30:00")
+async def test_switch_next(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Viborg', session=session, fail=True)
+            openexp_data = json.loads((datadir/'openexp.data').read_text())
+
+            async def get_data(*args, **kwargs):
+                return openexp_data
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+
+            pickups = await gc.get_pickup_data('1111')
+            assert pickups['next_pickup'].date == dt.date(2025, 5, 22)
+
+            gc.set_switch_time(12, 0)
+            pickups = await gc.get_pickup_data('1111')
+            assert pickups['next_pickup'].date == dt.date(2025, 6, 4)
 
 
 def test_type_from_material_cleaning(capsys, monkeypatch):

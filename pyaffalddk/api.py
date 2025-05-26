@@ -153,6 +153,7 @@ class GarbageCollection:
             self.pickup_events: PickupEvents = {}
             self.today = dt.date.today()
             self.last_fetch = str(dt.datetime.now())
+
             if self._api_type == 'odense':
                 data = await self._api.get_garbage_data(address_id)
                 try:
@@ -233,8 +234,8 @@ class GarbageCollection:
                         _pickup_date = min([d for d in dt_list if d >= self.today])
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
-            self.set_next_event()
-            return self.pickup_events
+        self.set_next_event()
+        return self.pickup_events
 
 
 def iso_string_to_date(datetext: str) -> dt.date:

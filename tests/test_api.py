@@ -62,17 +62,17 @@ async def test_switch_next(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Viborg', session=session, fail=True)
-            address = await gc.get_address_id('8800', 'Prinsens Alle', '5')
+            openexp_data = json.loads((datadir/'openexp.data').read_text())
 
             async def get_data(*args, **kwargs):
-                return revas_data
+                return openexp_data
             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
-            pickups = await gc.get_pickup_data(address.address_id)
+            pickups = await gc.get_pickup_data('1111')
             assert pickups['next_pickup'].date == dt.date(2025, 5, 22)
 
             gc.set_switch_time(12, 0)
-            pickups = await gc.get_pickup_data(address.address_id)
+            pickups = await gc.get_pickup_data('1111')
             assert pickups['next_pickup'].date == dt.date(2025, 6, 4)
 
 

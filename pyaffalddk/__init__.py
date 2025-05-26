@@ -1,8 +1,8 @@
 # ruff: noqa: F401
 """A Python Wrapper to communicate with AffaldDK API."""
 
-from pyaffalddk.api import (
-    GarbageCollection,
+from pyaffalddk.api import GarbageCollection
+from pyaffalddk.interface import (
     AffaldDKGarbageTypeNotFound,
     AffaldDKNotSupportedError,
     AffaldDKNotValidAddressError,
@@ -23,6 +23,6 @@ from pyaffalddk.const import (
 )
 
 __title__ = "pyaffalddk"
-__version__ = "2.9.0"
+__version__ = "2.10.0"
 __author__ = "briis"
 __license__ = "MIT"

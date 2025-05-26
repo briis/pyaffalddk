@@ -87,13 +87,12 @@
         "Papbeholder"
     ],
     "pappapir": [
-        "Genbrugsbeholder PP-240L/6",
+        "Genbrugsbeholder PP-240L/",
         "Pap/Papir",
         "Papir og Pap",
         "papir, pap",
-        "Papir, pap og tekstilaffald",
+        "papir/ pap",
         "Papir/Pap",
-        "Papir/pap og tekstiler",
         "Papir/Papspand"
     ],
     "pappapirglasmetal": [
@@ -103,18 +102,23 @@
         "glas/metal og pap/papir",
         "Grønt låg",
         "metal, glas, plast/papir",
-        "Metal/Glas/Plast/MDK",
         "Pap, papir, tekstil & metal og glas",
         "papir/pap + glas/metal",
         "Papir/pap og glas/metal",
         "Plast og drikkekarton - Glas og metal",
-        "Plast/mad- og drikkekartoner og glas/metal",
         "Ressourcebeholder"
+    ],
+    "pappapirtekstil": [
+        "Papir // Tekstilaffald",
+        "Papir, pap og tekstilaffald",
+        "Papir/pap og tekstiler"
     ],
     "pappi": [
         "Papir & Pap / Plast & MDK",
         "Papir & småt pap",
         "Papir- Plast/Mad- og Drikkekartoner",
+        "Papir-pap/plast-MDK",
+        "Papir/pap/plast/mdk",
         "Papir/Plast & MDK",
         "Papir/Plast og kartoner",
         "Papir/Plast og MDK",
@@ -133,9 +137,7 @@
         "PP/MDK-plast"
     ],
     "papir": [
-        "Papir",
-        "Papir // Tekstilaffald",
-        "Papir 660 L"
+        "Papir"
     ],
     "papirglas": [
         "Glas-papir",
@@ -176,7 +178,7 @@
         "blåt låg",
         "Genbrug - blåt låg",
         "Genbrug henteordning",
-        "Genbrugsbeholder PMDK/MG-240L/3",
+        "Genbrugsbeholder PMDK/MG-240L/",
         "Mad- og drikkekartoner",
         "PL/MD",
         "Plast & mad- og drikkekartoner",
@@ -186,33 +188,38 @@
         "plast, mad- og drikkekartoner",
         "Plast/ Mad- og drikkekartoner",
         "Plast/MDK",
-        "PMD"
+        "PMD",
+        "PMDK"
     ],
     "plastmdkglasmetal": [
         "Genbrugsbeholder",
         "genbrugsspand",
+        "Metal/Glas/Plast/MDK",
         "Plast og drikkekarton – Glas og metal",
         "plast, MDK/metal, glas",
-        "Plast/Drikkekarton og Metal"
+        "Plast/Drikkekarton og Metal",
+        "Plast/mad- og drikkekartoner og glas/metal"
     ],
     "plastmetal": [
         "Metal og Plast",
         "Plast & Metal",
-        "Plast, metal & MDK 660L",
-        "Plast, Metal, MDK",
-        "Plast, småt metal & MDK",
         "Plast-metal",
         "Plast/ Metal",
-        "Plast/MDK/Metal",
-        "Plast/Metal",
-        "PMDK/Metal"
+        "Plast/Metal"
     ],
     "plastmetalmadmdk": [
         "Plast, mad- og drikkekartoner og metal",
-        "Plast/Metal/Mad- & drikkekartoner"
+        "Plast, metal & MDK",
+        "Plast, Metal, MDK",
+        "Plast, småt metal & MDK",
+        "Plast/MDK / Metal",
+        "Plast/MDK/Metal",
+        "Plast/Metal/Mad- & drikkekartoner",
+        "Plast/småt metal/mdk",
+        "PMDK/Metal"
     ],
     "plastmetalpapir": [
-        "Genbrugsspand - Obligatorisk min. 1 spand",
+        "Genbrugsspand - Obligatorisk min. 1",
         "grøn",
         "Plast/Metal/Papir"
     ],
@@ -220,16 +227,18 @@
         "Industri Restaffald",
         "Rest",
         "Restaffald",
-        "Restaffald // Batterier og Småt Elektronik"
+        "Restaffald // Batterier og Småt Elektronik",
+        "restaffald container"
     ],
     "restaffaldmadaffald": [
         "(M/R)",
         "energi",
         "Energibeholder",
-        "Energispand - Obligatorisk min. 1 spand",
+        "Energispand - Obligatorisk min. 1",
         "Mad og restaffald",
         "Mad- og restaffald",
         "Mad-/ og restaffald",
+        "Mad-/restaffald",
         "Mad/Rest",
         "Mad/Rest affald",
         "mad/restaffald",

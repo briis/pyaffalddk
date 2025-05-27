@@ -399,5 +399,9 @@
     "metalglas": "Glas/metal",
     "restaffaldmadaffald": "Mad/Restaffald",
     "pappi": "Papir/pap/plast/mdk"
+  },
+  "Ringkøbing-Skjern_314": {
+    "restaffaldmadaffald": "Rest/Mad",
+    "genbrug": "Genanvendelse"
   }
 }

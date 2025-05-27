@@ -382,7 +382,6 @@ MATERIAL_LIST = {
         "240 l genbrug - blåt låg (1 stk.)",
         "660 L plast, mad- og drikkekartoner (1 stk.)",
         "660 liter - Plast/MDK - Tømmes hver 2. uge (1 stk.)",
-        "Genbrugsbeholder PMDK/MG-240L/3uge (1 stk.)",
         "Genbrug henteordning (1 stk.)",
         "Mad- og drikkekartoner",
         "Plast og MDK 240 L (ejer.kommune) (1 stk.)",
@@ -407,6 +406,7 @@ MATERIAL_LIST = {
         "Genbrugsbeholder, 190 ltr (1 stk.)",
         "Genbrugsspand, 240L (2-delt) (1 stk.)",
         "plast, MDK/metal, glas",
+        "Genbrugsbeholder PMDK/MG-240L/3uge (1 stk.)",
     ],
     "restaffald": [
         "rest",

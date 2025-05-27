@@ -1,5 +1,11 @@
 # Changelog for pyaffalddk
 
+## [2.10.2] - `2025-05-27`
+
+### Changes
+* fix fraction naming in Holbæk [#306](https://github.com/briis/affalddk/issues/306)
+
+
 ## [2.10.1] - `2025-05-26`
 
 ### Changes

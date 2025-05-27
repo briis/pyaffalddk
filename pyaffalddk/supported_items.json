@@ -114,6 +114,7 @@
         "Papir/pap og tekstiler"
     ],
     "pappi": [
+        "Pap/papir og plastik/kartoner",
         "Papir & Pap / Plast & MDK",
         "Papir & småt pap",
         "Papir- Plast/Mad- og Drikkekartoner",
@@ -178,7 +179,6 @@
         "blåt låg",
         "Genbrug - blåt låg",
         "Genbrug henteordning",
-        "Genbrugsbeholder PMDK/MG-240L/",
         "Mad- og drikkekartoner",
         "PL/MD",
         "Plast & mad- og drikkekartoner",
@@ -188,17 +188,18 @@
         "plast, mad- og drikkekartoner",
         "Plast/ Mad- og drikkekartoner",
         "Plast/MDK",
-        "PMD",
-        "PMDK"
+        "PMD"
     ],
     "plastmdkglasmetal": [
         "Genbrugsbeholder",
+        "Genbrugsbeholder PMDK/MG-240L/",
         "genbrugsspand",
         "Metal/Glas/Plast/MDK",
         "Plast og drikkekarton – Glas og metal",
         "plast, MDK/metal, glas",
         "Plast/Drikkekarton og Metal",
-        "Plast/mad- og drikkekartoner og glas/metal"
+        "Plast/mad- og drikkekartoner og glas/metal",
+        "PMDK"
     ],
     "plastmetal": [
         "Metal og Plast",

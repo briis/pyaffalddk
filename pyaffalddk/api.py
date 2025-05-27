@@ -213,9 +213,6 @@ class GarbageCollection:
                     for garbage_type in item['collections']:
                         for container_description in set([cont['description'] for cont in garbage_type['containers']]):
                             self.update_pickup_event(container_description, address_id, _pickup_date)
-                        
-#                        fraction_description = garbage_type['containers'][0]['description']
-#                        self.update_pickup_event(fraction_description, address_id, _pickup_date)
 
             elif self._api_type == "openexp":
                 garbage_data = await self._api.get_garbage_data(address_id)

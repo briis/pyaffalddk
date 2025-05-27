@@ -211,10 +211,11 @@ class GarbageCollection:
                 for item in garbage_data:
                     _pickup_date = iso_string_to_date(item['date'])
                     for garbage_type in item['collections']:
-#                        fraction_name = garbage_type['fraction']['name']
-                        fraction_description = garbage_type['containers'][0]['description']
-#                        print(fraction_name, fraction_description)
-                        self.update_pickup_event(fraction_description, address_id, _pickup_date)
+                        for container_description in set([cont['description'] for cont in garbage_type['containers']]):
+                            self.update_pickup_event(container_description, address_id, _pickup_date)
+                        
+#                        fraction_description = garbage_type['containers'][0]['description']
+#                        self.update_pickup_event(fraction_description, address_id, _pickup_date)
 
             elif self._api_type == "openexp":
                 garbage_data = await self._api.get_garbage_data(address_id)

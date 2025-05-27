@@ -37,6 +37,7 @@
         "Genanvendeligt",
         "Genbrug",
         "Genbrug 240 L",
+        "genbrugscontainer",
         "Genbrugshal",
         "Genbrugsøer"
     ],
@@ -188,7 +189,8 @@
         "plast, mad- og drikkekartoner",
         "Plast/ Mad- og drikkekartoner",
         "Plast/MDK",
-        "PMD"
+        "PMD",
+        "PMDK"
     ],
     "plastmdkglasmetal": [
         "Genbrugsbeholder",
@@ -198,8 +200,7 @@
         "Plast og drikkekarton – Glas og metal",
         "plast, MDK/metal, glas",
         "Plast/Drikkekarton og Metal",
-        "Plast/mad- og drikkekartoner og glas/metal",
-        "PMDK"
+        "Plast/mad- og drikkekartoner og glas/metal"
     ],
     "plastmetal": [
         "Metal og Plast",

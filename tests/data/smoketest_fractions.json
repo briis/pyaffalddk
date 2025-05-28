@@ -403,5 +403,12 @@
   "Ringkøbing-Skjern_314": {
     "restaffaldmadaffald": "Rest/Mad",
     "genbrug": "Genanvendelse"
+  },
+  "allerød_315": {
+    "storskrald": "Storskrald Distrikt 1",
+    "pap": "Pap 240 L (villa)",
+    "pappi": "Plast/papir, afstand over 5 meter",
+    "metalglas": "Glas/metal, afstand over 5 meter",
+    "restaffaldmadaffald": "(A) Rest/mad 240 L beh., afstand over 5 meter - 14 dg. tømning"
   }
 }

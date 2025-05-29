@@ -36,6 +36,7 @@ jobs:
     - name: Test unittests
       shell: bash -l {0}
       run: |
+        export CI="true"
         export TZ=UTC
         pytest tests --disable-warnings
         export TZ=Europe/Copenhagen

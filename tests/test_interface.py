@@ -47,7 +47,7 @@ async def test_OpenExpLive(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Frederiksberg', session=session, fail=True)
-
+            print('start: ', gc._municipality)
             address = await gc.get_address_id('2000', 'Smallegade', '1')
             add = {
                 'uid': 'Frederiksberg_70984', 'address_id': '70984',
@@ -61,6 +61,7 @@ async def test_OpenExpLive(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Frederiksberg', pickups, UPDATE)
+            print('done: ', gc._municipality)
 
 
 @pytest.mark.asyncio
@@ -69,6 +70,7 @@ async def test_OpenExp(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Viborg', session=session, fail=True)
+            print('start: ', gc._municipality)
 
             address = await gc.get_address_id('8800', 'Prinsens Alle', '5')
             add = {
@@ -83,6 +85,7 @@ async def test_OpenExp(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Viborg', pickups, UPDATE)
+            print('done: ', gc._municipality)
 
 
 @pytest.mark.asyncio
@@ -91,6 +94,7 @@ async def test_Affaldonline(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Vejle', session=session, fail=True)
+            print('start: ', gc._municipality)
 
             address = await gc.get_address_id('7100', 'Klostergade', '2A')
             add = {
@@ -105,6 +109,7 @@ async def test_Affaldonline(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Vejle', pickups, UPDATE)
+            print('done: ', gc._municipality)
 
 
 @pytest.mark.asyncio
@@ -113,6 +118,7 @@ async def test_Koege(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Køge', session=session, fail=True)
+            print('start: ', gc._municipality)
 
             address = await gc.get_address_id('4600', 'Torvet', '1')
             add = {
@@ -127,6 +133,7 @@ async def test_Koege(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Koege', pickups, UPDATE)
+            print('done: ', gc._municipality)
 
 
 @pytest.mark.asyncio
@@ -135,6 +142,7 @@ async def test_Aalborg_gh(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Aalborg', session=session, fail=True)
+            print('start: ', gc._municipality)
 
             address = await gc.get_address_id('9000', 'Boulevarden', '13')
             add = {
@@ -149,6 +157,7 @@ async def test_Aalborg_gh(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Aalborg_gh', pickups, UPDATE)
+            print('done: ', gc._municipality)
 
 
 @pytest.mark.asyncio
@@ -157,6 +166,7 @@ async def test_Odense(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Odense', session=session, fail=True)
+            print('start: ', gc._municipality)
 
             address = await gc.get_address_id('5000', 'Flakhaven', '2')
             # print(address.__dict__)
@@ -171,6 +181,7 @@ async def test_Odense(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Odense', pickups, UPDATE)
+            print('done: ', gc._municipality)
 
 
 @pytest.mark.asyncio
@@ -179,6 +190,7 @@ async def test_Aarhus(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Aarhus', session=session, fail=True)
+            print('start: ', gc._municipality)
 
             address = await gc.get_address_id('8000', 'Rådhuspladsen', '2')
             # print(address.__dict__)
@@ -193,6 +205,7 @@ async def test_Aarhus(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(address.address_id)
             update_and_compare('Aarhus', pickups, UPDATE)
+            print('done: ', gc._municipality)
 
 
 # @skip_in_ci
@@ -225,6 +238,7 @@ async def test_Kbh(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('København', session=session, fail=True)
+            print('start: ', gc._municipality)
 
             address = await gc.get_address_id('1550', 'Rådhuspladsen', '1')
             # print(address.__dict__)
@@ -243,3 +257,4 @@ async def test_Kbh(capsys, monkeypatch):
             assert pickups['next_pickup'].description == 'Rest/Madaffald'
             assert pickups['next_pickup'].date.strftime('%d/%m/%y') == '05/05/25'
             assert list(pickups.keys()) == ['restaffaldmadaffald', 'farligtaffald', 'next_pickup']
+            print('done: ', gc._municipality)

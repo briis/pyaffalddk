@@ -295,7 +295,7 @@
   },
   "holbæk_1": {
     "restaffaldmadaffald": "240L Rest/Mad 14.dg Skel",
-    "plastmetalmadmdk": "240L PMDK/Metal 4. uge Skel",
+    "plastmetalmdk": "240L PMDK/Metal 4. uge Skel",
     "papirglas": "240L Glas/Papir 8. uge Skel",
     "pap": "240L Pap 8. uge Skel"
   },
@@ -350,7 +350,7 @@
     "haveaffald": "Haveaffald (marts-november)",
     "pap": "Pap",
     "storskrald": "Storskrald og genbrug",
-    "plastmetalmadmdk": "Plast/småt metal/mdk",
+    "plastmetalmdk": "Plast/småt metal/mdk",
     "farligtaffald": "Farligt affald",
     "tekstil": "Tekstil"
   },
@@ -366,7 +366,7 @@
   },
   "fredensborg_1": {
     "storskrald": "Storskrald nord 3050, 3060, 3400, 3480 og 3490",
-    "plastmetalmadmdk": "Plast/MDK / Metal 240 L 2 kammer spand - 3 uger",
+    "plastmetalmdk": "Plast/MDK / Metal 240 L 2 kammer spand - 3 uger",
     "restaffaldmadaffald": "Rest/Mad 240 L 2 kammer spand - 2 uger",
     "pappapir": "Papir/ Pap 140 L spand - 5 uger"
   },
@@ -403,5 +403,12 @@
   "Ringkøbing-Skjern_314": {
     "restaffaldmadaffald": "Rest/Mad",
     "genbrug": "Genanvendelse"
+  },
+  "allerød_315": {
+    "storskrald": "Storskrald Distrikt 1",
+    "pap": "Pap 240 L (villa)",
+    "pappi": "Plast/papir, afstand over 5 meter",
+    "metalglas": "Glas/metal, afstand over 5 meter",
+    "restaffaldmadaffald": "(A) Rest/mad 240 L beh., afstand over 5 meter - 14 dg. tømning"
   }
 }

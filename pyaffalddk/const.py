@@ -68,7 +68,7 @@ ICON_LIST = {
     "plastmadkarton": "mdi:trash-can",
     "plastmdkglasmetal": "mdi:trash-can",
     "plastmetal": "mdi:trash-can-outline",
-    "plastmetalmadmdk": "mdi:trash-can",
+    "plastmetalmdk": "mdi:trash-can",
     "plastmetalpapir": "mdi:trash-can",
     "restaffald": "mdi:trash-can",
     "restaffaldmadaffald": "mdi:trash-can",
@@ -109,7 +109,7 @@ NAME_LIST = {
     "plastmadkarton": "Plast & Madkarton",
     "plastmdkglasmetal": "Plast, Madkarton, Glas & Metal",
     "plastmetal": "Plast & Metal",
-    "plastmetalmadmdk": "Plast, Metal, Mad & Drikkekartoner",
+    "plastmetalmdk": "Plast, Metal, Mad & Drikkekartoner",
     "plastmetalpapir": "Plast, Metal & Papir",
     "restaffald": "Restaffald",
     "restaffaldmadaffald": "Rest & Madaffald",
@@ -125,13 +125,13 @@ STRIPS = [
         'med 14-dages tømning ved helårshuse', '– tømmes hver 2. uge',
         'sommerhustømning', 'henteordning', 'beholder til', '1-rums',
         'egenløsning', 'en-familie', 'enfamiliehus', '26 tøm', 'sommer 32', 'm. sommertømning',
-        '-skel 0-2 meter', ' ?',
+        '-skel 0-2 meter', 'afstand over 5 meter', ' ?',
 ]
 RE_WORDS = [
     r'14(\.)?[\s-]?(?:dags|dage|dages|dg)(\.)?',  # diffenrent ways of 14. dags
     r'(?:3|4|6|8)?(\.)?[\s-]?(?:uge|ugers)',  # diffenrent ways of uge
     r'(?:to|1|2)[\s-]?(?:delt|kammer)',  # diffenrent ways of  2-delt or 2-kammer
-    r'beh\.', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra',
+    r'beh\.(,)?', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra',
     'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest',
     'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', 'd[0-9]', r'/\d{2}',
     ]

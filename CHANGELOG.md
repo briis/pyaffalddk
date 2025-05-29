@@ -1,11 +1,16 @@
 # Changelog for pyaffalddk
 
+## [2.10.4] - `2025-05-29`
+
+### Changes
+* change plastmetalmadmdk to plastmetalmdk [#305](https://github.com/briis/affalddk/issues/305)
+* fix Allerød, rest/mad mangler [#315](https://github.com/briis/affalddk/issues/315)
+
 ## [2.10.3] - `2025-05-27`
 
 ### Changes
 * fix fraction naming in Holbæk again [#306](https://github.com/briis/affalddk/issues/306)
 * fix Ringkøbing-Skjern [#314](https://github.com/briis/affalddk/issues/314)
-
 
 ## [2.10.2] - `2025-05-27`
 

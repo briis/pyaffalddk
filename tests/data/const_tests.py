@@ -147,7 +147,7 @@ SUPPORTED_ITEMS = {
         "Plast-metal",
         "Plast/Metal",
     ],
-    "plastmetalmadmdk": [
+    "plastmetalmdk": [
         "Plast, Metal, MDK",
         "Plast/MDK/Metal",
         "Plast, metal & MDK 660L",
@@ -393,7 +393,7 @@ MATERIAL_LIST = {
         "Metal og Plast",
         "Plast/Metal",
     ],
-    "plastmetalmadmdk": [
+    "plastmetalmdk": [
         "Plast, småt metal & MDK - 240 l. (1 stk.)"
     ],
     "plastmetalpapir": [

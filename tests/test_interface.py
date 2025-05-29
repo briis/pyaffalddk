@@ -160,76 +160,76 @@ async def test_Aalborg_gh(capsys, monkeypatch):
             print('done: ', gc._municipality)
 
 
-# @pytest.mark.asyncio
-# @freeze_time(FREEZE_TIME)
-# async def test_Odense(capsys, monkeypatch):
-#     with capsys.disabled():
-#         async with ClientSession() as session:
-#             gc = GarbageCollection('Odense', session=session, fail=True)
-#             print('start: ', gc._municipality)
+@pytest.mark.asyncio
+@freeze_time(FREEZE_TIME)
+async def test_Odense(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Odense', session=session, fail=True)
+            print('start: ', gc._municipality)
 
-#             address = await gc.get_address_id('5000', 'Flakhaven', '2')
-#             # print(address.__dict__)
-#             add = {
-#                 'uid': 'Odense_112970', 'address_id': '112970',
-#                 'kommunenavn': 'Odense', 'vejnavn': 'Flakhaven', 'husnr': '2'}
-#             assert address.__dict__ == add
+            address = await gc.get_address_id('5000', 'Flakhaven', '2')
+            # print(address.__dict__)
+            add = {
+                'uid': 'Odense_112970', 'address_id': '112970',
+                'kommunenavn': 'Odense', 'vejnavn': 'Flakhaven', 'husnr': '2'}
+            assert address.__dict__ == add
 
-#             async def get_data(*args, **kwargs):
-#                 return odense_ics_data
-#             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+            async def get_data(*args, **kwargs):
+                return odense_ics_data
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
-#             pickups = await gc.get_pickup_data(address.address_id)
-#             update_and_compare('Odense', pickups, UPDATE)
-#             print('done: ', gc._municipality)
-
-
-# @pytest.mark.asyncio
-# @freeze_time(FREEZE_TIME)
-# async def test_Aarhus(capsys, monkeypatch):
-#     with capsys.disabled():
-#         async with ClientSession() as session:
-#             gc = GarbageCollection('Aarhus', session=session, fail=True)
-#             print('start: ', gc._municipality)
-
-#             address = await gc.get_address_id('8000', 'Rådhuspladsen', '2')
-#             # print(address.__dict__)
-#             add = {
-#                 'uid': 'Aarhus_07517005___2_______', 'address_id': '07517005___2_______',
-#                 'kommunenavn': 'Aarhus', 'vejnavn': 'Rådhuspladsen', 'husnr': '2'}
-#             assert address.__dict__ == add
-
-#             async def get_data(*args, **kwargs):
-#                 return aarhus_data[0]["plannedLoads"]
-#             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
-
-#             pickups = await gc.get_pickup_data(address.address_id)
-#             update_and_compare('Aarhus', pickups, UPDATE)
-#             print('done: ', gc._municipality)
+            pickups = await gc.get_pickup_data(address.address_id)
+            update_and_compare('Odense', pickups, UPDATE)
+            print('done: ', gc._municipality)
 
 
-# @skip_in_ci
-# @pytest.mark.asyncio
-# @freeze_time("2025-05-18")
-# async def test_VestFor(capsys, monkeypatch):
-#     with capsys.disabled():
-#         async with ClientSession() as session:
-#             gc = GarbageCollection('Ballerup', session=session, fail=True)
+@pytest.mark.asyncio
+@freeze_time(FREEZE_TIME)
+async def test_Aarhus(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Aarhus', session=session, fail=True)
+            print('start: ', gc._municipality)
 
-#             address = await gc.get_address_id('2750', 'Banegårdspladsen', '1')
-#             # print(address.__dict__)
-#             add = {
-#                 'uid': 'Ballerup_2690c90b-016f-e511-80cd-005056be6a4c',
-#                 'address_id': '2690c90b-016f-e511-80cd-005056be6a4c',
-#                 'kommunenavn': 'Ballerup', 'vejnavn': 'Banegårdspladsen', 'husnr': '1'}
-#             assert address.__dict__ == add
+            address = await gc.get_address_id('8000', 'Rådhuspladsen', '2')
+            # print(address.__dict__)
+            add = {
+                'uid': 'Aarhus_07517005___2_______', 'address_id': '07517005___2_______',
+                'kommunenavn': 'Aarhus', 'vejnavn': 'Rådhuspladsen', 'husnr': '2'}
+            assert address.__dict__ == add
 
-#             async def get_data(*args, **kwargs):
-#                 return vestfor_data
-#             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+            async def get_data(*args, **kwargs):
+                return aarhus_data[0]["plannedLoads"]
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 
-#             pickups = await gc.get_pickup_data(address.address_id)
-#             update_and_compare('Ballerup', pickups, UPDATE)
+            pickups = await gc.get_pickup_data(address.address_id)
+            update_and_compare('Aarhus', pickups, UPDATE)
+            print('done: ', gc._municipality)
+
+
+@skip_in_ci
+@pytest.mark.asyncio
+@freeze_time("2025-05-18")
+async def test_VestFor(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Ballerup', session=session, fail=True)
+
+            address = await gc.get_address_id('2750', 'Banegårdspladsen', '1')
+            # print(address.__dict__)
+            add = {
+                'uid': 'Ballerup_2690c90b-016f-e511-80cd-005056be6a4c',
+                'address_id': '2690c90b-016f-e511-80cd-005056be6a4c',
+                'kommunenavn': 'Ballerup', 'vejnavn': 'Banegårdspladsen', 'husnr': '1'}
+            assert address.__dict__ == add
+
+            async def get_data(*args, **kwargs):
+                return vestfor_data
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+
+            pickups = await gc.get_pickup_data(address.address_id)
+            update_and_compare('Ballerup', pickups, UPDATE)
 
 
 # @pytest.mark.asyncio

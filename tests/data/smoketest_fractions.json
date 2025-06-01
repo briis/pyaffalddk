@@ -410,5 +410,10 @@
     "pappi": "Plast/papir, afstand over 5 meter",
     "metalglas": "Glas/metal, afstand over 5 meter",
     "restaffaldmadaffald": "(A) Rest/mad 240 L beh., afstand over 5 meter - 14 dg. tømning"
+  },
+  "assens_1": {
+    "pappapirglasmetal": "240 MGPP",
+    "restaffaldmadaffald": "240 MadRest",
+    "plastmadkarton": "240 PMDK"
   }
 }

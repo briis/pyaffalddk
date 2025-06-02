@@ -141,7 +141,7 @@ RE_RAW = [
     r'\b\d{4}\b\ og \b\d{4}\b',  # special ending of postal code listing
     r'(?<![\w/-])(?:25|90|140|190|240|370|400|660|770)\s*l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts
     r'(?<![\w/-])(?:25|90|140|190|240|370|400|660|770)l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts (no space before L)
-    r'^240\s',  # only remove "240 " if it is the start of the string like in Assens
+    r'^(?:90|140|190|240|370|400)\s',  # only remove "[vol] " if it is the start of the string like in Assens
     ]
 
 ODD_EVEN_ARRAY = ["lige", "ulige"]

@@ -12,7 +12,6 @@ from .const import (
     ICON_LIST,
     NAME_LIST,
     NON_SUPPORTED_ITEMS,
-    PAR_EXCEPTIONS,
     RE_WORDS,
     RE_RAW,
     SPECIAL_MATERIALS,
@@ -284,8 +283,8 @@ def clean_fraction_string(item):
     for strip in WEEKDAYS + STRIPS:
         fixed_item = fixed_item.replace(strip.lower(), '')
 
-    escaped = [re.escape(e.lower()) for e in PAR_EXCEPTIONS]
-    pattern = rf"\s*\((?!{'|'.join(escaped)}\)).*?\)"
+    strings_in_parenthesis = re.findall(r'\(([^()]*)\)', fixed_item)
+    pattern = r"\s*\([^()]*\)"
     fixed_item = re.sub(pattern, "", fixed_item)  # strip anything in parenthesis
 
     for word in RE_RAW:
@@ -300,7 +299,7 @@ def clean_fraction_string(item):
     res = [fixed_item.strip()]
     if ' - ' in fixed_item:
         res += [o.strip() for o in fixed_item.split(' - ')]
-    return res
+    return res + strings_in_parenthesis
 
 
 def warn_or_fail(name, municipality, address_id, fail=False):

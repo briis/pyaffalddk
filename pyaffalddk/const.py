@@ -120,7 +120,6 @@ NAME_LIST = {
 }
 
 NAME_ARRAY = list(NAME_LIST.keys())
-PAR_EXCEPTIONS = ['M/R']
 STRIPS = [
         'med 14-dages tømning ved helårshuse', '– tømmes hver 2. uge',
         'sommerhustømning', 'henteordning', 'beholder til', '1-rums',

@@ -216,6 +216,7 @@
     ],
     "plastmetalmdk": [
         "Plast, mad- og drikkekartoner og metal",
+        "Plast, metal & mad- og drikkekartoner",
         "Plast, metal & MDK",
         "Plast, Metal, MDK",
         "Plast, småt metal & MDK",
@@ -238,10 +239,10 @@
         "restaffald container"
     ],
     "restaffaldmadaffald": [
-        "(M/R)",
         "energi",
         "Energibeholder",
         "Energispand - Obligatorisk min. 1",
+        "M/R",
         "Mad og restaffald",
         "Mad- og restaffald",
         "Mad-/ og restaffald",

@@ -429,5 +429,10 @@
     "pappapirglasmetal": "Pap/papir + Metal/glas",
     "restaffaldmadaffald": "Mad/Rest",
     "plastmadkarton": "Plast/Mad-og drikkekarton"
+  },
+  "aalborg_51": {
+    "restaffald": "Delvis-nedgravet 5 m3 (Restaffald)",
+    "pappapir": "Delvis-nedgravet 2,5 m3 (Papir/pap)",
+    "plastmetalmdk": "Delvis-nedgravet 2,5 m3 (Plast, metal & mad- og drikkekartoner)"
   }
 }

@@ -20,7 +20,7 @@ NON_SUPPORTED_ITEMS = [
     'Haveaffald (skal bestilles)',
     'Henteordning for grene',
     'Ingen tømningsdato fundet!',
-    'Pap bundtet, havebolig',
+    'Pap bundtet',
     'Skal tilmeldes',
     'Storskrald (skal bestilles)',
     'Trærødder og stammer'
@@ -131,7 +131,7 @@ RE_WORDS = [
     r'14(\.)?[\s-]?(?:dags|dage|dages|dg)(\.)?',  # diffenrent ways of 14. dags
     r'(?:3|4|6|8)?(\.)?[\s-]?(?:uge|ugers)',  # diffenrent ways of uge
     r'(?:to|1|2)[\s-]?(?:delt|kammer)',  # diffenrent ways of  2-delt or 2-kammer
-    r'beh\.(,)?', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra', 'havebolig', 'indbo',
+    r'beh\.(,)?', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra', 'havebolig',
     'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest',
     'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', 'd[0-9]', r'/\d{2}',
     ]

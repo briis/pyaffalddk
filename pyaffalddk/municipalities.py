@@ -130,6 +130,7 @@ MUNICIPALITIES_LIST = {
     "Greve": ["perfectwaste"],
     "Gribskov": ["perfectwaste"],
     "Guldborgsund": ["perfectwaste"],
+    "Haderslev": ['provas'],
     "Halsnæs": ["perfectwaste"],
     "Helsingør": ["renoweb"],
     "Herlev": ["renoweb"],

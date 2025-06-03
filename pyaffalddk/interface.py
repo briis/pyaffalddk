@@ -328,6 +328,44 @@ class OpenExperienceLiveAPI(AffaldDKAPIBase):
         return data
 
 
+class ProvasAPI(AffaldDKAPIBase):
+    # Provas API (Haderslev)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://platform-api.wastehero.io/api-crm-portal/v1/"
+        self._token = None
+        self.today = dt.date.today()
+
+    @property
+    async def token(self):
+        if not self._token:
+            vars = {"username": "", "password": ""}
+            url = self.url_base + 'company/provas-portal.wastehero.io/login'
+            data = await self.async_post_request(url, para=vars)
+            self._token = data.get('token')
+        return self._token
+
+    async def get_address_id(self, zipcode, street, house_number):
+        headers = {'X-API-Key': await self.token}
+        address = f'{street} {house_number}, {zipcode}'
+        url = self.url_base + 'property/'
+        data = await self.async_get_request(url, para={'search': address}, headers=headers)
+        for res in data:
+            if str(zipcode) in res['location']['name']:
+                return res['id']
+        return None
+
+    async def get_garbage_data(self, address_id):
+        headers = {'X-API-Key': await self.token}
+        url = self.url_base + f'property/{address_id}/collection_log'
+        params = {
+            'from_date': str(self.today + dt.timedelta(days=-1)),
+            'to_date': str(self.today + dt.timedelta(days=60))
+        }
+        data = await self.async_get_request(url, para=params, headers=headers)
+        return data
+
+
 class AarhusAffaldAPI(AffaldDKAPIBase):
     # Aarhus Forsyning API
     def __init__(self, *args, **kwargs):

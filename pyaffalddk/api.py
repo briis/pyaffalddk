@@ -37,6 +37,7 @@ APIS = {
     'affaldonline': interface.AffaldOnlineAPI,
     'openexp': interface.OpenExperienceAPI,
     'openexplive': interface.OpenExperienceLiveAPI,
+    'provas': interface.ProvasAPI,
 }
 
 
@@ -234,6 +235,13 @@ class GarbageCollection:
                     if dt_list:
                         _pickup_date = min([d for d in dt_list if d >= self.today])
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)
+
+            elif self._api_type == "provas":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    _pickup_date = iso_string_to_date(item['date'])
+                    fraction_name = item['container']['waste_fraction']['name']
+                    self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
         self.set_next_event()
         return self.pickup_events

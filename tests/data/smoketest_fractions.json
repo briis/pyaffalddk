@@ -424,5 +424,10 @@
     "plastmetalmdk": "Plast/Metal/Mad- & drikkekartoner 240 l Havebolig",
     "pappapir": "Pap/Papir 240 l Havebolig",
     "tekstil": "Tekstilaffald Havebolig"
+  },
+  "haderslev_1": {
+    "pappapirglasmetal": "Pap/papir + Metal/glas",
+    "restaffaldmadaffald": "Mad/Rest",
+    "plastmadkarton": "Plast/Mad-og drikkekarton"
   }
 }

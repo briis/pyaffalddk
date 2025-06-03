@@ -129,22 +129,25 @@ class GarbageCollection:
         if not self.pickup_events:
             return
         if dt.datetime.now().time() > self.switch_time:
-            _next_pickup = min(event.date for event in self.pickup_events.values() if event.date is not None and event.date > self.today)
+            eventdates = [event.date for event in self.pickup_events.values() if event.date is not None and event.date > self.today]
         else:
-            _next_pickup = min(event.date for event in self.pickup_events.values() if event.date is not None)
-        _next_name = [event.friendly_name for event in self.pickup_events.values() if event.date == _next_pickup]
-        _next_description = [event.description for event in self.pickup_events.values() if event.date == _next_pickup]
-        _next_pickup_event = {
-            "next_pickup": PickupType(
-                date=_next_pickup,
-                group="genbrug",
-                friendly_name=list_to_string(_next_name),
-                icon=ICON_LIST.get("genbrug"),
-                entity_picture="genbrug.svg",
-                description=list_to_string(_next_description),
-            )
-        }
-        self.pickup_events.update(_next_pickup_event)
+            eventdates = [event.date for event in self.pickup_events.values() if event.date is not None]
+
+        if eventdates:
+            _next_pickup = min(eventdates)
+            _next_name = [event.friendly_name for event in self.pickup_events.values() if event.date == _next_pickup]
+            _next_description = [event.description for event in self.pickup_events.values() if event.date == _next_pickup]
+            _next_pickup_event = {
+                "next_pickup": PickupType(
+                    date=_next_pickup,
+                    group="genbrug",
+                    friendly_name=list_to_string(_next_name),
+                    icon=ICON_LIST.get("genbrug"),
+                    entity_picture="genbrug.svg",
+                    description=list_to_string(_next_description),
+                )
+            }
+            self.pickup_events.update(_next_pickup_event)
 
     async def get_pickup_data(self, address_id: str, debug=False) -> PickupEvents:
         """Get the garbage collection data."""

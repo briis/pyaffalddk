@@ -7,12 +7,12 @@ import logging
 import re
 from typing import Any
 import aiohttp
+from dateutil import parser
 
 from .const import (
     ICON_LIST,
     NAME_LIST,
     NON_SUPPORTED_ITEMS,
-    PAR_EXCEPTIONS,
     RE_WORDS,
     RE_RAW,
     SPECIAL_MATERIALS,
@@ -37,6 +37,8 @@ APIS = {
     'affaldonline': interface.AffaldOnlineAPI,
     'openexp': interface.OpenExperienceAPI,
     'openexplive': interface.OpenExperienceLiveAPI,
+    'provas': interface.ProvasAPI,
+    'renodjurs': interface.RenoDjursAPI,
 }
 
 
@@ -129,22 +131,25 @@ class GarbageCollection:
         if not self.pickup_events:
             return
         if dt.datetime.now().time() > self.switch_time:
-            _next_pickup = min(event.date for event in self.pickup_events.values() if event.date is not None and event.date > self.today)
+            eventdates = [event.date for event in self.pickup_events.values() if event.date is not None and event.date > self.today]
         else:
-            _next_pickup = min(event.date for event in self.pickup_events.values() if event.date is not None)
-        _next_name = [event.friendly_name for event in self.pickup_events.values() if event.date == _next_pickup]
-        _next_description = [event.description for event in self.pickup_events.values() if event.date == _next_pickup]
-        _next_pickup_event = {
-            "next_pickup": PickupType(
-                date=_next_pickup,
-                group="genbrug",
-                friendly_name=list_to_string(_next_name),
-                icon=ICON_LIST.get("genbrug"),
-                entity_picture="genbrug.svg",
-                description=list_to_string(_next_description),
-            )
-        }
-        self.pickup_events.update(_next_pickup_event)
+            eventdates = [event.date for event in self.pickup_events.values() if event.date is not None]
+
+        if eventdates:
+            _next_pickup = min(eventdates)
+            _next_name = [event.friendly_name for event in self.pickup_events.values() if event.date == _next_pickup]
+            _next_description = [event.description for event in self.pickup_events.values() if event.date == _next_pickup]
+            _next_pickup_event = {
+                "next_pickup": PickupType(
+                    date=_next_pickup,
+                    group="genbrug",
+                    friendly_name=list_to_string(_next_name),
+                    icon=ICON_LIST.get("genbrug"),
+                    entity_picture="genbrug.svg",
+                    description=list_to_string(_next_description),
+                )
+            }
+            self.pickup_events.update(_next_pickup_event)
 
     async def get_pickup_data(self, address_id: str, debug=False) -> PickupEvents:
         """Get the garbage collection data."""
@@ -232,16 +237,29 @@ class GarbageCollection:
                         _pickup_date = min([d for d in dt_list if d >= self.today])
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
+            elif self._api_type == "provas":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    _pickup_date = iso_string_to_date(item['date'])
+                    fraction_name = item['container']['waste_fraction']['name']
+                    self.update_pickup_event(fraction_name, address_id, _pickup_date)
+
+            elif self._api_type == "renodjurs":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    _pickup_date = iso_string_to_date(item['Næste tømningsdag'], dayfirst=True)
+                    fraction_name = item['Ordning']
+                    self.update_pickup_event(fraction_name, address_id, _pickup_date)
+
         self.set_next_event()
         return self.pickup_events
 
 
-def iso_string_to_date(datetext: str) -> dt.date:
+def iso_string_to_date(datetext: str, dayfirst=None) -> dt.date:
     """Convert a date string to a datetime object."""
     if datetext == "Ingen tømningsdato fundet!":
         return None
-
-    return dt.datetime.fromisoformat(datetext).date()
+    return parser.parse(datetext, dayfirst=dayfirst).date()
 
 
 def get_garbage_type(item, municipality, address_id, fail=False):
@@ -273,8 +291,8 @@ def clean_fraction_string(item):
     for strip in WEEKDAYS + STRIPS:
         fixed_item = fixed_item.replace(strip.lower(), '')
 
-    escaped = [re.escape(e.lower()) for e in PAR_EXCEPTIONS]
-    pattern = rf"\s*\((?!{'|'.join(escaped)}\)).*?\)"
+    strings_in_parenthesis = re.findall(r'\(([^()]*)\)', fixed_item)
+    pattern = r"\s*\([^()]*\)"
     fixed_item = re.sub(pattern, "", fixed_item)  # strip anything in parenthesis
 
     for word in RE_RAW:
@@ -289,7 +307,7 @@ def clean_fraction_string(item):
     res = [fixed_item.strip()]
     if ' - ' in fixed_item:
         res += [o.strip() for o in fixed_item.split(' - ')]
-    return res
+    return res + strings_in_parenthesis
 
 
 def warn_or_fail(name, municipality, address_id, fail=False):

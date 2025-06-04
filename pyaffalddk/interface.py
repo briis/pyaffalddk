@@ -4,6 +4,7 @@ import datetime as dt
 import logging
 import re
 from urllib.parse import urlparse, parse_qsl, quote
+from bs4 import BeautifulSoup
 
 from .const import GH_API
 
@@ -326,6 +327,75 @@ class OpenExperienceLiveAPI(AffaldDKAPIBase):
         url = self.url_base + f'arrangements/v1/collections/calendar/{self.mid}/{address_id}'
         data = await self.async_get_request(url, headers=self.headers)
         return data
+
+
+class ProvasAPI(AffaldDKAPIBase):
+    # Provas API (Haderslev)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://platform-api.wastehero.io/api-crm-portal/v1/"
+        self._token = None
+        self.today = dt.date.today()
+
+    @property
+    async def token(self):
+        if not self._token:
+            vars = {"username": "", "password": ""}
+            url = self.url_base + 'company/provas-portal.wastehero.io/login'
+            data = await self.async_post_request(url, para=vars)
+            self._token = data.get('token')
+        return self._token
+
+    async def get_address_id(self, zipcode, street, house_number):
+        headers = {'X-API-Key': await self.token}
+        address = f'{street} {house_number}, {zipcode}'
+        url = self.url_base + 'property/'
+        data = await self.async_get_request(url, para={'search': address}, headers=headers)
+        for res in data:
+            if str(zipcode) in res['location']['name']:
+                return res['id']
+        return None
+
+    async def get_garbage_data(self, address_id):
+        headers = {'X-API-Key': await self.token}
+        url = self.url_base + f'property/{address_id}/collection_log'
+        params = {
+            'from_date': str(self.today + dt.timedelta(days=-1)),
+            'to_date': str(self.today + dt.timedelta(days=60))
+        }
+        data = await self.async_get_request(url, para=params, headers=headers)
+        return data
+
+
+class RenoDjursAPI(AffaldDKAPIBase):
+    # Reno Djurs API
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://minside.renodjurs.dk"
+
+    async def get_address_id(self, zipcode, street, house_number):
+        address = f'{street} {house_number}'
+        url = self.url_base + '/Default.aspx/GetAddress'
+        data = await self.async_post_request(url, para={'address': address})
+        for res in data['d']:
+            if str(zipcode) in res['label']:
+                return res['value']
+
+    async def get_garbage_data(self, address_id):
+        url = self.url_base + '/Ordninger.aspx?id=55424'
+        data = await self.async_get_request(url, as_json=False)
+        soup = BeautifulSoup(data, "html.parser")
+        table = soup.find("table", class_="table--compact")
+
+        headers = [th.get_text(strip=True) for th in table.find("thead").find_all("th")]
+        rows = []
+        for tr in table.find("tbody").find_all("tr"):
+            td = tr.find_all("td")
+            if len(td) == len(headers):
+                row_data = {h:td.get_text(strip=True) for h, td in zip(headers, td)}
+                if row_data['Næste tømningsdag']:
+                    rows.append(row_data)
+        return rows
 
 
 class AarhusAffaldAPI(AffaldDKAPIBase):

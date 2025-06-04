@@ -15,6 +15,7 @@
     ],
     "farligtaffald": [
         "Farligt Affald",
+        "Farligt affald Rød boks",
         "Farligt Affald, Rød boks",
         "Genbrugsbilen",
         "Miljøkasser"
@@ -104,7 +105,9 @@
         "glas/metal og pap/papir",
         "Grønt låg",
         "metal, glas, plast/papir",
+        "MGPP",
         "Pap, papir, tekstil & metal og glas",
+        "Pap/papir + Metal/glas",
         "papir/pap + glas/metal",
         "Papir/pap og glas/metal",
         "Plast og drikkekarton - Glas og metal",
@@ -140,7 +143,8 @@
         "PP/MDK-plast"
     ],
     "papir": [
-        "Papir"
+        "Papir",
+        "papirbeholder"
     ],
     "papirglas": [
         "Glas-papir",
@@ -182,6 +186,7 @@
         "Genbrug - blåt låg",
         "Genbrug henteordning",
         "Mad- og drikkekartoner",
+        "Mad-og drikkekarton",
         "PL/MD",
         "Plast & mad- og drikkekartoner",
         "Plast & MDK",
@@ -189,6 +194,7 @@
         "Plast og MDK",
         "plast, mad- og drikkekartoner",
         "Plast/ Mad- og drikkekartoner",
+        "Plast/Mad-og drikkekarton",
         "Plast/MDK",
         "PMD",
         "PMDK"
@@ -201,7 +207,8 @@
         "Plast og drikkekarton – Glas og metal",
         "plast, MDK/metal, glas",
         "Plast/Drikkekarton og Metal",
-        "Plast/mad- og drikkekartoner og glas/metal"
+        "Plast/mad- og drikkekartoner og glas/metal",
+        "plast/mad- og drikkekartoner/glas/metal"
     ],
     "plastmetal": [
         "Metal og Plast",
@@ -212,6 +219,7 @@
     ],
     "plastmetalmdk": [
         "Plast, mad- og drikkekartoner og metal",
+        "Plast, metal & mad- og drikkekartoner",
         "Plast, metal & MDK",
         "Plast, Metal, MDK",
         "Plast, småt metal & MDK",
@@ -234,10 +242,10 @@
         "restaffald container"
     ],
     "restaffaldmadaffald": [
-        "(M/R)",
         "energi",
         "Energibeholder",
         "Energispand - Obligatorisk min. 1",
+        "M/R",
         "Mad og restaffald",
         "Mad- og restaffald",
         "Mad-/ og restaffald",
@@ -245,6 +253,7 @@
         "Mad/Rest",
         "Mad/Rest affald",
         "mad/restaffald",
+        "MadRest",
         "Rest - Mad",
         "Rest / Mad",
         "Rest Mad",
@@ -269,6 +278,7 @@
         "Pap og Storskrald",
         "Småt brændbart",
         "Storskrald",
+        "Storskrald Indbo",
         "Storskrald og genbrug",
         "Stort elektronik",
         "Stort indbo og Indendørs træ"

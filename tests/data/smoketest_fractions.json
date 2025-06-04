@@ -410,5 +410,34 @@
     "pappi": "Plast/papir, afstand over 5 meter",
     "metalglas": "Glas/metal, afstand over 5 meter",
     "restaffaldmadaffald": "(A) Rest/mad 240 L beh., afstand over 5 meter - 14 dg. tømning"
+  },
+  "assens_1": {
+    "pappapirglasmetal": "240 MGPP",
+    "restaffaldmadaffald": "240 MadRest",
+    "plastmadkarton": "240 PMDK"
+  },
+  "dragør_321": {
+    "storskrald": "Storskrald Indbo Havebolig",
+    "haveaffald": "Haveaffald Havebolig",
+    "restaffaldmadaffald": "Rest- og Madaffald 240 l Havebolig",
+    "farligtaffald": "Farligt affald Rød boks Havebolig",
+    "plastmetalmdk": "Plast/Metal/Mad- & drikkekartoner 240 l Havebolig",
+    "pappapir": "Pap/Papir 240 l Havebolig",
+    "tekstil": "Tekstilaffald Havebolig"
+  },
+  "haderslev_1": {
+    "pappapirglasmetal": "Pap/papir + Metal/glas",
+    "restaffaldmadaffald": "Mad/Rest",
+    "plastmadkarton": "Plast/Mad-og drikkekarton"
+  },
+  "aalborg_51": {
+    "restaffald": "Delvis-nedgravet 5 m3 (Restaffald)",
+    "pappapir": "Delvis-nedgravet 2,5 m3 (Papir/pap)",
+    "plastmetalmdk": "Delvis-nedgravet 2,5 m3 (Plast, metal & mad- og drikkekartoner)"
+  },
+  "norddjurs_1": {
+    "restaffaldmadaffald": "240 l restaffald/madaffald, 14-dages tømning",
+    "plastmdkglasmetal": "240 l plast/mad- og drikkekartoner/glas/metal, tømning hver 3. uge",
+    "papir": "240 l papirbeholder"
   }
 }

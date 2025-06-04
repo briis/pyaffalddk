@@ -1,5 +1,19 @@
 # Changelog for pyaffalddk
 
+## [2.10.5] - `2025-06-04`
+
+### Added
+* API for:
+  * Provas (Haderslev) [#216](https://github.com/briis/affalddk/issues/216)
+  * RenoDjurs [#246](https://github.com/briis/affalddk/issues/246)
+  * Assens [#229](https://github.com/briis/affalddk/issues/229)
+
+### Changes
+* fix bug in set_next_pickup when only one fraction type
+* fix Dragør, Missing definitions [#321](https://github.com/briis/affalddk/issues/321)
+* fix Aalborg [#51](https://github.com/briis/pyaffalddk/issues/51)
+
+
 ## [2.10.4] - `2025-05-29`
 
 ### Changes

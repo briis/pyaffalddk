@@ -20,7 +20,7 @@ NON_SUPPORTED_ITEMS = [
     'Haveaffald (skal bestilles)',
     'Henteordning for grene',
     'Ingen tømningsdato fundet!',
-    'Pap bundtet, havebolig',
+    'Pap bundtet',
     'Skal tilmeldes',
     'Storskrald (skal bestilles)',
     'Trærødder og stammer'
@@ -120,18 +120,17 @@ NAME_LIST = {
 }
 
 NAME_ARRAY = list(NAME_LIST.keys())
-PAR_EXCEPTIONS = ['M/R']
 STRIPS = [
         'med 14-dages tømning ved helårshuse', '– tømmes hver 2. uge',
         'sommerhustømning', 'henteordning', 'beholder til', '1-rums',
         'egenløsning', 'en-familie', 'enfamiliehus', '26 tøm', 'sommer 32', 'm. sommertømning',
-        '-skel 0-2 meter', 'afstand over 5 meter', ' ?',
+        '-skel 0-2 meter', 'afstand over 5 meter', 'Jern/Elektronik/Hårde hvidevarer', ' ?',
 ]
 RE_WORDS = [
     r'14(\.)?[\s-]?(?:dags|dage|dages|dg)(\.)?',  # diffenrent ways of 14. dags
     r'(?:3|4|6|8)?(\.)?[\s-]?(?:uge|ugers)',  # diffenrent ways of uge
     r'(?:to|1|2)[\s-]?(?:delt|kammer)',  # diffenrent ways of  2-delt or 2-kammer
-    r'beh\.(,)?', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra',
+    r'beh\.(,)?', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra', 'havebolig',
     'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest',
     'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', 'd[0-9]', r'/\d{2}',
     ]
@@ -141,6 +140,7 @@ RE_RAW = [
     r'\b\d{4}\b\ og \b\d{4}\b',  # special ending of postal code listing
     r'(?<![\w/-])(?:25|90|140|190|240|370|400|660|770)\s*l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts
     r'(?<![\w/-])(?:25|90|140|190|240|370|400|660|770)l(?:tr|iter)?\.?(?=\b|[^a-zA-Z]|$)',  # remove volume parts (no space before L)
+    r'^(?:90|140|190|240|370|400)\s',  # only remove "[vol] " if it is the start of the string like in Assens
     ]
 
 ODD_EVEN_ARRAY = ["lige", "ulige"]

@@ -434,5 +434,10 @@
     "restaffald": "Delvis-nedgravet 5 m3 (Restaffald)",
     "pappapir": "Delvis-nedgravet 2,5 m3 (Papir/pap)",
     "plastmetalmdk": "Delvis-nedgravet 2,5 m3 (Plast, metal & mad- og drikkekartoner)"
+  },
+  "norddjurs_1": {
+    "restaffaldmadaffald": "240 l restaffald/madaffald, 14-dages tømning",
+    "plastmdkglasmetal": "240 l plast/mad- og drikkekartoner/glas/metal, tømning hver 3. uge",
+    "papir": "240 l papirbeholder"
   }
 }

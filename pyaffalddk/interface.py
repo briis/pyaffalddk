@@ -4,6 +4,7 @@ import datetime as dt
 import logging
 import re
 from urllib.parse import urlparse, parse_qsl, quote
+from bs4 import BeautifulSoup
 
 from .const import GH_API
 
@@ -364,6 +365,37 @@ class ProvasAPI(AffaldDKAPIBase):
         }
         data = await self.async_get_request(url, para=params, headers=headers)
         return data
+
+
+class RenoDjursAPI(AffaldDKAPIBase):
+    # Reno Djurs API
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://minside.renodjurs.dk"
+
+    async def get_address_id(self, zipcode, street, house_number):
+        address = f'{street} {house_number}'
+        url = self.url_base + '/Default.aspx/GetAddress'
+        data = await self.async_post_request(url, para={'address': address})
+        for res in data['d']:
+            if str(zipcode) in res['label']:
+                return res['value']
+
+    async def get_garbage_data(self, address_id):
+        url = self.url_base + '/Ordninger.aspx?id=55424'
+        data = await self.async_get_request(url, as_json=False)
+        soup = BeautifulSoup(data, "html.parser")
+        table = soup.find("table", class_="table--compact")
+
+        headers = [th.get_text(strip=True) for th in table.find("thead").find_all("th")]
+        rows = []
+        for tr in table.find("tbody").find_all("tr"):
+            td = tr.find_all("td")
+            if len(td) == len(headers):
+                row_data = {h:td.get_text(strip=True) for h, td in zip(headers, td)}
+                if row_data['Næste tømningsdag']:
+                    rows.append(row_data)
+        return rows
 
 
 class AarhusAffaldAPI(AffaldDKAPIBase):

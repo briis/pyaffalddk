@@ -1,6 +1,7 @@
 aiohttp
 aiozoneinfo
 black
+bs4
 coverage
 flake8
 ical

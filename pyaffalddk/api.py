@@ -7,6 +7,7 @@ import logging
 import re
 from typing import Any
 import aiohttp
+from dateutil import parser
 
 from .const import (
     ICON_LIST,
@@ -37,6 +38,7 @@ APIS = {
     'openexp': interface.OpenExperienceAPI,
     'openexplive': interface.OpenExperienceLiveAPI,
     'provas': interface.ProvasAPI,
+    'renodjurs': interface.RenoDjursAPI,
 }
 
 
@@ -242,6 +244,13 @@ class GarbageCollection:
                     fraction_name = item['container']['waste_fraction']['name']
                     self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
+            elif self._api_type == "renodjurs":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    _pickup_date = iso_string_to_date(item['Næste tømningsdag'])
+                    fraction_name = item['Ordning']
+                    self.update_pickup_event(fraction_name, address_id, _pickup_date)
+
         self.set_next_event()
         return self.pickup_events
 
@@ -250,8 +259,7 @@ def iso_string_to_date(datetext: str) -> dt.date:
     """Convert a date string to a datetime object."""
     if datetext == "Ingen tømningsdato fundet!":
         return None
-
-    return dt.datetime.fromisoformat(datetext).date()
+    return parser.parse(datetext).date()
 
 
 def get_garbage_type(item, municipality, address_id, fail=False):

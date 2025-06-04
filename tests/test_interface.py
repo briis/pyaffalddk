@@ -56,6 +56,10 @@ async def test_OpenExpLive(capsys, monkeypatch):
                 address = await gc.get_address_id('2000', 'Smallegade', '1')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('2000', 'Smallegade', '')
+                assert len(address_list) == 80
+                assert 'name' in address_list[0]
+                assert 'id' in address_list[0]
 
             async def get_data(*args, **kwargs):
                 return openexplive_data
@@ -81,6 +85,10 @@ async def test_OpenExp(capsys, monkeypatch):
                 address = await gc.get_address_id('8800', 'Prinsens Alle', '5')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('8800', 'Prinsens Alle', '')
+                assert len(address_list) == 5
+                assert 'name' in address_list[0]
+                assert 'id' in address_list[0]
 
             async def get_data(*args, **kwargs):
                 return openexp_data
@@ -106,6 +114,10 @@ async def test_Affaldonline(capsys, monkeypatch):
                 address = await gc.get_address_id('7100', 'Klostergade', '2A')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('7100', 'Nørregade', '')
+                assert len(address_list) == 23
+                assert 'name' in address_list[0]
+                assert 'id' in address_list[0]
 
             async def get_data(*args, **kwargs):
                 return affaldonline_data
@@ -118,7 +130,7 @@ async def test_Affaldonline(capsys, monkeypatch):
 
 @pytest.mark.asyncio
 @freeze_time("2025-05-04")
-async def test_Koege(capsys, monkeypatch):
+async def test_PerfectWaste(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Køge', session=session, fail=True)
@@ -131,6 +143,10 @@ async def test_Koege(capsys, monkeypatch):
                 address = await gc.get_address_id('4600', 'Torvet', '1')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('4600', 'Torvet', '')
+                assert len(address_list) == 18
+                assert 'name' in address_list[0]
+                assert 'id' in address_list[0]
 
             async def get_data(*args, **kwargs):
                 return koege_data["result"]
@@ -143,7 +159,7 @@ async def test_Koege(capsys, monkeypatch):
 
 @pytest.mark.asyncio
 @freeze_time("2025-05-04")
-async def test_Aalborg_gh(capsys, monkeypatch):
+async def test_Renoweb(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Aalborg', session=session, fail=True)
@@ -156,6 +172,10 @@ async def test_Aalborg_gh(capsys, monkeypatch):
                 address = await gc.get_address_id('9000', 'Boulevarden', '13')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('9000', 'Boulevarden', '')
+                assert len(address_list) == 435
+                assert 'name' in address_list[0]
+                assert 'id' in address_list[0]
 
             async def get_data(*args, **kwargs):
                 return aalborg_data_gh
@@ -231,6 +251,10 @@ async def test_VestFor(capsys, monkeypatch):
                 address = await gc.get_address_id('2750', 'Banegårdspladsen', '1')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('2750', 'Banegårdspladsen', '')
+                assert len(address_list) == 63
+                assert 'name' in address_list[0]
+                assert 'id' in address_list[0]
 
             async def get_data(*args, **kwargs):
                 return vestfor_data
@@ -256,6 +280,10 @@ async def test_Provas(capsys, monkeypatch):
                 address = await gc.get_address_id('6100', "Christian X Vej", '29')
     #            print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('6100', 'Christian X', '')
+                assert len(address_list) == 2
+                assert 'name' in address_list[0]
+                assert 'id' in address_list[0]
 
             async def get_data(*args, **kwargs):
                 return provas_data
@@ -282,6 +310,10 @@ async def test_RenoDjurs(capsys, monkeypatch):
                 address = await gc.get_address_id('8500', 'Torvet', '3')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('6100', 'Christian X', '')
+                assert len(address_list) == 2
+                assert 'name' in address_list[0]
+                assert 'id' in address_list[0]
 
             async def get_data(*args, **kwargs):
                 return renodjurs_data
@@ -308,6 +340,10 @@ async def test_Kbh(capsys, monkeypatch):
                 address = await gc.get_address_id('1550', 'Rådhuspladsen', '1')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('1550', 'Rådhuspladsen', '')
+                assert len(address_list) == 6
+                assert 'name' in address_list[0]
+                assert 'id' in address_list[0]
 
             async def get_data(*args, **kwargs):
                 return kbh_ics_data
@@ -319,3 +355,4 @@ async def test_Kbh(capsys, monkeypatch):
             assert pickups['next_pickup'].date.strftime('%d/%m/%y') == '05/05/25'
             assert list(pickups.keys()) == ['restaffaldmadaffald', 'farligtaffald', 'next_pickup']
             print('done: ', gc._municipality)
+

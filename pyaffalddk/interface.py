@@ -3,6 +3,7 @@ import base64
 import datetime as dt
 import logging
 import re
+import json
 from urllib.parse import urlparse, parse_qsl, quote
 from bs4 import BeautifulSoup
 
@@ -79,7 +80,6 @@ class AffaldDKAPIBase:
 
                 raise AffaldDKNoConnection(
                     f"Error {response.status} from {url}")
-
             if as_json:
                 data = await response.json()
             else:
@@ -116,6 +116,12 @@ class NemAffaldAPI(AffaldDKAPIBase):
             if match:
                 self._token = match.group(1)
 
+    async def get_address_list(self, zipcode, street, house_number):
+        url = self.base_url + '/WasteHome/AddressByTerm'
+        para = {'term': f'{street} {house_number}'.strip()}
+        data = await self.async_get_request(url, para=para, as_json=False)
+        return [{'name': item['label'], 'id': item['Id']} for item in json.loads(data)]
+
     async def get_address_id(self, zipcode, street, house_number):
         if self._id is None:
             data = {
@@ -148,6 +154,14 @@ class VestForAPI(AffaldDKAPIBase):
         self.url_search = self.baseurl + "/Adresse/AddressByName"
         self.today = dt.date.today()
 
+    async def get_address_list(self, zipcode, street, house_number):
+        para = {'term': f'{street}', 'numberOfResults': 100}
+        if house_number and zipcode:
+            para['term'] += f' {house_number}, {zipcode}'
+        data = await self.async_get_request(self.url_search, para=para)
+        results = [{'name': item['FuldtVejnavn'], 'id': item['Id']} for item in data if str(zipcode) == item['Postnr'] ]
+        return results
+
     async def get_address_id(self, zipcode, street, house_number):
         para = {'term': f'{street} {house_number}, {zipcode}', 'numberOfResults': 50}
         data = await self.async_get_request(self.url_search, para=para, as_json=True)
@@ -174,6 +188,19 @@ class PerfectWasteAPI(AffaldDKAPIBase):
         self.baseurl = "https://europe-west3-perfect-waste.cloudfunctions.net"
         self.url_data = self.baseurl + "/getAddressCollections"
         self.url_search = self.baseurl + "/searchExternalAddresses"
+
+    async def get_address_list(self, zipcode, street, house_number):
+        para = {'data': {
+            "query": f"{street}",
+            "municipality": self.municipality_id,
+            "page": 1, "onlyManual": False
+            }}
+
+        if house_number and zipcode:
+            para['data']['query'] += f' {house_number}, {zipcode}'
+        data = await self.async_post_request(self.url_search, para=para)
+        results = [{'name': item['displayName'], 'id': item['addressID']} for item in data['result'] if str(zipcode) in item['displayName'] ]
+        return results
 
     async def get_address_id(self, zipcode, street, house_number):
         body = {'data': {
@@ -211,7 +238,17 @@ class RenowebghAPI(AffaldDKAPIBase):
         self.url_data = "https://servicesgh.renoweb.dk/v1_13/"
         self.uuid = base64.b64decode(GH_API).decode('utf-8')
         self.headers = {'Accept-Encoding': 'gzip'}
-        self.info = {}
+
+    async def get_address_list(self, zipcode, street, house_number):
+        road_id = await self.get_road(zipcode, street)
+        if road_id:
+            url = self.url_data + 'GetJSONAdress.aspx'
+            para = {'apikey': self.uuid, 'municipalitycode': self.municipality_id, 'roadid': road_id}
+            if house_number:
+                para['streetBuildingIdentifier'] = house_number
+            data = await self.async_get_request(url, para=para, headers=self.headers)
+            results = [{'name': item['presentationString'], 'id': item['id']} for item in data['list'] if str(zipcode) in item['presentationString'] ]
+            return results
 
     async def get_road(self, zipcode, street):
         url = self.url_data + 'GetJSONRoad.aspx'
@@ -240,9 +277,9 @@ class RenowebghAPI(AffaldDKAPIBase):
     async def get_address_id(self, zipcode, street, house_number):
         road_id = await self.get_road(zipcode, street)
         if road_id:
-            self.info = await self.get_address(road_id, house_number)
-            if self.info:
-                return self.info['id']
+            info = await self.get_address(road_id, house_number)
+            if info:
+                return info['id']
         return None
 
     async def get_garbage_data(self, address_id, fullinfo=0, shared=0):
@@ -258,7 +295,7 @@ class RenowebghAPI(AffaldDKAPIBase):
 
 
 class AffaldOnlineAPI(AffaldDKAPIBase):
-    # Affald online API
+    # Affald online / Renoweb API
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.url_base = "https://www.affaldonline.dk/api/address/"
@@ -268,6 +305,12 @@ class AffaldOnlineAPI(AffaldDKAPIBase):
             'X-Client-Type': 'Kunde app',
             'X-Client-Version': '22',
         }
+
+    async def get_address_list(self, zipcode, street, house_number):
+        para = {'q': f'{street} {house_number}'.strip()}
+        data = await self.async_get_request(self.url_base + 'search', para=para, headers=self.headers)
+        results = [{'name': item['displayName'], 'id': item['addressId']} for item in data['results'] if str(zipcode) in item['displayName'] ]
+        return results
 
     async def get_address_id(self, zipcode, street, house_number):
         para = {'q': f'{street} {house_number}'}
@@ -288,6 +331,16 @@ class OpenExperienceAPI(AffaldDKAPIBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.url_base = f"https://{self.municipality_id}"
+
+    async def get_address_list(self, zipcode, street, house_number):
+        address = f'{street}'
+        if house_number and zipcode:
+            address += f' {house_number}, {zipcode}'
+
+        url = self.url_base + f'search/address/{quote(address)}/limit/100'
+        data = await self.async_get_request(url)
+        results = [{'name': item['displayName'], 'id': item['addressId']} for item in data['results'] if str(zipcode) in item['displayName'] ]
+        return results
 
     async def get_address_id(self, zipcode, street, house_number):
         address = quote(f'{street} {house_number}, {zipcode}')
@@ -313,11 +366,20 @@ class OpenExperienceLiveAPI(AffaldDKAPIBase):
         self.headers = {'X-Auth-Token': uuid}
         self.mid = self.municipality_id[0]
 
+    async def get_address_list(self, zipcode, street, house_number):
+        address = f'{street}'
+        if house_number and zipcode:
+            address += f' {house_number}'
+
+        url = self.url_base + f'address/v1/search/{self.mid}/{address}/100'
+        data = await self.async_get_request(url, headers=self.headers)
+        results = [{'name': item['name'], 'id': item['id']} for item in data if str(zipcode) in item['name'] ]
+        return results
+
     async def get_address_id(self, zipcode, street, house_number):
         address = quote(f'{street} {house_number}')
         url = self.url_base + f'address/v1/search/{self.mid}/{address}/50'
         data = await self.async_get_request(url, headers=self.headers)
-#        print(data)
         for res in sorted(data, key=lambda x: x["name"]):
             if str(zipcode) in res['name']:
                 return res['id']
@@ -346,6 +408,16 @@ class ProvasAPI(AffaldDKAPIBase):
             self._token = data.get('token')
         return self._token
 
+    async def get_address_list(self, zipcode, street, house_number):
+        headers = {'X-API-Key': await self.token}
+        address = f'{street}'
+        if house_number and zipcode:
+            address += f' {house_number}, {zipcode}'
+        url = self.url_base + 'property/'
+        data = await self.async_get_request(url, para={'search': address}, headers=headers)
+        results = [{'name': item['location']['name'], 'id': item['id']} for item in data if str(zipcode) in item['location']['name'] ]
+        return results
+
     async def get_address_id(self, zipcode, street, house_number):
         headers = {'X-API-Key': await self.token}
         address = f'{street} {house_number}, {zipcode}'
@@ -372,6 +444,15 @@ class RenoDjursAPI(AffaldDKAPIBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.url_base = "https://minside.renodjurs.dk"
+
+    async def get_address_list(self, zipcode, street, house_number):
+        address = f'{street} {house_number}'
+        if house_number and zipcode:
+            address += f' {house_number}'
+        url = self.url_base + '/Default.aspx/GetAddress'
+        data = await self.async_post_request(url, para={'address': address})
+        results = [{'name': item['label'], 'id': item['value']} for item in data['d]'] if str(zipcode) in item['label'] ]
+        return results
 
     async def get_address_id(self, zipcode, street, house_number):
         address = f'{street} {house_number}'

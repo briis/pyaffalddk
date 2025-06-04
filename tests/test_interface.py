@@ -11,7 +11,7 @@ import os
 CI = os.getenv("CI") == "true"
 skip_in_ci = pytest.mark.skipif(CI, reason="Skipped in CI environment")
 UPDATE = False
-
+ADDRESS_LIST_KEYS = ['name', 'id']
 
 datadir = Path(__file__).parent/'data'
 kbh_ics_data = (datadir/'kbh_ics.data').read_text()
@@ -58,8 +58,9 @@ async def test_OpenExpLive(capsys, monkeypatch):
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('2000', 'Smallegade', '')
                 assert len(address_list) == 80
-                assert 'name' in address_list[0]
-                assert 'id' in address_list[0]
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('2000', 'Smallegade', '2')
+                assert len(address_list) == 9
 
             async def get_data(*args, **kwargs):
                 return openexplive_data
@@ -85,10 +86,11 @@ async def test_OpenExp(capsys, monkeypatch):
                 address = await gc.get_address_id('8800', 'Prinsens Alle', '5')
                 # print(address.__dict__)
                 assert address.__dict__ == add
-                address_list = await gc._api.get_address_list('8800', 'Prinsens Alle', '')
-                assert len(address_list) == 5
-                assert 'name' in address_list[0]
-                assert 'id' in address_list[0]
+                address_list = await gc._api.get_address_list('8800', 'Vesterled', '')
+                assert len(address_list) == 52
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('8800', 'Vesterled', '4')
+                assert len(address_list) == 9
 
             async def get_data(*args, **kwargs):
                 return openexp_data
@@ -114,10 +116,11 @@ async def test_Affaldonline(capsys, monkeypatch):
                 address = await gc.get_address_id('7100', 'Klostergade', '2A')
                 # print(address.__dict__)
                 assert address.__dict__ == add
-                address_list = await gc._api.get_address_list('7100', 'Nørregade', '')
-                assert len(address_list) == 23
-                assert 'name' in address_list[0]
-                assert 'id' in address_list[0]
+                address_list = await gc._api.get_address_list('7100', 'Vestbanevej', '')
+                assert len(address_list) == 52
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('7100', 'Vestbanevej', '1')
+                assert len(address_list) == 12
 
             async def get_data(*args, **kwargs):
                 return affaldonline_data
@@ -143,10 +146,11 @@ async def test_PerfectWaste(capsys, monkeypatch):
                 address = await gc.get_address_id('4600', 'Torvet', '1')
                 # print(address.__dict__)
                 assert address.__dict__ == add
-                address_list = await gc._api.get_address_list('4600', 'Torvet', '')
-                assert len(address_list) == 18
-                assert 'name' in address_list[0]
-                assert 'id' in address_list[0]
+                address_list = await gc._api.get_address_list('4600', 'Oksbølvej', '')
+                assert len(address_list) == 47
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('4600', 'Oksbølvej', '1')
+                assert len(address_list) == 11
 
             async def get_data(*args, **kwargs):
                 return koege_data["result"]
@@ -174,8 +178,9 @@ async def test_Renoweb(capsys, monkeypatch):
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('9000', 'Boulevarden', '')
                 assert len(address_list) == 435
-                assert 'name' in address_list[0]
-                assert 'id' in address_list[0]
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('9000', 'Boulevarden', '1')
+                assert len(address_list) == 21
 
             async def get_data(*args, **kwargs):
                 return aalborg_data_gh
@@ -201,6 +206,11 @@ async def test_Odense(capsys, monkeypatch):
                 address = await gc.get_address_id('5000', 'Flakhaven', '2')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('5230', 'Læssøegade', '')
+                assert len(address_list) == 162
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('5230', 'Læssøegade', '1')
+                assert len(address_list) == 95
 
             async def get_data(*args, **kwargs):
                 return odense_ics_data
@@ -220,12 +230,17 @@ async def test_Aarhus(capsys, monkeypatch):
             print('start: ', gc._municipality)
 
             add = {
-                'uid': 'Aarhus_07517005___2_______', 'address_id': '07517005___2_______',
+                'uid': 'Aarhus_07517005___2__2____', 'address_id': '07517005___2__2____', 
                 'kommunenavn': 'Aarhus', 'vejnavn': 'Rådhuspladsen', 'husnr': '2'}
             if not CI:
                 address = await gc.get_address_id('8000', 'Rådhuspladsen', '2')
                 # print(address.__dict__)
                 assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('8000', 'Rådhuspladsen', '')
+                assert len(address_list) == 44
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('8000', 'Rådhuspladsen', '2')
+                assert len(address_list) == 11
 
             async def get_data(*args, **kwargs):
                 return aarhus_data[0]["plannedLoads"]
@@ -253,8 +268,9 @@ async def test_VestFor(capsys, monkeypatch):
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('2750', 'Banegårdspladsen', '')
                 assert len(address_list) == 63
-                assert 'name' in address_list[0]
-                assert 'id' in address_list[0]
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('2750', 'Banegårdspladsen', '1')
+                assert len(address_list) == 5
 
             async def get_data(*args, **kwargs):
                 return vestfor_data
@@ -280,10 +296,11 @@ async def test_Provas(capsys, monkeypatch):
                 address = await gc.get_address_id('6100', "Christian X Vej", '29')
     #            print(address.__dict__)
                 assert address.__dict__ == add
-                address_list = await gc._api.get_address_list('6100', 'Christian X', '')
-                assert len(address_list) == 2
-                assert 'name' in address_list[0]
-                assert 'id' in address_list[0]
+                address_list = await gc._api.get_address_list('6100', 'Parkvej', '')
+                assert len(address_list) == 53
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('6100', 'Parkvej', '2')
+                assert len(address_list) == 9
 
             async def get_data(*args, **kwargs):
                 return provas_data
@@ -310,10 +327,11 @@ async def test_RenoDjurs(capsys, monkeypatch):
                 address = await gc.get_address_id('8500', 'Torvet', '3')
                 # print(address.__dict__)
                 assert address.__dict__ == add
-                address_list = await gc._api.get_address_list('6100', 'Christian X', '')
-                assert len(address_list) == 2
-                assert 'name' in address_list[0]
-                assert 'id' in address_list[0]
+                address_list = await gc._api.get_address_list('8500', 'Fuglsangparken', '')
+                assert len(address_list) == 25
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('8500', 'Fuglsangparken', '1')
+                assert len(address_list) == 16
 
             async def get_data(*args, **kwargs):
                 return renodjurs_data
@@ -340,10 +358,11 @@ async def test_Kbh(capsys, monkeypatch):
                 address = await gc.get_address_id('1550', 'Rådhuspladsen', '1')
                 # print(address.__dict__)
                 assert address.__dict__ == add
-                address_list = await gc._api.get_address_list('1550', 'Rådhuspladsen', '')
-                assert len(address_list) == 6
-                assert 'name' in address_list[0]
-                assert 'id' in address_list[0]
+                address_list = await gc._api.get_address_list('2300', 'Irlandsvej', '')
+                assert len(address_list) == 50
+                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                address_list = await gc._api.get_address_list('2300', 'Irlandsvej', '1')
+                assert len(address_list) == 14
 
             async def get_data(*args, **kwargs):
                 return kbh_ics_data

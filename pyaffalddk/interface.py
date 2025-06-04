@@ -118,7 +118,7 @@ class NemAffaldAPI(AffaldDKAPIBase):
 
     async def get_address_list(self, zipcode, street, house_number):
         url = self.base_url + '/WasteHome/AddressByTerm'
-        para = {'term': f'{street} {house_number}'.strip()}
+        para = {'term': f'{street} {house_number}'.strip(), 'limit': 100}
         data = await self.async_get_request(url, para=para, as_json=False)
         return [{'name': item['label'], 'id': item['Id']} for item in json.loads(data)]
 
@@ -155,9 +155,7 @@ class VestForAPI(AffaldDKAPIBase):
         self.today = dt.date.today()
 
     async def get_address_list(self, zipcode, street, house_number):
-        para = {'term': f'{street}', 'numberOfResults': 100}
-        if house_number and zipcode:
-            para['term'] += f' {house_number}, {zipcode}'
+        para = {'term': f'{street} {house_number}'.strip(), 'numberOfResults': 100}
         data = await self.async_get_request(self.url_search, para=para)
         results = [{'name': item['FuldtVejnavn'], 'id': item['Id']} for item in data if str(zipcode) == item['Postnr'] ]
         return results
@@ -191,15 +189,18 @@ class PerfectWasteAPI(AffaldDKAPIBase):
 
     async def get_address_list(self, zipcode, street, house_number):
         para = {'data': {
-            "query": f"{street}",
+            "query": f"{street} {house_number}".strip(),
             "municipality": self.municipality_id,
             "page": 1, "onlyManual": False
             }}
 
-        if house_number and zipcode:
-            para['data']['query'] += f' {house_number}, {zipcode}'
-        data = await self.async_post_request(self.url_search, para=para)
-        results = [{'name': item['displayName'], 'id': item['addressID']} for item in data['result'] if str(zipcode) in item['displayName'] ]
+        page = await self.async_post_request(self.url_search, para=para)
+        data = page['result']
+        while len(page['result']) == 30:
+            para['data']['page'] += 1
+            page = await self.async_post_request(self.url_search, para=para)
+            data += page['result']
+        results = [{'name': item['displayName'], 'id': item['addressID']} for item in data if str(zipcode) in item['displayName'] ]
         return results
 
     async def get_address_id(self, zipcode, street, house_number):
@@ -307,9 +308,14 @@ class AffaldOnlineAPI(AffaldDKAPIBase):
         }
 
     async def get_address_list(self, zipcode, street, house_number):
-        para = {'q': f'{street} {house_number}'.strip()}
-        data = await self.async_get_request(self.url_base + 'search', para=para, headers=self.headers)
-        results = [{'name': item['displayName'], 'id': item['addressId']} for item in data['results'] if str(zipcode) in item['displayName'] ]
+        para = {'q': f'{street} {house_number}'.strip(), 'page': 1}
+        page = await self.async_get_request(self.url_base + 'search', para=para, headers=self.headers)
+        data = page['results']
+        while len(page['results']) == 50:
+            para['page'] += 1
+            page = await self.async_get_request(self.url_base + 'search', para=para, headers=self.headers)
+            data += page['results']
+        results = [{'name': item['displayName'], 'id': item['addressId']} for item in data if str(zipcode) in item['displayName'] ]
         return results
 
     async def get_address_id(self, zipcode, street, house_number):
@@ -333,11 +339,8 @@ class OpenExperienceAPI(AffaldDKAPIBase):
         self.url_base = f"https://{self.municipality_id}"
 
     async def get_address_list(self, zipcode, street, house_number):
-        address = f'{street}'
-        if house_number and zipcode:
-            address += f' {house_number}, {zipcode}'
-
-        url = self.url_base + f'search/address/{quote(address)}/limit/100'
+        address = f'{street} {house_number}'.strip()
+        url = self.url_base + f'search/address/{quote(address)}/limit/200'
         data = await self.async_get_request(url)
         results = [{'name': item['displayName'], 'id': item['addressId']} for item in data['results'] if str(zipcode) in item['displayName'] ]
         return results
@@ -367,11 +370,9 @@ class OpenExperienceLiveAPI(AffaldDKAPIBase):
         self.mid = self.municipality_id[0]
 
     async def get_address_list(self, zipcode, street, house_number):
-        address = f'{street}'
-        if house_number and zipcode:
-            address += f' {house_number}'
+        address = f'{street} {house_number}'.strip()
 
-        url = self.url_base + f'address/v1/search/{self.mid}/{address}/100'
+        url = self.url_base + f'address/v1/search/{self.mid}/{quote(address)}/100'
         data = await self.async_get_request(url, headers=self.headers)
         results = [{'name': item['name'], 'id': item['id']} for item in data if str(zipcode) in item['name'] ]
         return results
@@ -410,11 +411,9 @@ class ProvasAPI(AffaldDKAPIBase):
 
     async def get_address_list(self, zipcode, street, house_number):
         headers = {'X-API-Key': await self.token}
-        address = f'{street}'
-        if house_number and zipcode:
-            address += f' {house_number}, {zipcode}'
+        address = f'{street} {house_number}, {zipcode}'.strip()
         url = self.url_base + 'property/'
-        data = await self.async_get_request(url, para={'search': address}, headers=headers)
+        data = await self.async_get_request(url, para={'search': address, 'limit':100}, headers=headers)
         results = [{'name': item['location']['name'], 'id': item['id']} for item in data if str(zipcode) in item['location']['name'] ]
         return results
 
@@ -446,12 +445,11 @@ class RenoDjursAPI(AffaldDKAPIBase):
         self.url_base = "https://minside.renodjurs.dk"
 
     async def get_address_list(self, zipcode, street, house_number):
-        address = f'{street} {house_number}'
-        if house_number and zipcode:
-            address += f' {house_number}'
+        address = f'{street} {house_number}*, {zipcode}'.strip()
+
         url = self.url_base + '/Default.aspx/GetAddress'
-        data = await self.async_post_request(url, para={'address': address})
-        results = [{'name': item['label'], 'id': item['value']} for item in data['d]'] if str(zipcode) in item['label'] ]
+        data = await self.async_post_request(url, para={'address': address.strip()})
+        results = [{'name': item['label'], 'id': item['value']} for item in data['d'] if str(zipcode) in item['label'] ]
         return results
 
     async def get_address_id(self, zipcode, street, house_number):
@@ -484,20 +482,23 @@ class AarhusAffaldAPI(AffaldDKAPIBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.url_data = "https://portal-api.kredslob.dk/api/calendar/address/"
-        self.url_search = "https://api.dataforsyningen.dk/adresser?kommunekode=751&q="
+        self.url_search = "https://api.dataforsyningen.dk/adresser"
+
+    async def get_address_list(self, zipcode, street, house_number):
+        para = {'kommunekode': 751, 'q': f'{street} {house_number}'.strip(), 'struktur': 'mini'}
+        data = await self.async_get_request(self.url_search, para=para)
+        results = [{'name': item['betegnelse'], 'id': item["id"]} for item in data if str(zipcode) in item["postnr"] ]
+        return results
 
     async def get_address_id(self, zipcode, street, house_number):
-        url = f"{self.url_search}{street.capitalize()}*"
-        _LOGGER.debug("URL: %s", url)
-        data = await self.async_get_request(url)
-        _result_count = len(data)
-        if _result_count > 1:
-            for row in data:
-                if (
-                    str(zipcode) in row["adgangsadresse"]["postnummer"]["nr"]
-                    and str(house_number) == row["adgangsadresse"]["husnr"]
-                ):
-                    return row["kvhx"]
+        for add in await self.get_address_list(zipcode, street, house_number):
+            para = {'kommunekode': 751, 'id': add['id']}
+            row = await self.async_get_request(self.url_search, para=para)
+            if (
+                str(zipcode) in row[0]["adgangsadresse"]["postnummer"]["nr"]
+                and str(house_number) == row[0]["adgangsadresse"]["husnr"]
+            ):
+                return row[0]["kvhx"]
         return None
 
     async def get_garbage_data(self, address_id):
@@ -513,11 +514,12 @@ class OdenseAffaldAPI(AffaldDKAPIBase):
         self.url_data = "https://mit.odenserenovation.dk/api/Calendar/GetICalCalendar?addressNo="
         self.url_search = "https://mit.odenserenovation.dk/api/Calendar/CommunicationHouseNumbers?addressString="
 
-    async def async_get_ical_data(self, address_id):
-        """Get data from iCal API."""
-        url = f"{self.url_data}{address_id}"
-        data = await self.async_get_request(url, as_json=False)
-        return data
+    async def get_address_list(self, zipcode, street, house_number):
+        address = f'{street} {house_number}'.strip()
+        url = f"{self.url_search}{quote(address)}"
+        data = await self.async_get_request(url)
+        results = [{'name': item['FullAddress'], 'id': item["AddressNo"]} for item in data if str(zipcode) in item["PostCode"] ]
+        return results
 
     async def get_address_id(self, zipcode, street, house_number):
         url = f"{self.url_search}{street}"
@@ -529,6 +531,12 @@ class OdenseAffaldAPI(AffaldDKAPIBase):
             ):
                 return row["AddressNo"]
         return None
+
+    async def async_get_ical_data(self, address_id):
+        """Get data from iCal API."""
+        url = f"{self.url_data}{address_id}"
+        data = await self.async_get_request(url, as_json=False)
+        return data
 
     async def get_garbage_data(self, address_id):
         return await self.async_get_ical_data(address_id)

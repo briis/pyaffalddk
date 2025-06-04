@@ -9,7 +9,7 @@
   * Assens [#229](https://github.com/briis/affalddk/issues/229)
 
 ### Changes
-* fix bug in setting set_next_pickup when only one fraction type
+* fix bug in set_next_pickup when only one fraction type
 * fix Dragør, Missing definitions [#321](https://github.com/briis/affalddk/issues/321)
 * fix Aalborg [#51](https://github.com/briis/pyaffalddk/issues/51)
 

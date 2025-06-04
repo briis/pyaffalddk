@@ -247,7 +247,7 @@ class GarbageCollection:
             elif self._api_type == "renodjurs":
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for item in garbage_data:
-                    _pickup_date = iso_string_to_date(item['Næste tømningsdag'])
+                    _pickup_date = iso_string_to_date(item['Næste tømningsdag'], dayfirst=True)
                     fraction_name = item['Ordning']
                     self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
@@ -255,11 +255,11 @@ class GarbageCollection:
         return self.pickup_events
 
 
-def iso_string_to_date(datetext: str) -> dt.date:
+def iso_string_to_date(datetext: str, dayfirst=None) -> dt.date:
     """Convert a date string to a datetime object."""
     if datetext == "Ingen tømningsdato fundet!":
         return None
-    return parser.parse(datetext).date()
+    return parser.parse(datetext, dayfirst=dayfirst).date()
 
 
 def get_garbage_type(item, municipality, address_id, fail=False):

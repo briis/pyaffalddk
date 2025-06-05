@@ -11,7 +11,7 @@ import os
 CI = os.getenv("CI") == "true"
 skip_in_ci = pytest.mark.skipif(CI, reason="Skipped in CI environment")
 UPDATE = False
-ADDRESS_LIST_KEYS = ['name', 'id']
+ADDRESS_LIST_KEYS = ['id']
 
 datadir = Path(__file__).parent/'data'
 kbh_ics_data = (datadir/'kbh_ics.data').read_text()
@@ -41,6 +41,12 @@ def update_and_compare(name, actual_data, update=False, debug=False):
     assert actual_data == compare_data[name]
 
 
+async def assert_add_list(gc, address_list):
+    add = await gc.get_address(address_list[0])
+    print(add.address_id, add.address)
+    assert list(gc._api.address_list[address_list[0]].keys()) == ADDRESS_LIST_KEYS
+
+
 @pytest.mark.asyncio
 @freeze_time("2025-05-25")
 async def test_OpenExpLive(capsys, monkeypatch):
@@ -51,14 +57,15 @@ async def test_OpenExpLive(capsys, monkeypatch):
 
             add = {
                 'uid': 'Frederiksberg_70984', 'address_id': '70984',
-                'kommunenavn': 'Frederiksberg', 'vejnavn': 'Smallegade', 'husnr': '1'}
+                'kommunenavn': 'Frederiksberg', 'address': 'Smallegade 1'}
             if not CI:
-                address = await gc.get_address_id('2000', 'Smallegade', '1')
+                address_list = await gc.get_address_list('2000', 'Smallegade', '1')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('2000', 'Smallegade', '')
                 assert len(address_list) == 80
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('2000', 'Smallegade', '2')
                 assert len(address_list) == 9
 
@@ -81,14 +88,15 @@ async def test_OpenExp(capsys, monkeypatch):
 
             add = {
                 'uid': 'Viborg_67580', 'address_id': '67580',
-                'kommunenavn': 'Viborg', 'vejnavn': 'Prinsens alle', 'husnr': '5'}
+                'kommunenavn': 'Viborg', 'address': 'Prinsens alle 5'}
             if not CI:
-                address = await gc.get_address_id('8800', 'Prinsens Alle', '5')
+                address_list = await gc.get_address_list('8800', 'Prinsens Alle', '5')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('8800', 'Vesterled', '')
                 assert len(address_list) == 52
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('8800', 'Vesterled', '4')
                 assert len(address_list) == 9
 
@@ -111,14 +119,15 @@ async def test_Affaldonline(capsys, monkeypatch):
 
             add = {
                 'uid': 'Vejle_1261533|490691026|0', 'address_id': '1261533|490691026|0',
-                'kommunenavn': 'Vejle', 'vejnavn': 'Klostergade', 'husnr': '2A'}
+                'kommunenavn': 'Vejle', 'address': 'Klostergade 2a'}
             if not CI:
-                address = await gc.get_address_id('7100', 'Klostergade', '2A')
+                address_list = await gc.get_address_list('7100', 'Klostergade', '2A')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('7100', 'Vestbanevej', '')
                 assert len(address_list) == 52
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('7100', 'Vestbanevej', '1')
                 assert len(address_list) == 12
 
@@ -141,14 +150,15 @@ async def test_PerfectWaste(capsys, monkeypatch):
 
             add = {
                 'uid': 'Køge_27768', 'address_id': '27768',
-                'kommunenavn': 'Køge', 'vejnavn': 'Torvet', 'husnr': '1'}
+                'kommunenavn': 'Køge', 'address': 'Torvet 1'}
             if not CI:
-                address = await gc.get_address_id('4600', 'Torvet', '1')
+                address_list = await gc.get_address_list('4600', 'Torvet', '1')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('4600', 'Oksbølvej', '')
                 assert len(address_list) == 47
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('4600', 'Oksbølvej', '1')
                 assert len(address_list) == 11
 
@@ -171,14 +181,15 @@ async def test_Renoweb(capsys, monkeypatch):
 
             add = {
                 'uid': 'Aalborg_139322', 'address_id': '139322',
-                'kommunenavn': 'Aalborg', 'vejnavn': 'Boulevarden', 'husnr': '13'}
+                'kommunenavn': 'Aalborg', 'address': 'Boulevarden 13'}
             if not CI:
-                address = await gc.get_address_id('9000', 'Boulevarden', '13')
+                address_list = await gc.get_address_list('9000', 'Boulevarden', '13')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('9000', 'Boulevarden', '')
                 assert len(address_list) == 435
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('9000', 'Boulevarden', '1')
                 assert len(address_list) == 21
 
@@ -201,14 +212,15 @@ async def test_Odense(capsys, monkeypatch):
 
             add = {
                 'uid': 'Odense_112970', 'address_id': '112970',
-                'kommunenavn': 'Odense', 'vejnavn': 'Flakhaven', 'husnr': '2'}
+                'kommunenavn': 'Odense', 'address': 'Flakhaven 2'}
             if not CI:
-                address = await gc.get_address_id('5000', 'Flakhaven', '2')
+                address_list = await gc.get_address_list('5000', 'Flakhaven', '2')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('5230', 'Læssøegade', '')
                 assert len(address_list) == 162
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('5230', 'Læssøegade', '1')
                 assert len(address_list) == 95
 
@@ -231,14 +243,15 @@ async def test_Aarhus(capsys, monkeypatch):
 
             add = {
                 'uid': 'Aarhus_07517005___2__2____', 'address_id': '07517005___2__2____', 
-                'kommunenavn': 'Aarhus', 'vejnavn': 'Rådhuspladsen', 'husnr': '2'}
+                'kommunenavn': 'Aarhus', 'address': 'Rådhuspladsen 2, 2.'}
             if not CI:
-                address = await gc.get_address_id('8000', 'Rådhuspladsen', '2')
+                address_list = await gc.get_address_list('8000', 'Rådhuspladsen', '2')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('8000', 'Rådhuspladsen', '')
                 assert len(address_list) == 44
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('8000', 'Rådhuspladsen', '2')
                 assert len(address_list) == 11
 
@@ -257,18 +270,20 @@ async def test_VestFor(capsys, monkeypatch):
     with capsys.disabled():
         async with ClientSession() as session:
             gc = GarbageCollection('Ballerup', session=session, fail=True)
+            print('start: ', gc._municipality)
 
             add = {
                 'uid': 'Ballerup_2690c90b-016f-e511-80cd-005056be6a4c',
                 'address_id': '2690c90b-016f-e511-80cd-005056be6a4c',
-                'kommunenavn': 'Ballerup', 'vejnavn': 'Banegårdspladsen', 'husnr': '1'}
+                'kommunenavn': 'Ballerup', 'address': 'Banegårdspladsen 1'}
             if not CI:
-                address = await gc.get_address_id('2750', 'Banegårdspladsen', '1')
+                address_list = await gc.get_address_list('2750', 'Banegårdspladsen', '1')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('2750', 'Banegårdspladsen', '')
                 assert len(address_list) == 63
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('2750', 'Banegårdspladsen', '1')
                 assert len(address_list) == 5
 
@@ -278,6 +293,7 @@ async def test_VestFor(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(add['address_id'])
             update_and_compare('Ballerup', pickups, UPDATE)
+            print('done: ', gc._municipality)
 
 
 @pytest.mark.asyncio
@@ -290,15 +306,16 @@ async def test_Provas(capsys, monkeypatch):
 
             add = {
                 'uid': 'Haderslev_UHJvcGVydHlUeXBlOjEwMTQzNDE=', 'address_id': 'UHJvcGVydHlUeXBlOjEwMTQzNDE=', 
-                'kommunenavn': 'Haderslev', 'vejnavn': 'Christian x vej', 'husnr': '29'
+                'kommunenavn': 'Haderslev', 'address': "Christian x's vej 29"
                 }
             if not CI:
-                address = await gc.get_address_id('6100', "Christian X Vej", '29')
+                address_list = await gc.get_address_list('6100', "Christian X Vej", '29')
+                address = await gc.get_address(address_list[0])
     #            print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('6100', 'Parkvej', '')
                 assert len(address_list) == 53
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('6100', 'Parkvej', '2')
                 assert len(address_list) == 9
 
@@ -320,16 +337,17 @@ async def test_RenoDjurs(capsys, monkeypatch):
             print('start: ', gc._municipality)
 
             add = {
-                'uid': 'Norddjurs_40130', 'address_id': '40130', 
-                'kommunenavn': 'Norddjurs', 'vejnavn': 'Torvet', 'husnr': '3'
+                'uid': 'Norddjurs_40130', 'address_id': '40130',
+                'kommunenavn': 'Norddjurs', 'address': 'Torvet 3'
                 }
             if not CI:
-                address = await gc.get_address_id('8500', 'Torvet', '3')
+                address_list = await gc.get_address_list('8500', 'Torvet', '3')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('8500', 'Fuglsangparken', '')
                 assert len(address_list) == 25
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('8500', 'Fuglsangparken', '1')
                 assert len(address_list) == 16
 
@@ -353,14 +371,15 @@ async def test_Kbh(capsys, monkeypatch):
             add = {
                 'uid': 'København_a4e9a503-c27f-ef11-9169-005056823710',
                 'address_id': 'a4e9a503-c27f-ef11-9169-005056823710',
-                'kommunenavn': 'København', 'vejnavn': 'Rådhuspladsen', 'husnr': '1'}
+                'kommunenavn': 'København', 'address': 'Rådhuspladsen 1'}
             if not CI:
-                address = await gc.get_address_id('1550', 'Rådhuspladsen', '1')
+                address_list = await gc.get_address_list('1550', 'Rådhuspladsen', '1')
+                address = await gc.get_address(address_list[0])
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('2300', 'Irlandsvej', '')
                 assert len(address_list) == 50
-                assert list(address_list[0].keys()) == ADDRESS_LIST_KEYS
+                await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('2300', 'Irlandsvej', '1')
                 assert len(address_list) == 14
 
@@ -374,4 +393,3 @@ async def test_Kbh(capsys, monkeypatch):
             assert pickups['next_pickup'].date.strftime('%d/%m/%y') == '05/05/25'
             assert list(pickups.keys()) == ['restaffaldmadaffald', 'farligtaffald', 'next_pickup']
             print('done: ', gc._municipality)
-

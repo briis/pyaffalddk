@@ -84,13 +84,17 @@ class GarbageCollection:
             if self._api_type == "nemaffald":
                 await self._api.token
 
-    async def get_address_id(
-        self, zipcode: str, street: str, house_number: str
-    ) -> AffaldDKAddressInfo:
-        """Get the address id."""
+    async def get_address_list(self, zipcode, street, house_number):
+        """Get list of address, id """
+        if self._api_type is not None:
+            return await self._api.get_address_list(zipcode, street, house_number)
+        raise interface.AffaldDKNotSupportedError("Cannot find Municipality")
+
+    async def get_address(self, address_name) -> AffaldDKAddressInfo:
+        """Get the address from id"""
 
         if self._api_type is not None:
-            self._address_id = await self._api.get_address_id(zipcode, street, house_number)
+            self._address_id, address = await self._api.get_address(address_name)
 
             if self._address_id is None:
                 raise interface.AffaldDKNotValidAddressError("Address not found")
@@ -98,8 +102,7 @@ class GarbageCollection:
             address_data = AffaldDKAddressInfo(
                 str(self._address_id),
                 self._municipality.capitalize(),
-                street.capitalize(),
-                str(house_number),
+                address.capitalize()
             )
             return address_data
         else:

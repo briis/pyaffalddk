@@ -8,12 +8,12 @@ _LOGGER = logging.getLogger(__name__)
 @dataclass
 class AffaldDKAddressInfo:
     """Represent AffaldDK address info."""
-    def __init__(self, address_id, kommunenavn, vejnavn, husnr):
+    def __init__(self, address_id, kommunenavn, address):
         self.uid = f'{kommunenavn}_{address_id}'
         self.address_id = address_id
         self.kommunenavn = kommunenavn
-        self.vejnavn = vejnavn
-        self.husnr = husnr
+        self.address = address
+
 
 @dataclass(frozen=True)
 class PickupType:
@@ -53,7 +53,7 @@ class PickupEvents:
     plast: list[PickupType] | None = None
     plastmadkarton: list[PickupType] | None = None
     plastmetal: list[PickupType] | None = None
-    plastmetalmadmdk: list[PickupType] | None = None
+    plastmetalmdk: list[PickupType] | None = None
     plastmetalpapir: list[PickupType] | None = None
     restaffaldmadaffald: list[PickupType] | None = None
     storskrald: list[PickupType] | None = None

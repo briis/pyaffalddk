@@ -50,6 +50,14 @@ class AffaldDKAPIBase:
             return self.address_list[address_name]['id'], address_name
         return None, None
 
+    def update_address_list(self, item, name_key, id_key):
+        name = clean_name(item[name_key])
+        if name in self.address_list:
+            name += ' *'
+            while name in self.address_list:
+                name += '*'
+        self.address_list[name] = {'id': item[id_key], 'fullname': item[name_key]}
+
     async def async_get_request(self, url, headers=None, para=None, as_json=True, new_session=False):
         return await self.async_api_request('GET', url, headers, para, as_json, new_session)
 
@@ -132,7 +140,9 @@ class NemAffaldAPI(AffaldDKAPIBase):
         para = {'term': f'{street} {house_number}'.strip(), 'limit': 100}
         data = await self.async_get_request(url, para=para, as_json=False)
         data = json.loads(data)
-        self.address_list = {item['label']: {'id': item['Id']} for item in data}
+        self.address_list = {}
+        for item in data:
+            self.update_address_list(item, 'label', 'Id')
         return list(self.address_list.keys())
 
     async def get_address(self, address_name):
@@ -171,10 +181,7 @@ class VestForAPI(AffaldDKAPIBase):
         self.address_list = {}
         for item in data:
             if str(zipcode) in item['Postnr']:
-                name = clean_name(item['FuldtVejnavn'])
-                if name in self.address_list:
-                    name += '*'
-                self.address_list[name] = {'id': item['Id']}
+                self.update_address_list(item, 'FuldtVejnavn', 'Id')
         return list(self.address_list.keys())
 
     async def get_garbage_data(self, address_id):
@@ -213,10 +220,7 @@ class PerfectWasteAPI(AffaldDKAPIBase):
         self.address_list = {}
         for item in data:
             if str(zipcode) in item['displayName']:
-                name = clean_name(item['displayName'])
-                if name in self.address_list:
-                    name += '*'
-                self.address_list[name] = {'id': item['addressID']}
+                self.update_address_list(item, 'displayName', 'addressID')
         return list(self.address_list.keys())
 
     async def save_to_db(self, address_id):
@@ -254,10 +258,7 @@ class RenowebghAPI(AffaldDKAPIBase):
             self.address_list = {}
             for item in data['list']:
                 if str(zipcode) in item['presentationString']:
-                    name = clean_name(item['presentationString'])
-                    if name in self.address_list:
-                        name += '*'
-                    self.address_list[name] = {'id': item['id']}
+                    self.update_address_list(item, 'presentationString', 'id')
             return list(self.address_list.keys())
         return []
 
@@ -271,18 +272,6 @@ class RenowebghAPI(AffaldDKAPIBase):
         for item in js['list']:
             if str(zipcode) in item['name']:
                 return item['id']
-        return None
-
-    async def get_address_old(self, road_id, house_number):
-        url = self.url_data + 'GetJSONAdress.aspx'
-        data = {
-            'apikey': self.uuid, 'municipalitycode': self.municipality_id,
-            'roadid': road_id, 'streetBuildingIdentifier': house_number,
-            }
-        js = await self.async_get_request(url, para=data, headers=self.headers)
-        for item in js['list']:
-            if str(house_number) == str(item['streetBuildingIdentifier']):
-                return item
         return None
 
     async def get_garbage_data(self, address_id, fullinfo=0, shared=0):
@@ -320,10 +309,7 @@ class AffaldOnlineAPI(AffaldDKAPIBase):
         self.address_list = {}
         for item in data:
             if str(zipcode) in item['displayName']:
-                name = clean_name(item['displayName'])
-                if name in self.address_list:
-                    name += '*'
-                self.address_list[name] = {'id': item['addressId']}
+                self.update_address_list(item, 'displayName', 'addressId')
         return list(self.address_list.keys())
 
     async def get_garbage_data(self, address_id):
@@ -345,10 +331,7 @@ class OpenExperienceAPI(AffaldDKAPIBase):
         self.address_list = {}
         for item in sorted(data['results'], key=lambda x: int(x["addressId"])):
             if str(zipcode) in item['displayName']:
-                name = clean_name(item['displayName'])
-                if name in self.address_list:
-                    name += '*'
-                self.address_list[name] = {'id': item['addressId']}
+                self.update_address_list(item, 'displayName', 'addressId')
         return list(self.address_list.keys())
 
     async def get_garbage_data(self, address_id):
@@ -373,10 +356,7 @@ class OpenExperienceLiveAPI(AffaldDKAPIBase):
         self.address_list = {}
         for item in sorted(data, key=lambda x: int(x["id"])):
             if str(zipcode) in item['name']:
-                name = clean_name(item['name'])
-                if name in self.address_list:
-                    name += '*'
-                self.address_list[name] = {'id': item['id']}
+                self.update_address_list(item, 'name', 'id')
         return list(self.address_list.keys())
 
     async def get_garbage_data(self, address_id):
@@ -409,11 +389,9 @@ class ProvasAPI(AffaldDKAPIBase):
         data = await self.async_get_request(url, para={'search': address, 'limit':100}, headers=headers)
         self.address_list = {}
         for item in data:
-            if str(zipcode) in item['location']['name']:
-                name = clean_name(item['location']['name'])
-                if name in self.address_list:
-                    name += '*'
-                self.address_list[name] = {'id': item['id']}
+            item['name'] = item['location']['name']
+            if str(zipcode) in item['name']:
+                self.update_address_list(item, 'name', 'id')
         return list(self.address_list.keys())
 
     async def get_garbage_data(self, address_id):
@@ -440,10 +418,7 @@ class RenoDjursAPI(AffaldDKAPIBase):
         self.address_list = {}
         for item in data['d']:
             if str(zipcode) in item['label']:
-                name = clean_name(item['label'])
-                if name in self.address_list:
-                    name += '*'
-                self.address_list[name] = {'id': item['value']}
+                self.update_address_list(item, 'label', 'value')
         return list(self.address_list.keys())
 
     async def get_garbage_data(self, address_id):
@@ -476,10 +451,7 @@ class AarhusAffaldAPI(AffaldDKAPIBase):
         self.address_list = {}
         for item in data:
             if str(zipcode) in item['postnr']:
-                name = clean_name(item['betegnelse'])
-                if name in self.address_list:
-                    name += '*'
-                self.address_list[name] = {'id': item['id']}
+                self.update_address_list(item, 'betegnelse', 'id')
         return list(self.address_list.keys())
 
     async def get_address(self, address_name):
@@ -509,10 +481,7 @@ class OdenseAffaldAPI(AffaldDKAPIBase):
         self.address_list = {}
         for item in data:
             if str(zipcode) in item['PostCode']:
-                name = clean_name(item['FullAddress'])
-                if name in self.address_list:
-                    name += '*'
-                self.address_list[name] = {'id': item['AddressNo']}
+                self.update_address_list(item, 'FullAddress', 'AddressNo')
         return list(self.address_list.keys())
 
     async def async_get_ical_data(self, address_id):

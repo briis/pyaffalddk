@@ -11,7 +11,7 @@ import os
 CI = os.getenv("CI") == "true"
 skip_in_ci = pytest.mark.skipif(CI, reason="Skipped in CI environment")
 UPDATE = False
-ADDRESS_LIST_KEYS = ['id']
+ADDRESS_LIST_KEYS = ['id', 'fullname']
 
 datadir = Path(__file__).parent/'data'
 kbh_ics_data = (datadir/'kbh_ics.data').read_text()

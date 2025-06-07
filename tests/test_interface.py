@@ -242,8 +242,8 @@ async def test_Aarhus(capsys, monkeypatch):
             print('start: ', gc._municipality)
 
             add = {
-                'uid': 'Aarhus_07517005___2__2____', 'address_id': '07517005___2__2____', 
-                'kommunenavn': 'Aarhus', 'address': 'Rådhuspladsen 2, 2.'}
+                'uid': 'Aarhus_07517005___1__2____', 'address_id': '07517005___1__2____',
+                'kommunenavn': 'Aarhus', 'address': 'Rådhuspladsen 1, 2.'}
             if not CI:
                 address_list = await gc.get_address_list('8000', 'Rådhuspladsen', '2')
                 address = await gc.get_address(address_list[0])

@@ -84,13 +84,18 @@ class GarbageCollection:
             if self._api_type == "nemaffald":
                 await self._api.token
 
-    async def get_address_id(
-        self, zipcode: str, street: str, house_number: str
-    ) -> AffaldDKAddressInfo:
-        """Get the address id."""
+    async def get_address_list(self, zipcode, street, house_number):
+        """Get list of address, id """
+        if self._api_type is not None:
+            address_list = await self._api.get_address_list(zipcode, street, house_number)
+            return sorted(address_list, key=extract_house_number)
+        raise interface.AffaldDKNotSupportedError("Cannot find Municipality")
+
+    async def get_address(self, address_name) -> AffaldDKAddressInfo:
+        """Get the address from id"""
 
         if self._api_type is not None:
-            self._address_id = await self._api.get_address_id(zipcode, street, house_number)
+            self._address_id, address = await self._api.get_address(address_name)
 
             if self._address_id is None:
                 raise interface.AffaldDKNotValidAddressError("Address not found")
@@ -98,8 +103,7 @@ class GarbageCollection:
             address_data = AffaldDKAddressInfo(
                 str(self._address_id),
                 self._municipality.capitalize(),
-                street.capitalize(),
-                str(house_number),
+                address.capitalize()
             )
             return address_data
         else:
@@ -341,3 +345,12 @@ def key_exists_in_pickup_events(pickup_events: PickupEvents, key: str) -> bool:
 def value_exists_in_pickup_events(pickup_events: PickupEvents, value: Any) -> bool:
     """Check if a value exists in PickupEvents."""
     return any(event for event in pickup_events.values() if event == value)
+
+
+def extract_house_number(addr):
+    """Sort address string by found house number numerical"""
+    parts = addr.split(',', 1)
+    second_part = parts[1].strip().lower() if len(parts) > 1 else ""
+    match = re.search(r'\d+', parts[0])
+    house_num = int(match.group()) if match else float('inf')  # non-numbered addresses go last
+    return (house_num, second_part)

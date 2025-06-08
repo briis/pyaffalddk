@@ -1,5 +1,18 @@
 # Changelog for pyaffalddk
 
+## [2.11.0] - `2025-06-08`
+
+### Changes
+* BREAKING CHANGES:
+  * `get_address_id()` is dropped in favour of using `get_address_list()` -> `get_address()`
+  * `AffaldDKAddressInfo` got an `address`attribute instead of `vejnavn` and `husnr`
+
+* With these changes searching for address in all interfaces, will not use zipcode directly when searching, but instead filter results on it. This is to ensure that `house_number` is not used explicit when searching, but as `house_number` + wildcard.
+* Tests have been extended to test searching with and without `house_number`, and to ensure that paging from online source is being handled correctly.
+* address_list results holds the shortend name of the result (without zipcode and city), but `self.address_list` holds the `fullname` and `id` for each result if needed.
+* `get_address()` was needed as some interfaces don't list the id needed for pickup events in the search result, so this function will always return this true `id` of the result for further use.
+
+
 ## [2.10.5] - `2025-06-04`
 
 ### Added

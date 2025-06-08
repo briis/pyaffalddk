@@ -55,16 +55,17 @@ async def main() -> None:
         if args.street or args.address_id:
             if args.street:
                 try:
-                    address = await gc.get_address_id(
+                    address_list = await gc.get_address_list(
                         zipcode=args.zipcode, street=args.street, house_number=args.number
                     )
-                    address_id = address.address_id
-                    print("")
-                    print("========================================================")
-                    print("Address ID: ", address.address_id)
-                    print("Kommune: ", address.kommunenavn)
-                    print("Vejnavn: ", address.vejnavn)
-                    print("Hus nr.: ", address.husnr)
+                    for address_name in address_list:
+                        address = await gc.get_address(address_name)
+                        address_id = address.address_id
+                        print("")
+                        print("========================================================")
+                        print("Address ID: ", address.address_id)
+                        print("Kommune: ", address.kommunenavn)
+                        print("Addresse: ", address.address)
 
                 except Exception as err:
                     print(err)

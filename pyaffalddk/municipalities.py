@@ -149,6 +149,7 @@ MUNICIPALITIES_LIST = {
     "København": ["nemaffald", 'kk'],
     "Køge": ["perfectwaste"],
     "Langeland": ["affaldonline", "YmU4YTk0MjAtYTlhZS00MmU2LTgzZjItZWRhNWVjM2ZhMjlm"],
+    "Lejre": ["renoweb"],
     "Lemvig": ["renoweb"],
     "Lolland": ["perfectwaste"],
     "Lyngby-Taarbæk": ["renoweb"],

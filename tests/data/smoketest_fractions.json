@@ -32,7 +32,7 @@
     "farligtaffald": "Farligt affald"
   },
   "smoke_5": {
-    "pappapirglasmetal": "Plast og drikkekarton - Glas og metal",
+    "plastmdkglasmetal": "Plast og drikkekarton - Glas og metal",
     "restaffaldmadaffald": "Rest - Mad",
     "pappapirtekstil": "Papir, pap og tekstilaffald"
   },
@@ -439,5 +439,10 @@
     "restaffaldmadaffald": "240 l restaffald/madaffald, 14-dages tømning",
     "plastmdkglasmetal": "240 l plast/mad- og drikkekartoner/glas/metal, tømning hver 3. uge",
     "papir": "240 l papirbeholder"
+  },
+  "horsens_326": {
+    "restaffaldmadaffald": "Rest - Mad",
+    "plastmdkglasmetal": "Plast og drikkekarton - Glas og metal",
+    "pappapirtekstil": "Papir, pap og tekstilaffald"
   }
 }

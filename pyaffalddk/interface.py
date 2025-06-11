@@ -50,6 +50,26 @@ class AffaldDKAPIBase:
             return self.address_list[address_name]['id'], address_name
         return None, None
 
+        self.url_search = "https://api.dataforsyningen.dk/adresser"
+
+    async def get_df_address_list(self, code, zipcode, street, house_number):
+        url_search = "https://api.dataforsyningen.dk/adresser"
+        para = {'kommunekode': code, 'q': f'{street} {house_number}'.strip(), 'struktur': 'mini'}
+        data = await self.async_get_request(url_search, para=para)
+        self.address_list = {}
+        for item in data:
+            if str(zipcode) in item['postnr']:
+                self.update_address_list(item, 'betegnelse', 'id')
+        return list(self.address_list.keys())
+
+    async def get_kvhx(self, code, address_name):
+        url_search = "https://api.dataforsyningen.dk/adresser"
+        item = self.address_list.get(address_name)
+        if item:
+            para = {'kommunekode': code, 'id': item['id']}
+            row = await self.async_get_request(url_search, para=para)
+            return row[0]["kvhx"], address_name
+
     def update_address_list(self, item, name_key, id_key):
         name = clean_name(item[name_key])
         if name in self.address_list:
@@ -432,10 +452,33 @@ class RenoDjursAPI(AffaldDKAPIBase):
         for tr in table.find("tbody").find_all("tr"):
             td = tr.find_all("td")
             if len(td) == len(headers):
-                row_data = {h:td.get_text(strip=True) for h, td in zip(headers, td)}
+                row_data = {h: td.get_text(strip=True) for h, td in zip(headers, td)}
                 if row_data['Næste tømningsdag']:
                     rows.append(row_data)
         return rows
+
+
+class RenoSydAPI(AffaldDKAPIBase):
+    # Reno Syd API
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://skoda-selvbetjeningsapi.renosyd.dk/api/v1"
+
+    async def get_address_list(self, zipcode, street, house_number):
+        return await self.get_df_address_list(self.municipality_id, zipcode, street, house_number)
+
+    async def get_address(self, address_name):
+        kvhx, address_name = await self.get_kvhx(self.municipality_id, address_name)
+        if kvhx:
+            url = self.url_base + f'/adresser/{kvhx}/standpladser'
+            data = await self.async_get_request(url)
+            if data:
+                return data[0]['nummer'], address_name
+
+    async def get_garbage_data(self, address_id):
+        url = f"{self.url_base}/toemmekalender?nummer={address_id}"
+        data = await self.async_get_request(url)
+        return data[0]["planlagtetømninger"]
 
 
 class AarhusAffaldAPI(AffaldDKAPIBase):
@@ -446,20 +489,10 @@ class AarhusAffaldAPI(AffaldDKAPIBase):
         self.url_search = "https://api.dataforsyningen.dk/adresser"
 
     async def get_address_list(self, zipcode, street, house_number):
-        para = {'kommunekode': 751, 'q': f'{street} {house_number}'.strip(), 'struktur': 'mini'}
-        data = await self.async_get_request(self.url_search, para=para)
-        self.address_list = {}
-        for item in data:
-            if str(zipcode) in item['postnr']:
-                self.update_address_list(item, 'betegnelse', 'id')
-        return list(self.address_list.keys())
+        return await self.get_df_address_list(751, zipcode, street, house_number)
 
     async def get_address(self, address_name):
-        item = self.address_list.get(address_name)
-        if item:
-            para = {'kommunekode': 751, 'id': item['id']}
-            row = await self.async_get_request(self.url_search, para=para)
-            return row[0]["kvhx"], address_name
+        return await self.get_kvhx(751, address_name)
 
     async def get_garbage_data(self, address_id):
         url = f"{self.url_data}{address_id}"

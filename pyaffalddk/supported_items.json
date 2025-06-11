@@ -74,6 +74,7 @@
     "metalglas": [
         "glas & metal",
         "Glas / Metal",
+        "glas metal",
         "Glas og metal",
         "Glas/Metal",
         "Glas/metal, afstand over 5 meter",
@@ -110,10 +111,10 @@
         "Pap/papir + Metal/glas",
         "papir/pap + glas/metal",
         "Papir/pap og glas/metal",
-        "Plast og drikkekarton - Glas og metal",
         "Ressourcebeholder"
     ],
     "pappapirtekstil": [
+        "pap papir tekstilaffald",
         "Papir // Tekstilaffald",
         "Papir, pap og tekstilaffald",
         "Papir/pap og tekstiler"
@@ -186,6 +187,7 @@
         "Genbrug - blåt låg",
         "Genbrug henteordning",
         "Mad- og drikkekartoner",
+        "mad- og drikkekartoner plast",
         "Mad-og drikkekarton",
         "PL/MD",
         "Plast & mad- og drikkekartoner",
@@ -203,7 +205,9 @@
         "Genbrugsbeholder",
         "Genbrugsbeholder PMDK/MG-240L/",
         "genbrugsspand",
+        "glas mad- og drikkekartoner metal plast",
         "Metal/Glas/Plast/MDK",
+        "Plast og drikkekarton - Glas og metal",
         "Plast og drikkekarton – Glas og metal",
         "plast, MDK/metal, glas",
         "Plast/Drikkekarton og Metal",
@@ -253,6 +257,7 @@
         "Mad/Rest",
         "Mad/Rest affald",
         "mad/restaffald",
+        "madaffald restaffald",
         "MadRest",
         "Rest - Mad",
         "Rest / Mad",

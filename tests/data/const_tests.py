@@ -108,7 +108,6 @@ SUPPORTED_ITEMS = {
         "4delt beholder",
         "Ressourcebeholder (pap/papir og glas/metal)",
         "Papir/pap og glas/metal",
-        "Plast og drikkekarton - Glas og metal",
         "Genbrug - grønt låg",
     ],
     "pappapirtekstil": [
@@ -140,6 +139,7 @@ SUPPORTED_ITEMS = {
     ],
     "plastmdkglasmetal": [
         "Plast og drikkekarton – Glas og metal",
+        "Plast og drikkekarton - Glas og metal",
     ],
     "plastmetal": [
         "Plast & Metal",

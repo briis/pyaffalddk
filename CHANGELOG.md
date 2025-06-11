@@ -1,5 +1,16 @@
 # Changelog for pyaffalddk
 
+## [2.11.1] - `2025-06-11`
+
+### Added
+* API for:
+  * RenoSyd (Skanderborg and Odder)
+  * Lemvig, Skive and Struer through the nomi4s interface
+
+### Changes
+* fix Horsens - Pap, Papir, Glas & Metal [#326](https://github.com/briis/affalddk/issues/326)
+
+
 ## [2.11.0] - `2025-06-08`
 
 ### Changes

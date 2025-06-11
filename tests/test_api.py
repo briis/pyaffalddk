@@ -44,6 +44,8 @@ async def test_smoketest(capsys, monkeypatch, update=False):
                 assert keys[-1] == 'next_pickup'
 
                 data = {key: pickups[key].description for key in keys[:-1]}
+                data['next_pickup'] = pickups['next_pickup'].friendly_name
+
                 if name not in smokecompare or update:
                     smokecompare[name] = data
                     print(f'adding "{name}" to the smoketest compare data')

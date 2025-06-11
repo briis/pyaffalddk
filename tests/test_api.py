@@ -20,6 +20,12 @@ with open(datadir.parents[1] / 'pyaffalddk/supported_items.json', 'w', encoding=
     json.dump(const.SUPPORTED_ITEMS, fh, indent=4, ensure_ascii=False)
 
 
+def test_const_consistency(capsys):
+    with capsys.disabled():
+        names = list(NAME_LIST.values())
+        assert len(set(names)) == len(names)
+
+
 @pytest.mark.asyncio
 @freeze_time("2025-05-09")
 async def test_smoketest(capsys, monkeypatch, update=False):

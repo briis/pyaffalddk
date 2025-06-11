@@ -90,7 +90,7 @@ NAME_LIST = {
     "glas": "Glas",
     "glasplast": "Glas, Plast & Madkartoner",
     "haveaffald": "Haveaffald",
-    "jern": "Metal",
+    "jern": "Jern",
     "juletrae": "Juletræer",
     "madaffald": "Madaffald",
     "metal": "Metal",

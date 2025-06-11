@@ -39,6 +39,7 @@ APIS = {
     'openexplive': interface.OpenExperienceLiveAPI,
     'provas': interface.ProvasAPI,
     'renodjurs': interface.RenoDjursAPI,
+    'renosyd': interface.RenoSydAPI,
 }
 
 
@@ -253,6 +254,13 @@ class GarbageCollection:
                 for item in garbage_data:
                     _pickup_date = iso_string_to_date(item['Næste tømningsdag'], dayfirst=True)
                     fraction_name = item['Ordning']
+                    self.update_pickup_event(fraction_name, address_id, _pickup_date)
+
+            elif self._api_type == "renosyd":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    _pickup_date = iso_string_to_date(item['dato'])
+                    fraction_name = ' '.join(sorted(item['fraktioner']))
                     self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
         self.set_next_event()

@@ -159,6 +159,7 @@ MUNICIPALITIES_LIST = {
     "Næstved": ["perfectwaste"],
     "Nordfyns": ['openexp', 'reno.nordfynskommune.dk/app/AppService/AppService/'],
     "Odense": ["odense"],
+    "Odder": ["renosyd", 727],
     "Odsherred": ["perfectwaste"],
     "Randers": ["renoweb"],  # also openexplive 4UGdDU2dhdDFqTHZsV0NQSQ==
     "Rebild": ["affaldonline", "Y2IzZGRjOGMtOTAwYS00M2NlLWFjODgtZWM3NTg3ZGI0ZGIz"],
@@ -167,6 +168,7 @@ MUNICIPALITIES_LIST = {
     "Rudersdal": ["renoweb"],
     "Rødovre": ["renoweb"],
     "Samsø": ["renoweb"],
+    "Skanderborg": ["renosyd", 746],
     "Skive": ["openexp", "renomatic.nomi4s.dk/app/appservice/"],
     "Slagelse": ["perfectwaste"],
     "Solrød": ["renoweb"],

@@ -207,7 +207,7 @@
     "farligtaffaldmiljoboks": "Miljøboks Torsdag hver 4. uge (A)",
     "restaffaldmadaffald": "240 L Rest og Mad",
     "pap": "Pap - Storskrald",
-    "next_pickup": "Storskrald | Papir, Pap & Glas | Rest & Madaffald | Pap | Pap"
+    "next_pickup": "Storskrald | Papir, Pap & Glas | Rest & Madaffald | Pap"
   },
   "hjørring_265": {
     "madaffald": "140 l Mad sommer 32",
@@ -357,8 +357,8 @@
     "next_pickup": "Rest & Madaffald"
   },
   "rebild_1": {
-    "genbrug": "Ekstra 240 L genbrugscontainer",
     "pappi": "240L Genbrug",
+    "genbrug": "Ekstra 240 L genbrugscontainer",
     "storskrald": "Storskrald S6",
     "restaffaldmadaffald": "240 L mad/rest - 14 dags",
     "next_pickup": "Genbrug | Papir & Plast | Storskrald"

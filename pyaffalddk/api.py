@@ -130,20 +130,23 @@ class GarbageCollection:
                 )
             }
             self.pickup_events.update(_pickup_event)
+
+        if _pickup_date in self.next_events:
+            self.next_events[_pickup_date]['name'] .append(NAME_LIST.get(key))
+            self.next_events[_pickup_date]['description'].append(item_name)
+        else:
+            self.next_events.update({_pickup_date: {'name': [NAME_LIST.get(key)], 'description': [item_name]}})
         return 'done'
 
     def set_next_event(self):
-        if not self.pickup_events:
-            return
-        if dt.datetime.now().time() > self.switch_time:
-            eventdates = [event.date for event in self.pickup_events.values() if event.date is not None and event.date > self.today]
-        else:
-            eventdates = [event.date for event in self.pickup_events.values() if event.date is not None]
+        if self.next_events:
+            if dt.datetime.now().time() > self.switch_time:
+                _next_pickup = sorted([key for key in self.next_events.keys() if key > self.today])[0]
+            else:
+                _next_pickup = sorted([key for key in self.next_events.keys() if key >= self.today])[0]
 
-        if eventdates:
-            _next_pickup = min(eventdates)
-            _next_name = [event.friendly_name for event in self.pickup_events.values() if event.date == _next_pickup]
-            _next_description = [event.description for event in self.pickup_events.values() if event.date == _next_pickup]
+            _next_name = self.next_events[_next_pickup]['name']
+            _next_description = self.next_events[_next_pickup]['description']
             _next_pickup_event = {
                 "next_pickup": PickupType(
                     date=_next_pickup,
@@ -161,6 +164,7 @@ class GarbageCollection:
 
         if (self._api_type is not None) & (self.today != dt.date.today()):
             self.pickup_events: PickupEvents = {}
+            self.next_events: PickupEvents = {}
             self.today = dt.date.today()
             self.last_fetch = str(dt.datetime.now())
 
@@ -229,9 +233,9 @@ class GarbageCollection:
                 for item in garbage_data['collections']:
                     dt_list = [iso_string_to_date(d) for d in item['dates']]
                     if dt_list:
-                        _pickup_date = min([d for d in dt_list if d >= self.today])
-                        fraction_name = item['fraction']['name']
-                        self.update_pickup_event(fraction_name, address_id, _pickup_date)
+                        for _pickup_date in sorted([d for d in dt_list if d >= self.today])[:2]:
+                            fraction_name = item['fraction']['name']
+                            self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
             elif self._api_type == "openexplive":
                 garbage_data = await self._api.get_garbage_data(address_id)
@@ -239,8 +243,8 @@ class GarbageCollection:
                     fraction_name = item['fraction']['name']
                     dt_list = [iso_string_to_date(d['date']) for d in item['upcoming_dates']]
                     if dt_list:
-                        _pickup_date = min([d for d in dt_list if d >= self.today])
-                        self.update_pickup_event(fraction_name, address_id, _pickup_date)
+                        for _pickup_date in sorted([d for d in dt_list if d >= self.today])[:2]:
+                            self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
             elif self._api_type == "provas":
                 garbage_data = await self._api.get_garbage_data(address_id)

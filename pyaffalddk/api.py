@@ -132,8 +132,9 @@ class GarbageCollection:
             self.pickup_events.update(_pickup_event)
 
         if _pickup_date in self.next_events:
-            self.next_events[_pickup_date]['name'] .append(NAME_LIST.get(key))
-            self.next_events[_pickup_date]['description'].append(item_name)
+            if item_name not in self.next_events[_pickup_date]['description']:
+                self.next_events[_pickup_date]['name'] .append(NAME_LIST.get(key))
+                self.next_events[_pickup_date]['description'].append(item_name)
         else:
             self.next_events.update({_pickup_date: {'name': [NAME_LIST.get(key)], 'description': [item_name]}})
         return 'done'
@@ -145,8 +146,8 @@ class GarbageCollection:
             else:
                 _next_pickup = sorted([key for key in self.next_events.keys() if key >= self.today])[0]
 
-            _next_name = set(self.next_events[_next_pickup]['name'])
-            _next_description = set(self.next_events[_next_pickup]['description'])
+            _next_name = self.next_events[_next_pickup]['name']
+            _next_description = self.next_events[_next_pickup]['description']
             _next_pickup_event = {
                 "next_pickup": PickupType(
                     date=_next_pickup,

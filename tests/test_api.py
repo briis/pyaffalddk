@@ -20,6 +20,12 @@ with open(datadir.parents[1] / 'pyaffalddk/supported_items.json', 'w', encoding=
     json.dump(const.SUPPORTED_ITEMS, fh, indent=4, ensure_ascii=False)
 
 
+def test_const_consistency(capsys):
+    with capsys.disabled():
+        names = list(NAME_LIST.values())
+        assert len(set(names)) == len(names)
+
+
 @pytest.mark.asyncio
 @freeze_time("2025-05-09")
 async def test_smoketest(capsys, monkeypatch, update=False):
@@ -76,6 +82,25 @@ async def test_switch_next(capsys, monkeypatch):
             gc.set_switch_time(12, 0)
             pickups = await gc.get_pickup_data('1111')
             assert pickups['next_pickup'].date == dt.date(2025, 6, 4)
+
+@pytest.mark.asyncio
+@freeze_time("2025-05-22 12:30:00")
+async def test_next_of_same(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Viborg', session=session, fail=True)
+            openexp_data = json.loads((datadir/'openexp.data').read_text())
+
+            async def get_data(*args, **kwargs):
+                return {'collections': [item for item in openexp_data['collections'] if item['fraction']['name'] == 'Rest/Madaffald']}
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+
+            pickups = await gc.get_pickup_data('1111')
+            assert pickups['next_pickup'].date == dt.date(2025, 5, 22)
+
+            gc.set_switch_time(12, 0)
+            pickups = await gc.get_pickup_data('1111')
+            assert pickups['next_pickup'].date == dt.date(2025, 6, 5)
 
 
 def test_type_from_material_cleaning(capsys, monkeypatch):

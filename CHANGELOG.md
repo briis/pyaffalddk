@@ -1,5 +1,13 @@
 # Changelog for pyaffalddk
 
+## [2.12.0] - `2025-06-12`
+
+### Changes
+- Rewrite of `get_next_event` logic, to ensure getting true next event and not next pickup type
+- fix handling next_event when only one fraction type [#50](https://github.com/briis/pyaffalddk/issues/50)
+* fix Jammerbugt  - 360 l skraldespand [#328](https://github.com/briis/affalddk/issues/328)
+
+
 ## [2.11.1] - `2025-06-11`
 
 ### Added

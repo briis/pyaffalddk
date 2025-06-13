@@ -517,5 +517,10 @@
     "genbrug": "360 l genbrug",
     "restaffaldmadaffald": "240 l mad/rest 14-dags",
     "next_pickup": "Rest & Madaffald"
+  },
+  "hjørring_329": {
+    "pappi": "240 l PMD/PP sommer 4. ugers ",
+    "restaffaldmadaffald": "240 l mad/rest sommer 14. dags ",
+    "next_pickup": "Rest & Madaffald"
   }
 }

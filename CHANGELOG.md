@@ -1,5 +1,11 @@
 # Changelog for pyaffalddk
 
+## [2.12.1] - `2025-06-13`
+
+### Changes
+* fix Hjørring - Manglende data [#329](https://github.com/briis/affalddk/issues/329)
+
+
 ## [2.12.0] - `2025-06-12`
 
 ### Changes

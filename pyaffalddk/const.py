@@ -123,7 +123,7 @@ NAME_ARRAY = list(NAME_LIST.keys())
 STRIPS = [
         'med 14-dages tømning ved helårshuse', '– tømmes hver 2. uge',
         'sommerhustømning', 'henteordning', 'beholder til', '1-rums',
-        'egenløsning', 'en-familie', 'enfamiliehus', '26 tøm', 'sommer 32', 'm. sommertømning',
+        'egenløsning', 'en-familie', 'enfamiliehus', '26 tøm', 'm. sommertømning',
         '-skel 0-2 meter', 'afstand over 5 meter', 'Jern/Elektronik/Hårde hvidevarer', ' ?',
 ]
 RE_WORDS = [
@@ -131,7 +131,7 @@ RE_WORDS = [
     r'(?:3|4|6|8)?(\.)?[\s-]?(?:uge|ugers)',  # diffenrent ways of uge
     r'(?:to|1|2)[\s-]?(?:delt|kammer)',  # diffenrent ways of  2-delt or 2-kammer
     r'beh\.(,)?', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra', 'havebolig',
-    'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest',
+    'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest', r'sommer( \d{2})?', 'vinter',
     'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', 'd[0-9]', r'/\d{2}',
     ]
 

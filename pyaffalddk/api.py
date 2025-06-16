@@ -287,6 +287,8 @@ class GarbageCollection:
                         weeks = [-2]
                     for w in weeks:
                         _pickup_date = weekday_week_to_date(weekday, w)
+                        if not _pickup_date:
+                            raise RuntimeWarning(f'Failed to convert date for Herning, "{item}"')
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
         self.set_next_event()

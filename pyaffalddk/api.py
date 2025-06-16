@@ -40,6 +40,7 @@ APIS = {
     'provas': interface.ProvasAPI,
     'renodjurs': interface.RenoDjursAPI,
     'renosyd': interface.RenoSydAPI,
+    'herning': interface.AffaldWebAPI,
 }
 
 
@@ -272,6 +273,22 @@ class GarbageCollection:
                     fraction_name = ' '.join(sorted(item['fraktioner']))
                     self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
+            elif self._api_type == "herning":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    fraction_name = re.sub(r'^\d+\s*', '', item['Beholder-id'])
+
+                    weekday, rest = item['Tømningsdag'].split(None, 1)
+                    if 'Ugenumre:' in rest:
+                        weeks = [int(w) for w in rest.split('Ugenumre:')[1].split(',')]
+                    elif 'ulige' in rest.lower():
+                        weeks = [-1]
+                    else:
+                        weeks = [-2]
+                    for w in weeks:
+                        _pickup_date = weekday_week_to_date(weekday, w)
+                        self.update_pickup_event(fraction_name, address_id, _pickup_date)
+
         self.set_next_event()
         return self.pickup_events
 
@@ -281,6 +298,38 @@ def iso_string_to_date(datetext: str, dayfirst=None) -> dt.date:
     if datetext == "Ingen tømningsdato fundet!":
         return None
     return parser.parse(datetext, dayfirst=dayfirst).date()
+
+
+def weekday_week_to_date(weekday_name, week_number, year=None):
+    """
+    Convert weekday name and ISO week number to a date.
+    If weeks_number is -1 we will find next in uneven weeks, and
+    if -2 in even weeks
+    """
+    today = dt.date.today()
+    if year is None:
+        year = today.year
+
+    weekday_name = weekday_name.lower()
+    weekdays_lower = [day.lower() for day in WEEKDAYS]
+    if weekday_name in weekdays_lower:
+        weekday_num = weekdays_lower.index(weekday_name)
+
+        # ISO week: Week 1 always has Jan 4th in it, so we can get the Monday of the desired week:
+        # Use ISO calendar: (year, week, weekday)
+        # ISO weekday: Monday = 1, Sunday = 7
+        iso_weekday = weekday_num + 1
+
+        if week_number < 0:
+            remain = 0 if week_number == -2 else 1
+            for i in range(0, 14):  # Look up to 2 weeks ahead
+                candidate = today + dt.timedelta(days=i)
+                if candidate.weekday() == weekday_num:
+                    week_number = candidate.isocalendar()[1]
+                    if week_number % 2 == remain:
+                        return candidate
+        else:
+            return dt.date.fromisocalendar(year, week_number, iso_weekday)
 
 
 def get_garbage_type(item, municipality, address_id, fail=False):

@@ -458,6 +458,52 @@ class RenoDjursAPI(AffaldDKAPIBase):
         return rows
 
 
+class AffaldWebAPI(AffaldDKAPIBase):
+    # Herning API
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://affaldsweb.net/affaldweb"
+        self.url_search = "https://affaldsweb.net/dagrenovation/find_veje.php"
+
+    async def get_address_list(self, zipcode, street, house_number):
+        address = f'{street} {house_number}'.strip()
+        letters_encoded = quote(address.encode('windows-1252'))
+
+        url = f"{self.url_search}?getCountriesByLetters=1&letters={letters_encoded}"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0",
+        }
+        data = await self.async_post_request(url, headers=headers, as_json=False)
+        self.address_list = {}
+        for line in data.split('|'):
+            if line:
+                id, name = line.split('###')
+                self.update_address_list({'name': name, 'id': id}, 'name', 'id')
+        return list(self.address_list.keys())
+
+    async def get_garbage_data(self, address_id):
+        url = self.url_base + '/ruter.php'
+        params = {"ejdnr": address_id}
+        headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        }
+        data = await self.async_get_request(url, para=params, headers=headers, as_json=False)
+
+        soup = BeautifulSoup(data, "html.parser")
+        table = soup.find("table")
+        header_row = table.find('tr')
+        header_cells = header_row.find_all(['th', 'td'])
+        headers = [cell.get_text(strip=True) for cell in header_cells]
+        if ['Beholder-id', 'Tømningsdag'] == headers[2:]:
+            data = []
+            for row in table.find_all('tr')[1:]:
+                cells = row.find_all('td')
+                row_data = [cell.get_text(separator=' ', strip=True) for cell in cells]
+                data.append({'Beholder-id': row_data[2], 'Tømningsdag': row_data[3]})
+            return data
+
+
 class RenoSydAPI(AffaldDKAPIBase):
     # Reno Syd API
     def __init__(self, *args, **kwargs):

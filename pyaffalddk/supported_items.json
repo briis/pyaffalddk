@@ -216,6 +216,7 @@
         "plast/mad- og drikkekartoner/glas/metal"
     ],
     "plastmetal": [
+        "metal/plast",
         "Metal og Plast",
         "Plast & Metal",
         "Plast-metal",

@@ -529,5 +529,10 @@
     "pappapir": "660 l papir/pap",
     "restaffald": "5 m3 restaffald",
     "next_pickup": "Restaffald"
+  },
+  "herning_2": {
+    "restaffaldmadaffald": "240 l mad/restaffald",
+    "pappapirglasmetal": "240 l papir/pap - metal/plast",
+    "next_pickup": "Rest & Madaffald"
   }
 }

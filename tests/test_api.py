@@ -146,3 +146,23 @@ END:DAYLIGHT
 END:VTIMEZONE""")
         ics2 = IcsCalendarStream.calendar_from_ics(data)
         assert ics.events == ics2.events
+
+
+@freeze_time("2025-06-16")
+def test_weekday_conversion(capsys):
+    with capsys.disabled():
+        date = api.weekday_week_to_date('Mandag', 26, 2024)
+        assert date == dt.date(2024, 6, 24)
+
+        date = api.weekday_week_to_date('MANDAG', 26, 2025)
+        assert date == dt.date(2025, 6, 23)
+
+        date = api.weekday_week_to_date('Mandag', 26)
+        assert date == dt.date(2025, 6, 23)
+
+        date = api.weekday_week_to_date('Onsdag', -1)
+        assert date == dt.date(2025, 6, 18)
+
+        date = api.weekday_week_to_date('Onsdag', -2)
+        assert date == dt.date(2025, 6, 25)
+

@@ -134,6 +134,7 @@ MUNICIPALITIES_LIST = {
     "Halsnæs": ["perfectwaste"],
     "Helsingør": ["renoweb"],
     "Herlev": ["renoweb"],
+    "Herning": ["herning"],
     "Hillerød": ["perfectwaste"],
     "Hjørring": ["renoweb"],
     "Holbæk": ["affaldonline", "MDE3ZWZkMDYtYWM0Mi00YjM2LThhNzAtYWIzMDkxNjJlOTg4"],

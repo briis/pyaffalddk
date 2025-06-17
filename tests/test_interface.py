@@ -25,6 +25,7 @@ openexp_data = json.loads((datadir/'openexp.data').read_text())
 openexplive_data = json.loads((datadir/'openexplive.data').read_text())
 renodjurs_data = json.loads((datadir/'renodjurs.data').read_text())
 provas_data = json.loads((datadir/'provas.data').read_text())
+herning_data = json.loads((datadir/'herning.data').read_text())
 
 FREEZE_TIME = "2025-04-25"
 compare_file = (datadir/'compare_data.p')
@@ -359,6 +360,52 @@ async def test_RenoDjurs(capsys, monkeypatch):
 
             pickups = await gc.get_pickup_data(add['address_id'])
             update_and_compare('Norddjurs', pickups, UPDATE)
+            print('done: ', gc._municipality)
+
+
+@pytest.mark.asyncio
+@freeze_time("2025-06-17")
+async def test_Herning(capsys, monkeypatch):
+    with capsys.disabled():
+        async with ClientSession() as session:
+            gc = GarbageCollection('Herning', session=session, fail=True)
+            print('start: ', gc._municipality)
+
+            add = {
+                'uid': 'Herning_8486', 'address_id': '8486',
+                'kommunenavn': 'Herning', 'address': 'Torvet 5 (herning)'
+                }
+            if not CI:
+                address_list = await gc.get_address_list('7400', 'Torvet', '5')
+                address = await gc.get_address(address_list[0])
+                # print(address.__dict__)
+                assert address.__dict__ == add
+                address_list = await gc._api.get_address_list('7400', 'Godthåbsvej', '')
+                assert len(address_list) == 113
+                await assert_add_list(gc, address_list)
+                address_list = await gc._api.get_address_list('7400', 'Godthåbsvej', '1')
+                assert len(address_list) == 24
+
+            async def get_data(*args, **kwargs):
+                if args[0] == 'newyear1':
+                    return [{"Beholder-id": "plast/metal", "Tømningsdag": "Tirsdag Ugenumre: 24,1,10"}]
+                if args[0] == 'newyear2':
+                    return [{"Beholder-id": "plast/metal", "Tømningsdag": "Tirsdag Ugenumre: 2,10,20"}]
+                return herning_data
+            monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
+
+            pickups = await gc.get_pickup_data(add['address_id'])
+            update_and_compare('Herning', pickups, UPDATE)
+
+            # test over new year
+            gc.today = None  # to force refetch...
+            pickups = await gc.get_pickup_data('newyear1')
+            assert pickups['next_pickup'].date .strftime('%d/%m/%y') == '30/12/25'
+
+            gc.today = None  # to force refetch...
+            pickups = await gc.get_pickup_data('newyear2')
+            assert pickups['next_pickup'].date .strftime('%d/%m/%y') == '06/01/26'
+
             print('done: ', gc._municipality)
 
 

@@ -522,5 +522,17 @@
     "pappi": "240 l PMD/PP sommer 4. ugers ",
     "restaffaldmadaffald": "240 l mad/rest sommer 14. dags ",
     "next_pickup": "Rest & Madaffald"
+  },
+  "herning_1": {
+    "plastmetal": "5 m3 plast/metal",
+    "madaffald": "240 l madaffald",
+    "pappapir": "660 l papir/pap",
+    "restaffald": "5 m3 restaffald",
+    "next_pickup": "Restaffald"
+  },
+  "herning_2": {
+    "restaffaldmadaffald": "240 l mad/restaffald",
+    "pappapirglasmetal": "240 l papir/pap - metal/plast",
+    "next_pickup": "Rest & Madaffald"
   }
 }

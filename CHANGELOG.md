@@ -1,6 +1,10 @@
 # Changelog for pyaffalddk
 
-## [2.12.1] - `2025-06-13`
+## [2.12.1] - `2025-06-17`
+
+### Added
+* API for:
+  * Herning [#330](https://github.com/briis/affalddk/issues/330)
 
 ### Changes
 * fix Hjørring - Manglende data [#329](https://github.com/briis/affalddk/issues/329)

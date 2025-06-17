@@ -167,7 +167,6 @@ class GarbageCollection:
 
     async def get_pickup_data(self, address_id: str, debug=False) -> PickupEvents:
         """Get the garbage collection data."""
-
         if (self._api_type is not None) & (self.today != dt.date.today()):
             self.pickup_events: PickupEvents = {}
             self.next_events: PickupEvents = {}
@@ -277,16 +276,9 @@ class GarbageCollection:
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for item in garbage_data:
                     fraction_name = re.sub(r'^\d+\s*', '', item['Beholder-id'])
-
-                    weekday, rest = item['Tømningsdag'].split(None, 1)
-                    if 'Ugenumre:' in rest:
-                        weeks = [int(w) for w in rest.split('Ugenumre:')[1].split(',')]
-                    elif 'ulige' in rest.lower():
-                        weeks = [-1]
-                    else:
-                        weeks = [-2]
-                    for w in weeks:
-                        _pickup_date = weekday_week_to_date(weekday, w)
+                    weekday, weeks = self._api.get_weekday_and_weeks(item)
+                    for [w, y] in weeks:
+                        _pickup_date = weekday_week_to_date(weekday, w, year=y)
                         if not _pickup_date:
                             raise RuntimeWarning(f'Failed to convert date for Herning, "{item}"')
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)

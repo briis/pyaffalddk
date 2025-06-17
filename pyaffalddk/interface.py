@@ -44,6 +44,8 @@ class AffaldDKAPIBase:
         self.address_list = {}
         if self.session is None:
             self.session = aiohttp.ClientSession()
+        self.today = dt.date.today()
+        self.year = self.today.year
 
     async def get_address(self, address_name):
         if address_name in self.address_list:
@@ -193,7 +195,6 @@ class VestForAPI(AffaldDKAPIBase):
         self.baseurl = "https://selvbetjening.vestfor.dk"
         self.url_data = self.baseurl + "/Home/MinSide"
         self.url_search = self.baseurl + "/Adresse/AddressByName"
-        self.today = dt.date.today()
 
     async def get_address_list(self, zipcode, street, house_number):
         para = {'term': f'{street} {house_number}'.strip(), 'numberOfResults': 100}
@@ -391,7 +392,6 @@ class ProvasAPI(AffaldDKAPIBase):
         super().__init__(*args, **kwargs)
         self.url_base = "https://platform-api.wastehero.io/api-crm-portal/v1/"
         self._token = None
-        self.today = dt.date.today()
 
     @property
     async def token(self):
@@ -502,6 +502,22 @@ class AffaldWebAPI(AffaldDKAPIBase):
                 row_data = [cell.get_text(separator=' ', strip=True) for cell in cells]
                 data.append({'Beholder-id': row_data[2], 'Tømningsdag': row_data[3]})
             return data
+
+    def get_weekday_and_weeks(self, item):
+        weekday, rest = item['Tømningsdag'].split(None, 1)
+        weeks = []
+        if 'Ugenumre:' in rest:
+            this_week = self.today.isocalendar()[1]
+            for w in rest.split('Ugenumre:')[1].split(','):
+                if int(w) < this_week:
+                    weeks.append([int(w), self.year + 1])
+                else:
+                    weeks.append([int(w), self.year])
+        elif 'ulige' in rest.lower():
+            weeks.append([-1, self.year])
+        else:
+            weeks.append([-2, self.year])
+        return weekday, weeks
 
 
 class RenoSydAPI(AffaldDKAPIBase):

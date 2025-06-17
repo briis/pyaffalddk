@@ -390,7 +390,7 @@ async def test_Herning(capsys, monkeypatch):
                 if args[0] == 'newyear1':
                     return [{"Beholder-id": "plast/metal", "Tømningsdag": "Tirsdag Ugenumre: 24,1,10"}]
                 if args[0] == 'newyear2':
-                    return [{"Beholder-id": "plast/metal", "Tømningsdag": "Tirsdag Ugenumre: 2,10, 20"}]
+                    return [{"Beholder-id": "plast/metal", "Tømningsdag": "Tirsdag Ugenumre: 2,10,20"}]
                 return herning_data
             monkeypatch.setattr(gc._api, "get_garbage_data", get_data)
 

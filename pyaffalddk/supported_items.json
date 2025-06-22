@@ -112,6 +112,7 @@
         "papir/pap + glas/metal",
         "papir/pap - metal/plast",
         "Papir/pap og glas/metal",
+        "Papir/småt pap og glas/metal",
         "Ressourcebeholder"
     ],
     "pappapirtekstil": [
@@ -293,6 +294,9 @@
     ],
     "storskraldogtekstilaffald": [
         "Storskrald og tekstilaffald"
+    ],
+    "storskraldogfarligtaffald": [
+        "Storskrald og farligt affald"
     ],
     "tekstil": [
         "Miljøkasse/tekstiler",

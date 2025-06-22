@@ -534,5 +534,12 @@
     "restaffaldmadaffald": "240 l mad/restaffald",
     "pappapirglasmetal": "240 l papir/pap - metal/plast",
     "next_pickup": "Rest & Madaffald"
+  },
+  "lolland_1": {
+    "pappapirglasmetal": "Papir/småt pap og glas/metal",
+    "restaffaldmadaffald": "Rest- og madaffald",
+    "plastmadkarton": "Plast og mad- & drikkekartoner",
+    "storskraldogfarligtaffald": "Storskrald og farligt affald - hvis du har bestilt",
+    "next_pickup": "Pap, Papir, Glas & Metal"
   }
 }

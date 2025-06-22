@@ -75,6 +75,7 @@ ICON_LIST = {
     "restplast": "mdi:trash-can",
     "storskrald": "mdi:table-furniture",
     "storskraldogtekstilaffald": "mdi:table-furniture",
+    "storskraldogfarligtaffald": "mdi:table-furniture",
     "tekstil": "mdi:recycle",
 }
 
@@ -115,6 +116,7 @@ NAME_LIST = {
     "restaffaldmadaffald": "Rest & Madaffald",
     "restplast": "Restaffald & Plast/Madkartoner",
     "storskrald": "Storskrald",
+    "storskraldogfarligtaffald": "Storskrald & Farligt affald",
     "storskraldogtekstilaffald": "Storskrald & Tekstilaffald",
     "tekstil": "Tekstilaffald",
 }

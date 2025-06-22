@@ -1,5 +1,11 @@
 # Changelog for pyaffalddk
 
+## [2.12.2] - `2025-06-22`
+
+### Changes
+* fix Lolland - plast metal mangler [#333](https://github.com/briis/affalddk/issues/333)
+
+
 ## [2.12.1] - `2025-06-17`
 
 ### Added

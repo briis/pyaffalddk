@@ -541,5 +541,14 @@
     "plastmadkarton": "Plast og mad- & drikkekartoner",
     "storskraldogfarligtaffald": "Storskrald og farligt affald - hvis du har bestilt",
     "next_pickup": "Pap, Papir, Glas & Metal"
+  },
+  "randers_335": {
+    "storskrald": "Storskrald distrikt 18",
+    "madaffald": "140L madaffald 14 dags tømning",
+    "restaffald": "240L restaffald 14 dags tømning",
+    "pappapir": "240L papir, pap",
+    "plastmadkarton": "240L plast, MDK",
+    "metalglas": "140L metal, glas",
+    "next_pickup": "Metal & Glas | Plast & Madkarton"
   }
 }

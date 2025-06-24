@@ -134,7 +134,7 @@ RE_WORDS = [
     r'(?:to|1|2)[\s-]?(?:delt|kammer)',  # diffenrent ways of  2-delt or 2-kammer
     r'beh\.(,)?', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra', 'havebolig', '5 m3',
     'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest', r'sommer( \d{2})?', 'vinter',
-    'distrikt [A-Za-z0-9]', 'rute [0-9]', 's[0-9]', 'd[0-9]', r'/\d{2}',
+    r'distrikt (?:[A-Za-z]|\d+)', 'rute [0-9]', 's[0-9]', 'd[0-9]', r'/\d{2}',
     ]
 
 RE_RAW = [

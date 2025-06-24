@@ -1,5 +1,11 @@
 # Changelog for pyaffalddk
 
+## [2.12.3] - `2025-06-24`
+
+### Changes
+* fix Randers - Plast og metal [#335](https://github.com/briis/affalddk/issues/335)
+
+
 ## [2.12.2] - `2025-06-22`
 
 ### Changes

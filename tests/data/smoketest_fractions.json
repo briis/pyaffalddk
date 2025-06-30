@@ -550,5 +550,10 @@
     "plastmadkarton": "240L plast, MDK",
     "metalglas": "140L metal, glas",
     "next_pickup": "Metal & Glas | Plast & Madkarton"
+  },
+  "ikast_1": {
+    "restaffaldmadaffald": "240 L Dobbeltbeholder Mad og Rest (2,5 kr./kg.)** ( Vis vejninger )",
+    "plastmdkglasmetal": "240 L Genbrugsbeholder, genbrugsplads, miljøøer m.v.",
+    "next_pickup": "Rest & Madaffald"
   }
 }

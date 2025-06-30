@@ -285,7 +285,7 @@ async def test_VestFor(capsys, monkeypatch):
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('2750', 'Banegårdspladsen', '')
-                assert len(address_list) == 63
+                assert len(address_list) == 64
                 await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('2750', 'Banegårdspladsen', '1')
                 assert len(address_list) == 5

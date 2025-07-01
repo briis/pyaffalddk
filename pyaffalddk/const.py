@@ -126,14 +126,14 @@ STRIPS = [
         'med 14-dages tømning ved helårshuse', '– tømmes hver 2. uge',
         'sommerhustømning', 'henteordning', 'beholder til', '1-rums',
         'egenløsning', 'en-familie', 'enfamiliehus', '26 tøm', 'm. sommertømning',
-        '-skel 0-2 meter', 'afstand over 5 meter', 'Jern/Elektronik/Hårde hvidevarer', ' ?',
+        '-skel 0-2 meter', 'afstand over 5 meter', 'Jern/Elektronik/Hårde hvidevarer', ' ?', '**',
 ]
 RE_WORDS = [
     r'14(\.)?[\s-]?(?:dags|dage|dages|dg)(\.)?',  # diffenrent ways of 14. dags
     r'(?:3|4|6|8)?(\.)?[\s-]?(?:uge|ugers)',  # diffenrent ways of uge
     r'(?:to|1|2)[\s-]?(?:delt|kammer)',  # diffenrent ways of  2-delt or 2-kammer
-    r'beh\.(,)?', r'\bgl\.', 'beholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra', 'havebolig', '5 m3',
-    'stand', 'skel', 'hver', 'nord', 'syd', 'øst', 'vest', r'sommer( \d{2})?', 'vinter',
+    r'beh\.(,)?', r'\bgl\.', 'beholder', 'dobbeltbeholder', 'spand', 'tøm', 'villa', 'tømning', 'ekstra', 'havebolig', '5 m3',
+    'stand', 'skel', 'skelordning', 'hver', 'nord', 'syd', 'øst', 'vest', r'sommer( \d{2})?', 'vinter',
     r'distrikt (?:[A-Za-z]|\d+)', 'rute [0-9]', 's[0-9]', 'd[0-9]', r'/\d{2}',
     ]
 

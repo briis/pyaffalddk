@@ -520,6 +520,71 @@ class AffaldWebAPI(AffaldDKAPIBase):
         return weekday, weeks
 
 
+class IkastBrandeAPI(AffaldDKAPIBase):
+    # Ikast / Brande API
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = "https://skrald.ikast-brande.dk/Adresse"
+
+    async def get_address_list(self, zipcode, street, house_number):
+        address = f'{street} {house_number}'.strip()
+        url = f"{self.url_base}/Typeahead"
+        data = await self.async_post_request(url, para={'query': address.strip(), 'limit': 30000})
+        self.address_list = {}
+        for item in data:
+            if str(zipcode) in item['Beliggenhed']:
+                self.update_address_list(item, 'Beliggenhed', 'AdresseId')
+        return list(self.address_list.keys())
+
+    async def get_garbage_data(self, address_id):
+        url = self.url_base + '/SubmitAdresse'
+        params = {
+            "hiddenPrevController": "Tomningsinfo",
+            "hiddenPrevAction": "Index",
+            "hiddenSiteType": "R",
+            "hiddenId": address_id
+        }
+
+        data = await self.async_post_request(url, para=params, as_json=False)
+        soup = BeautifulSoup(data, "html.parser")
+        table = soup.find("table")
+        header_row = table.find('tr')
+        header_cells = header_row.find_all(['th', 'td'])
+        headers = [cell.get_text(strip=True) for cell in header_cells]
+        if headers[3] == 'Kommende tømninger':
+            data = []
+            for row in table.find_all('tr'):
+                cells = row.find_all('td')
+                if cells:
+                    row_data = [cell.get_text(separator=' ', strip=True) for cell in cells]
+                    if row_data[3]:
+                        data.append({
+                            'Materiel': row_data[0],
+                            'Tømningsdag': self.get_next_upcoming_date(row_data[3])
+                            })
+
+            return data
+
+    def get_next_upcoming_date(self, date_str):
+        current_year = self.today.year
+        candidates = []
+
+        for part in date_str.split(','):
+            part = part.strip()
+            try:
+                # Parse as this year first
+                dt_this_year = dt.datetime.strptime(f"{part}-{current_year}", "%d-%m-%Y").date()
+                if dt_this_year >= self.today:
+                    candidates.append(dt_this_year)
+                else:
+                    # If in the past, add with next year
+                    dt_next_year = dt.datetime.strptime(f"{part}-{current_year + 1}", "%d-%m-%Y").date()
+                    candidates.append(dt_next_year)
+            except ValueError:
+                continue
+        return min(candidates) if candidates else None
+
+
 class RenoSydAPI(AffaldDKAPIBase):
     # Reno Syd API
     def __init__(self, *args, **kwargs):

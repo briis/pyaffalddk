@@ -41,6 +41,7 @@ APIS = {
     'renodjurs': interface.RenoDjursAPI,
     'renosyd': interface.RenoSydAPI,
     'herning': interface.AffaldWebAPI,
+    'ikastbrande': interface.IkastBrandeAPI,
 }
 
 
@@ -85,6 +86,12 @@ class GarbageCollection:
         if self._municipality is not None:
             if self._api_type == "nemaffald":
                 await self._api.token
+
+    async def init_address(self, address_id) -> None:
+        """calls when initializing a new address the first time"""
+        if self._municipality is not None:
+            if self._api_type == "perfectwaste":
+                await self._api.save_to_db(address_id)
 
     async def get_address_list(self, zipcode, street, house_number):
         """Get list of address, id """
@@ -282,6 +289,13 @@ class GarbageCollection:
                         if not _pickup_date:
                             raise RuntimeWarning(f'Failed to convert date for Herning, "{item}"')
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)
+            elif self._api_type == "ikastbrande":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    if item['Tømningsdag']:
+                        _pickup_date = item['Tømningsdag']
+                        fraction_name = item['Materiel']
+                        self.update_pickup_event(fraction_name, address_id, _pickup_date)
 
         self.set_next_event()
         return self.pickup_events
@@ -371,6 +385,8 @@ def clean_fraction_string(item):
     res = [fixed_item.strip()]
     if ' - ' in fixed_item:
         res += [o.strip() for o in fixed_item.split(' - ')]
+    if ', ' in fixed_item:
+        res += [o.strip() for o in fixed_item.split(', ')]
     return res + strings_in_parenthesis
 
 

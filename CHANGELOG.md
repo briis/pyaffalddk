@@ -1,5 +1,15 @@
 # Changelog for pyaffalddk
 
+## [2.12.4] - `2025-07-01`
+
+### Changes
+* fix Næstved - fractions and initializing of new address not used in perfect waste before
+
+### Added
+* API for:
+  * Ikast-Brande [#330](https://github.com/briis/affalddk/issues/340)
+
+
 ## [2.12.3] - `2025-06-24`
 
 ### Changes

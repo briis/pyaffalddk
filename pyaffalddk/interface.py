@@ -224,7 +224,6 @@ class PerfectWasteAPI(AffaldDKAPIBase):
         self.baseurl = "https://europe-west3-perfect-waste.cloudfunctions.net"
         self.url_data = self.baseurl + "/getAddressCollections"
         self.url_search = self.baseurl + "/searchExternalAddresses"
-        self.saved_addresses = []
 
     async def get_address_list(self, zipcode, street, house_number):
         para = {'data': {
@@ -253,9 +252,6 @@ class PerfectWasteAPI(AffaldDKAPIBase):
         await self.async_post_request(url, para=para)
 
     async def get_garbage_data(self, address_id):
-        if address_id not in self.saved_addresses:
-            await self.save_to_db(address_id)
-            self.saved_addresses.append(address_id)
         body = {"data": {
             "addressID": address_id,
             "municipality": self.municipality_id

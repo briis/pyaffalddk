@@ -87,6 +87,12 @@ class GarbageCollection:
             if self._api_type == "nemaffald":
                 await self._api.token
 
+    async def init_address(self, address_id) -> None:
+        """calls when initializing a new address the first time"""
+        if self._municipality is not None:
+            if self._api_type == "perfectwaste":
+                await self._api.save_to_db(address_id)
+
     async def get_address_list(self, zipcode, street, house_number):
         """Get list of address, id """
         if self._api_type is not None:

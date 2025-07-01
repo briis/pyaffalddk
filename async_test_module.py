@@ -74,6 +74,7 @@ async def main() -> None:
 
             if args.pickup:
                 try:
+                    await gc.init_address(address_id)
                     data = await gc.get_pickup_data(address_id)
                     if data:
                         print("")

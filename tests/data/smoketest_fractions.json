@@ -555,5 +555,15 @@
     "restaffaldmadaffald": "240 L Dobbeltbeholder Mad og Rest (2,5 kr./kg.)** ( Vis vejninger )",
     "plastmdkglasmetal": "240 L Genbrugsbeholder, genbrugsplads, miljøøer m.v.",
     "next_pickup": "Rest & Madaffald"
+  },
+  "næsteved_1": {
+    "restaffald": "Restaffald",
+    "storskrald": "Storskrald",
+    "plastmadkarton": "Plast og MD-Karton",
+    "pappapir": "Papir og småt pap",
+    "madaffald": "Madaffald",
+    "glas": "Glas",
+    "jern": "Metal",
+    "next_pickup": "Restaffald"
   }
 }

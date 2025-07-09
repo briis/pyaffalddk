@@ -1,5 +1,11 @@
 # Changelog for pyaffalddk
 
+## [2.12.5] - `2025-07-09`
+
+### Changes
+* fix Solrød - now using Perfect Waste
+
+
 ## [2.12.4] - `2025-07-01`
 
 ### Changes

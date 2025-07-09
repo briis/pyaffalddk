@@ -173,7 +173,7 @@ MUNICIPALITIES_LIST = {
     "Skanderborg": ["renosyd", 746],
     "Skive": ["openexp", "renomatic.nomi4s.dk/app/appservice/"],
     "Slagelse": ["perfectwaste"],
-    "Solrød": ["renoweb"],
+    "Solrød": ["perfectwaste"],
     "Stevns": ["perfectwaste"],
     "Struer": ["openexp", "renomatic.nomi4s.dk/app/appservice/"],
     "Svendborg": ["renoweb"],

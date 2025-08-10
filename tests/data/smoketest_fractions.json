@@ -564,5 +564,17 @@
     "glas": "Glas",
     "jern": "Metal",
     "next_pickup": "Restaffald"
+  },
+  "gladsaxe_352": {
+    "dagrenovation": "Dagrenovation",
+    "haveaffald": "Haveaffald",
+    "pap": "Pap",
+    "plast": "Plast",
+    "papir": "Papir",
+    "glas": "Glas",
+    "jern": "Jern og metal",
+    "storskrald": "Storskrald",
+    "tekstil": "Tekstilaffald",
+    "next_pickup": "Dagrenovation"
   }
 }

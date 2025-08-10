@@ -3,7 +3,7 @@
 ## [2.12.6] - `2025-08-10`
 
 ### Changes
-* fix sOLRØD - Miljøkasse/tekstiler [#349](https://github.com/briis/affalddk/issues/349)
+* fix Solrød - Miljøkasse/tekstiler [#349](https://github.com/briis/affalddk/issues/349)
 * fix Gladsaxe - jern og metal mangler [#352](https://github.com/briis/affalddk/issues/352)
 
 

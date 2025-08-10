@@ -200,7 +200,6 @@ SUPPORTED_ITEMS = {
         "Tekstiler",
         "Standplads",
         "Tekstilaffald",
-        "Miljøkasse/tekstiler",
         "Tekstil",
         "Tekstilposer (1 stk.)",
     ],

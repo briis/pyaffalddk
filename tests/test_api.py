@@ -107,13 +107,13 @@ def test_type_from_material_cleaning(capsys, monkeypatch):
     with capsys.disabled():
         for category, vals in const_tests.MATERIAL_LIST.items():
             for val in vals:
-                cat = api.get_garbage_type(val, 'test', '1111', fail=False)
+                cat = api.get_garbage_types(val, 'test', '1111', fail=False)[0]
                 if cat != category:
                     print(val, api.clean_fraction_string(val))
                 assert cat == category
 
         for val in const_tests.NON_MATERIAL_LIST:
-            cat = api.get_garbage_type(val, 'test', '1111', fail=False)
+            cat = api.get_garbage_types(val, 'test', '1111', fail=False)[0]
             assert cat == 'not-supported'
 
 
@@ -121,7 +121,7 @@ def test_type_cleaning(capsys, monkeypatch):
     with capsys.disabled():
         for category, vals in const_tests.SUPPORTED_ITEMS.items():
             for val in vals:
-                cat = api.get_garbage_type(val, 'test', '1111', fail=False)
+                cat = api.get_garbage_types(val, 'test', '1111', fail=False)[0]
                 if cat != category:
                     print(val, api.clean_fraction_string(val))
                 assert cat == category

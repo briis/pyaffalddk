@@ -28,13 +28,14 @@ NON_SUPPORTED_ITEMS = [
 
 
 SPECIAL_MATERIALS = {
-    '240 l genbrug 2-kammer': 'pappapirglasmetal',
-    'haveaffald': 'haveaffald',
-    '4-kammer (370 l)': 'papirglasmetalplast',
-    '4-kammer (240 l)': 'pappapirglasmetal',
-    '240L genbrug': 'pappi',
-    'genbrug - blåt låg': 'plastmadkarton',
-    'Genbrug henteordning': 'plastmadkarton',
+    '240 l genbrug 2-kammer': ['pappapirglasmetal'],
+    'haveaffald': ['haveaffald'],
+    '4-kammer (370 l)': ['papirglasmetalplast'],
+    '4-kammer (240 l)': ['pappapirglasmetal'],
+    '240L genbrug': ['pappi'],
+    'genbrug - blåt låg': ['plastmadkarton'],
+    'Genbrug henteordning': ['plastmadkarton'],
+    'Miljøkasse/tekstiler': ['farligtaffald', 'tekstil'],
 }
 
 

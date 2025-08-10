@@ -1,5 +1,12 @@
 # Changelog for pyaffalddk
 
+## [2.12.6] - `2025-08-10`
+
+### Changes
+* fix Solrød - Miljøkasse/tekstiler [#349](https://github.com/briis/affalddk/issues/349)
+* fix Gladsaxe - jern og metal mangler [#352](https://github.com/briis/affalddk/issues/352)
+
+
 ## [2.12.5] - `2025-07-09`
 
 ### Changes

@@ -122,29 +122,29 @@ class GarbageCollection:
         if _pickup_date is not None and _pickup_date < self.today:
             return 'old-event'
 
-        key = get_garbage_type(item_name, self._municipality, address_id, self.fail)
-        if key in ['not-supported', 'missing-type']:
-            return key
+        for key in get_garbage_types(item_name, self._municipality, address_id, self.fail):
+            if key in ['not-supported', 'missing-type']:
+                return key
 
-        if (key not in self.pickup_events) or (_pickup_date < self.pickup_events[key].date):
-            _pickup_event = {
-                key: PickupType(
-                    date=_pickup_date,
-                    group=key,
-                    friendly_name=NAME_LIST.get(key),
-                    icon=ICON_LIST.get(key),
-                    entity_picture=f"{key}.svg",
-                    description=item_name,
-                )
-            }
-            self.pickup_events.update(_pickup_event)
+            if (key not in self.pickup_events) or (_pickup_date < self.pickup_events[key].date):
+                _pickup_event = {
+                    key: PickupType(
+                        date=_pickup_date,
+                        group=key,
+                        friendly_name=NAME_LIST.get(key),
+                        icon=ICON_LIST.get(key),
+                        entity_picture=f"{key}.svg",
+                        description=item_name,
+                    )
+                }
+                self.pickup_events.update(_pickup_event)
 
-        if _pickup_date in self.next_events:
-            if NAME_LIST.get(key) not in self.next_events[_pickup_date]['name']:
-                self.next_events[_pickup_date]['name'] .append(NAME_LIST.get(key))
-                self.next_events[_pickup_date]['description'].append(item_name)
-        else:
-            self.next_events.update({_pickup_date: {'name': [NAME_LIST.get(key)], 'description': [item_name]}})
+            if _pickup_date in self.next_events:
+                if NAME_LIST.get(key) not in self.next_events[_pickup_date]['name']:
+                    self.next_events[_pickup_date]['name'] .append(NAME_LIST.get(key))
+                    self.next_events[_pickup_date]['description'].append(item_name)
+            else:
+                self.next_events.update({_pickup_date: {'name': [NAME_LIST.get(key)], 'description': [item_name]}})
         return 'done'
 
     def set_next_event(self):
@@ -340,11 +340,11 @@ def weekday_week_to_date(weekday_name, week_number, year=None):
             return dt.date.fromisocalendar(year, week_number, iso_weekday)
 
 
-def get_garbage_type(item, municipality, address_id, fail=False):
-    """Get the garbage type."""
+def get_garbage_types(item, municipality, address_id, fail=False):
+    """Get the garbage types."""
     # _LOGGER.debug("Affalds type: %s", item)
     if item in NON_SUPPORTED_ITEMS:
-        return 'not-supported'
+        return ['not-supported']
 
     for special in SPECIAL_MATERIALS:
         if special.lower() in item.lower():
@@ -353,14 +353,14 @@ def get_garbage_type(item, municipality, address_id, fail=False):
     fixed_items = clean_fraction_string(item)
     for fixed_item in fixed_items:
         if fixed_item in [non.lower() for non in NON_SUPPORTED_ITEMS]:
-            return 'not-supported'
+            return ['not-supported']
         for key, values in SUPPORTED_ITEMS.items():
             for entry in values:
                 if fixed_item.lower() == entry.lower():
-                    return key
+                    return [key]
     print(f'\nmissing: {fixed_items}')
     warn_or_fail(item, municipality, address_id, fail=fail)
-    return 'missing-type'
+    return ['missing-type']
 
 
 def clean_fraction_string(item):

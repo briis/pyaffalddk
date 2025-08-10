@@ -67,7 +67,7 @@ async def test_OpenExpLive(capsys, monkeypatch):
                 # print(address.__dict__)
                 assert address.__dict__ == add
                 address_list = await gc._api.get_address_list('2000', 'Smallegade', '')
-                assert len(address_list) == 80
+                assert len(address_list) == 79
                 await assert_add_list(gc, address_list)
                 address_list = await gc._api.get_address_list('2000', 'Smallegade', '2')
                 assert len(address_list) == 9

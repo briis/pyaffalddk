@@ -392,6 +392,7 @@
     "papirglasdaaser": "Papir og glas/dåser",
     "elektronik": "Småt elektronik i pose på låg",
     "batterier": "Batterier i pose på låg",
+    "farligtaffald": "Miljøkasse/tekstiler",
     "tekstil": "Miljøkasse/tekstiler",
     "next_pickup": "Haveaffald | Pap | Rest & Madaffald | Storskrald"
   },
@@ -564,5 +565,17 @@
     "glas": "Glas",
     "jern": "Metal",
     "next_pickup": "Restaffald"
+  },
+  "gladsaxe_352": {
+    "dagrenovation": "Dagrenovation",
+    "haveaffald": "Haveaffald",
+    "pap": "Pap",
+    "plast": "Plast",
+    "papir": "Papir",
+    "glas": "Glas",
+    "jern": "Jern og metal",
+    "storskrald": "Storskrald",
+    "tekstil": "Tekstilaffald",
+    "next_pickup": "Dagrenovation"
   }
 }

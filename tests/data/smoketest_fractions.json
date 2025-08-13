@@ -577,5 +577,11 @@
     "storskrald": "Storskrald",
     "tekstil": "Tekstilaffald",
     "next_pickup": "Dagrenovation"
+  },
+  "brønderslev_356": {
+    "plastmetalmdk": "240L plast/metal/MDK",
+    "pappapir": "140L papir/pap",
+    "restaffaldmadaffald": "240L mad/rest",
+    "next_pickup": "Rest & Madaffald"
   }
 }

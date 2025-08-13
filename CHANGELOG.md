@@ -1,5 +1,11 @@
 # Changelog for pyaffalddk
 
+## [2.12.7] - `2025-08-13`
+
+### Changes
+* fix Brønderslev - 240L plast/metal/MDK [#356](https://github.com/briis/affalddk/issues/356)
+
+
 ## [2.12.6] - `2025-08-10`
 
 ### Changes

@@ -23,6 +23,6 @@ from pyaffalddk.const import (
 )
 
 __title__ = "pyaffalddk"
-__version__ = "2.12.6"
+__version__ = "2.12.7"
 __author__ = "briis"
 __license__ = "MIT"

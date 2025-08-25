@@ -583,5 +583,13 @@
     "pappapir": "140L papir/pap",
     "restaffaldmadaffald": "240L mad/rest",
     "next_pickup": "Rest & Madaffald"
+  },
+  "faxe65": {
+    "restaffaldmadaffald": "Rest-/Madaffald",
+    "pappi": "Plast/MDK & PP",
+    "farligtaffald": "Farligt affald",
+    "storskrald": "Storskrald",
+    "metalglas": "Metal/Glas",
+    "next_pickup": "Rest & Madaffald"
   }
 }

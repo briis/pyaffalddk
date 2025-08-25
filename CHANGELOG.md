@@ -1,5 +1,11 @@
 # Changelog for pyaffalddk
 
+## [2.12.8] - `2025-08-25`
+
+### Changes
+* fix: plast/papir mangler faxe kommune [#65](https://github.com/briis/pyaffalddk/pull/65)
+
+
 ## [2.12.7] - `2025-08-13`
 
 ### Changes

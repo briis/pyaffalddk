@@ -1,5 +1,11 @@
 # Changelog for pyaffalddk
 
+## [2.13.1] - `2025-09-01`
+
+### Changes
+* fix: fraction problems in Silkeborg [#361](https://github.com/briis/affalddk/pull/361)
+
+
 ## [2.13.0] - `2025-09-01`
 
 ### Added

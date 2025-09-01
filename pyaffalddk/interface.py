@@ -575,10 +575,11 @@ class SilkeborgAPI(AffaldDKAPIBase):
             if len(cols) == 2:
                 date = cols[0].get_text(strip=True)
                 desc = cols[1].get_text(strip=True)
-                results.append({
-                    'Materiel': desc,
-                    'Tømningsdag': self.get_next_upcoming_date(date)
-                    })
+                for desc in cols[1].get_text(strip=True).split(', '):
+                    results.append({
+                        'Materiel': desc.strip(),
+                        'Tømningsdag': self.get_next_upcoming_date(date)
+                        })
         return results
 
     def get_next_upcoming_date(self, date_str):

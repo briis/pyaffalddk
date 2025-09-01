@@ -591,5 +591,10 @@
     "storskrald": "Storskrald",
     "metalglas": "Metal/Glas",
     "next_pickup": "Rest & Madaffald"
+  },
+  "silkeborg_1": {
+    "papirglasmetalplast": "Plast/MDK/Glas/Metal/Papir/Pap",
+    "restaffaldmadaffald": "Mad-/Rest",
+    "next_pickup": "Papir, Glas, Metal & Plast"
   }
 }

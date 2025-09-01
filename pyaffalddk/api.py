@@ -42,6 +42,7 @@ APIS = {
     'renosyd': interface.RenoSydAPI,
     'herning': interface.AffaldWebAPI,
     'ikastbrande': interface.IkastBrandeAPI,
+    'silkeborg': interface.SilkeborgAPI,
 }
 
 
@@ -290,6 +291,13 @@ class GarbageCollection:
                             raise RuntimeWarning(f'Failed to convert date for Herning, "{item}"')
                         self.update_pickup_event(fraction_name, address_id, _pickup_date)
             elif self._api_type == "ikastbrande":
+                garbage_data = await self._api.get_garbage_data(address_id)
+                for item in garbage_data:
+                    if item['Tømningsdag']:
+                        _pickup_date = item['Tømningsdag']
+                        fraction_name = item['Materiel']
+                        self.update_pickup_event(fraction_name, address_id, _pickup_date)
+            elif self._api_type == "silkeborg":
                 garbage_data = await self._api.get_garbage_data(address_id)
                 for item in garbage_data:
                     if item['Tømningsdag']:

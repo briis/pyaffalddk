@@ -86,6 +86,9 @@ class AffaldDKAPIBase:
     async def async_post_request(self, url, headers={"Content-Type": "application/json"}, para=None, as_json=True, new_session=False):
         return await self.async_api_request('POST', url, headers, para, as_json, new_session)
 
+    async def async_postform_request(self, url, headers={"Content-Type": "application/x-www-form-urlencoded"}, para=None, as_json=True, new_session=False):
+        return await self.async_api_request('POSTform', url, headers, para, as_json, new_session)
+
     async def async_api_request(self, method, url, headers, para=None, as_json=True, new_session=False):
         """Make an API request."""
 
@@ -98,11 +101,18 @@ class AffaldDKAPIBase:
         if method == 'POST':
             json_input = para
             data_input = None
-        else:
+            params_input = None
+        elif method == 'POSTform':
+            method = 'POST'
             json_input = None
             data_input = para
+            params_input = None
+        else:
+            json_input = None
+            data_input = None
+            params_input = para
 
-        async with session.request(method, url, headers=headers, json=json_input, params=data_input) as response:
+        async with session.request(method, url, headers=headers, json=json_input, params=params_input, data=data_input) as response:
             if response.status != 200:
                 if new_session:
                     await session.close()
@@ -518,6 +528,77 @@ class AffaldWebAPI(AffaldDKAPIBase):
         else:
             weeks.append([-2, self.year])
         return weekday, weeks
+
+
+class SilkeborgAPI(AffaldDKAPIBase):
+    # Silkeborg API
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.url_base = 'https://www.affaldonline.dk/kalender/silkeborg'
+
+    async def get_address_list(self, zipcode, street, house_number):
+        self.address_list = {}
+        # street
+        url = f"{self.url_base}/acCal.php"
+        streets = await self.async_get_request(url, para={'term': street.strip()}, as_json=False)
+        streets = json.loads(streets)
+
+        # house numbers
+        url = f"{self.url_base}/husnrCal.php"
+        for street in streets:
+            if str(zipcode) in str(street['postnr']):
+                params = {
+                    'vejnavn': street['vejnavn'],
+                    'postnr': street['postnr'],
+#                    'postdist': item['Bynavn'],
+                }
+                data2 = await self.async_get_request(url, para=params, as_json=False)
+                soup = BeautifulSoup(data2, "html.parser")
+                for opt in soup.select("select#SelHusNr option"):
+                    number = opt.text.strip()
+                    if house_number in number:
+                        item = {
+                            'name': f"{street['vejnavn']} {number}, {street['postnr']} {street['Bynavn']}",
+                            'id': opt["value"]
+                        }
+                        self.update_address_list(item, 'name', 'id')
+        return list(self.address_list.keys())
+
+    async def get_garbage_data(self, address_id):
+        url = self.url_base + '/showInfo.php'
+        data = await self.async_postform_request(url, para={'values': address_id}, as_json=False)
+        soup = BeautifulSoup(data, "html.parser")
+        table = soup.find("table")
+        results = []
+        for row in table.find_all("tr"):
+            cols = row.find_all("td")
+            if len(cols) == 2:
+                date = cols[0].get_text(strip=True)
+                desc = cols[1].get_text(strip=True)
+                results.append({
+                    'Materiel': desc,
+                    'Tømningsdag': self.get_next_upcoming_date(date)
+                    })
+        return results
+
+    def get_next_upcoming_date(self, date_str):
+        current_year = self.today.year
+        candidates = []
+
+        for part in date_str.split(','):
+            part = part.strip()
+            try:
+                # Parse as this year first
+                dt_this_year = dt.datetime.strptime(f"{part}-{current_year}", "%d-%m-%Y").date()
+                if dt_this_year >= self.today:
+                    candidates.append(dt_this_year)
+                else:
+                    # If in the past, add with next year
+                    dt_next_year = dt.datetime.strptime(f"{part}-{current_year + 1}", "%d-%m-%Y").date()
+                    candidates.append(dt_next_year)
+            except ValueError:
+                continue
+        return min(candidates) if candidates else None
 
 
 class IkastBrandeAPI(AffaldDKAPIBase):

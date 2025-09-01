@@ -170,6 +170,7 @@ MUNICIPALITIES_LIST = {
     "Rudersdal": ["renoweb"],
     "Rødovre": ["renoweb"],
     "Samsø": ["renoweb"],
+    "Silkeborg": ["silkeborg"],
     "Skanderborg": ["renosyd", 746],
     "Skive": ["openexp", "renomatic.nomi4s.dk/app/appservice/"],
     "Slagelse": ["perfectwaste"],

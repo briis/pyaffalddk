@@ -552,8 +552,8 @@ class SilkeborgAPI(AffaldDKAPIBase):
                     'postnr': street['postnr'],
 #                    'postdist': item['Bynavn'],
                 }
-                data2 = await self.async_get_request(url, para=params, as_json=False)
-                soup = BeautifulSoup(data2, "html.parser")
+                data = await self.async_get_request(url, para=params, as_json=False)
+                soup = BeautifulSoup(data, "html.parser")
                 for opt in soup.select("select#SelHusNr option"):
                     number = opt.text.strip()
                     if house_number in number:

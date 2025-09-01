@@ -172,9 +172,9 @@
         "4-kammer",
         "genbrug låg i låg",
         "Pap og papir/metal, glas og hård plast",
+        "Plast/MDK/Glas/Metal/Papir/Pap",
         "plast/metal/drikkekartoner og papir/pap",
         "plast/metal/MDK/papir/pap",
-        "Plast/MDK/Glas/Metal/Papir/Pap",
         "PP/GM"
     ],
     "papirmetal": [
@@ -266,9 +266,9 @@
         "Mad og restaffald",
         "Mad- og restaffald",
         "Mad-/ og restaffald",
+        "Mad-/Rest",
         "Mad-/restaffald",
         "Mad/Rest",
-        "Mad-/Rest",
         "Mad/Rest affald",
         "mad/restaffald",
         "madaffald restaffald",

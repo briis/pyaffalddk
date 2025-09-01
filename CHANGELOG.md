@@ -1,5 +1,12 @@
 # Changelog for pyaffalddk
 
+## [2.13.0] - `2025-09-01`
+
+### Added
+* API for:
+  * Silkeborg [#361](https://github.com/briis/affalddk/issues/361)
+
+
 ## [2.12.8] - `2025-08-25`
 
 ### Changes
